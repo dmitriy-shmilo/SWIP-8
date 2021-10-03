@@ -13,7 +13,20 @@
 		5DEABB502709C960007AB419 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 5DEABB4E2709C960007AB419 /* Main.storyboard */; };
 		5DEABB522709C964007AB419 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 5DEABB512709C964007AB419 /* Assets.xcassets */; };
 		5DEABB552709C964007AB419 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 5DEABB532709C964007AB419 /* LaunchScreen.storyboard */; };
+		5DEABB632709D3A0007AB419 /* SWIP8Tests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5DEABB622709D3A0007AB419 /* SWIP8Tests.swift */; };
+		5DEABB6B2709D713007AB419 /* Emulator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5DEABB6A2709D713007AB419 /* Emulator.swift */; };
+		5DEABB6D2709D769007AB419 /* Instruction.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5DEABB6C2709D769007AB419 /* Instruction.swift */; };
 /* End PBXBuildFile section */
+
+/* Begin PBXContainerItemProxy section */
+		5DEABB642709D3A0007AB419 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 5DEABB3D2709C960007AB419 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 5DEABB442709C960007AB419;
+			remoteInfo = SWIP8;
+		};
+/* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
 		5DEABB452709C960007AB419 /* SWIP8.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = SWIP8.app; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -24,10 +37,21 @@
 		5DEABB512709C964007AB419 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		5DEABB542709C964007AB419 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		5DEABB562709C964007AB419 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		5DEABB602709D3A0007AB419 /* SWIP8Tests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = SWIP8Tests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		5DEABB622709D3A0007AB419 /* SWIP8Tests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SWIP8Tests.swift; sourceTree = "<group>"; };
+		5DEABB6A2709D713007AB419 /* Emulator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Emulator.swift; sourceTree = "<group>"; };
+		5DEABB6C2709D769007AB419 /* Instruction.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Instruction.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
 		5DEABB422709C960007AB419 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		5DEABB5D2709D3A0007AB419 /* Frameworks */ = {
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
@@ -41,6 +65,7 @@
 			isa = PBXGroup;
 			children = (
 				5DEABB472709C960007AB419 /* SWIP8 */,
+				5DEABB612709D3A0007AB419 /* SWIP8Tests */,
 				5DEABB462709C960007AB419 /* Products */,
 			);
 			sourceTree = "<group>";
@@ -49,6 +74,7 @@
 			isa = PBXGroup;
 			children = (
 				5DEABB452709C960007AB419 /* SWIP8.app */,
+				5DEABB602709D3A0007AB419 /* SWIP8Tests.xctest */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -56,6 +82,7 @@
 		5DEABB472709C960007AB419 /* SWIP8 */ = {
 			isa = PBXGroup;
 			children = (
+				5DEABB692709D700007AB419 /* Emulator */,
 				5DEABB482709C960007AB419 /* AppDelegate.swift */,
 				5DEABB4A2709C960007AB419 /* SceneDelegate.swift */,
 				5DEABB4C2709C960007AB419 /* ViewController.swift */,
@@ -65,6 +92,23 @@
 				5DEABB562709C964007AB419 /* Info.plist */,
 			);
 			path = SWIP8;
+			sourceTree = "<group>";
+		};
+		5DEABB612709D3A0007AB419 /* SWIP8Tests */ = {
+			isa = PBXGroup;
+			children = (
+				5DEABB622709D3A0007AB419 /* SWIP8Tests.swift */,
+			);
+			path = SWIP8Tests;
+			sourceTree = "<group>";
+		};
+		5DEABB692709D700007AB419 /* Emulator */ = {
+			isa = PBXGroup;
+			children = (
+				5DEABB6A2709D713007AB419 /* Emulator.swift */,
+				5DEABB6C2709D769007AB419 /* Instruction.swift */,
+			);
+			path = Emulator;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -87,6 +131,24 @@
 			productReference = 5DEABB452709C960007AB419 /* SWIP8.app */;
 			productType = "com.apple.product-type.application";
 		};
+		5DEABB5F2709D3A0007AB419 /* SWIP8Tests */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 5DEABB662709D3A0007AB419 /* Build configuration list for PBXNativeTarget "SWIP8Tests" */;
+			buildPhases = (
+				5DEABB5C2709D3A0007AB419 /* Sources */,
+				5DEABB5D2709D3A0007AB419 /* Frameworks */,
+				5DEABB5E2709D3A0007AB419 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				5DEABB652709D3A0007AB419 /* PBXTargetDependency */,
+			);
+			name = SWIP8Tests;
+			productName = SWIP8Tests;
+			productReference = 5DEABB602709D3A0007AB419 /* SWIP8Tests.xctest */;
+			productType = "com.apple.product-type.bundle.unit-test";
+		};
 /* End PBXNativeTarget section */
 
 /* Begin PBXProject section */
@@ -99,6 +161,10 @@
 				TargetAttributes = {
 					5DEABB442709C960007AB419 = {
 						CreatedOnToolsVersion = 13.0;
+					};
+					5DEABB5F2709D3A0007AB419 = {
+						CreatedOnToolsVersion = 13.0;
+						TestTargetID = 5DEABB442709C960007AB419;
 					};
 				};
 			};
@@ -116,6 +182,7 @@
 			projectRoot = "";
 			targets = (
 				5DEABB442709C960007AB419 /* SWIP8 */,
+				5DEABB5F2709D3A0007AB419 /* SWIP8Tests */,
 			);
 		};
 /* End PBXProject section */
@@ -131,6 +198,13 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
+		5DEABB5E2709D3A0007AB419 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 /* End PBXResourcesBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
@@ -140,11 +214,29 @@
 			files = (
 				5DEABB4D2709C960007AB419 /* ViewController.swift in Sources */,
 				5DEABB492709C960007AB419 /* AppDelegate.swift in Sources */,
+				5DEABB6B2709D713007AB419 /* Emulator.swift in Sources */,
+				5DEABB6D2709D769007AB419 /* Instruction.swift in Sources */,
 				5DEABB4B2709C960007AB419 /* SceneDelegate.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
+		5DEABB5C2709D3A0007AB419 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				5DEABB632709D3A0007AB419 /* SWIP8Tests.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 /* End PBXSourcesBuildPhase section */
+
+/* Begin PBXTargetDependency section */
+		5DEABB652709D3A0007AB419 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 5DEABB442709C960007AB419 /* SWIP8 */;
+			targetProxy = 5DEABB642709D3A0007AB419 /* PBXContainerItemProxy */;
+		};
+/* End PBXTargetDependency section */
 
 /* Begin PBXVariantGroup section */
 		5DEABB4E2709C960007AB419 /* Main.storyboard */ = {
@@ -340,6 +432,52 @@
 			};
 			name = Release;
 		};
+		5DEABB672709D3A0007AB419 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = ZJSZZS49UL;
+				GENERATE_INFOPLIST_FILE = YES;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@loader_path/Frameworks",
+				);
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = "Dmitriy-Shmilo.SWIP8Tests";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_EMIT_LOC_STRINGS = NO;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/SWIP8.app/SWIP8";
+			};
+			name = Debug;
+		};
+		5DEABB682709D3A0007AB419 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = ZJSZZS49UL;
+				GENERATE_INFOPLIST_FILE = YES;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@loader_path/Frameworks",
+				);
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = "Dmitriy-Shmilo.SWIP8Tests";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_EMIT_LOC_STRINGS = NO;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/SWIP8.app/SWIP8";
+			};
+			name = Release;
+		};
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
@@ -357,6 +495,15 @@
 			buildConfigurations = (
 				5DEABB5A2709C964007AB419 /* Debug */,
 				5DEABB5B2709C964007AB419 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		5DEABB662709D3A0007AB419 /* Build configuration list for PBXNativeTarget "SWIP8Tests" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				5DEABB672709D3A0007AB419 /* Debug */,
+				5DEABB682709D3A0007AB419 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
