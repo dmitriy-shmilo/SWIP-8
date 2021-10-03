@@ -115,86 +115,86 @@ class Emulator {
 	}
 	
 	func execute(instruction: Instruction) {
-		switch instruction.o {
-		case 0x00 where instruction.b == 0xe0:
+		switch instruction.group {
+		case .Special where instruction.b == 0xe0:
 			clearScreen()
-		case 0x00 where instruction.b == 0xee:
+		case .Special where instruction.b == 0xee:
 			if let returnTo = stack.popLast() {
 				programCounter = returnTo
 			} else {
 				quit = true
 			}
-		case 0x00:
+		case .Special:
 			fatalError("Jump to machine code isn't supported")
-		case 0x01:
+		case .Jump:
 			programCounter = instruction.nnn
-		case 0x02:
+		case .Call:
 			// TODO: prevent stack from growing too tall
 			stack.append(programCounter)
 			programCounter = instruction.nnn
-		case 0x03:
+		case .SkipIf:
 			if registers[instruction.x] == instruction.b {
 				programCounter += 2
 			}
-		case 0x04:
+		case .SkipIfNot:
 			if registers[instruction.x] != instruction.b {
 				programCounter += 2
 			}
-		case 0x05:
+		case .SkipIfRegister:
 			if registers[instruction.x] == registers[instruction.y] {
 				programCounter += 2
 			}
-		case 0x06:
+		case .SetRegister:
 			registers[instruction.x] = instruction.b
-		case 0x07:
+		case .AddToRegister:
 			registers[instruction.x] &+= instruction.b
-		case 0x08:
+		case .Arithmetic:
 			fatalError("Boolean and arithmetic operations aren't implemented")
-		case 0x09:
+		case .SkipIfNotRegister:
 			if registers[instruction.x] == registers[instruction.y] {
 				programCounter += 2
 			}
-		case 0x0a:
+		case .SetIndex:
 			indexRegister = instruction.nnn
-		case 0x0b:
+		case .JumpMod:
 			// TODO: implement an option to increment by registers[x]
 			programCounter = instruction.nnn + registers[0]
-		case 0x0c:
+		case .Random:
 			registers[instruction.x] = UInt8.random(in: 0..<UInt8.max) & instruction.b
-		case 0x0d:
+		case .Draw:
 			fatalError("Draw call isn't implemented")
-		case 0x0e where instruction.b == 0x9e:
+		case .SkipIfKey where instruction.b == 0x9e:
 			fatalError("Skip if key pressed isn't implemented")
-		case 0x0e where instruction.b == 0xa1:
+		case .SkipIfKey where instruction.b == 0xa1:
 			fatalError("Skip if key not pressed isn't implemented")
-		case 0x0f where instruction.b == 0x07:
+		case .Extended where instruction.b == 0x07:
 			registers[instruction.x] = delayTimer
-		case 0x0f where instruction.b == 0x15:
+		case .Extended where instruction.b == 0x15:
 			delayTimer = registers[instruction.x]
-		case 0x0f where instruction.b == 0x18:
+		case .Extended where instruction.b == 0x18:
 			soundTimer = registers[instruction.x]
-		case 0x0f where instruction.b == 0x1e:
+		case .Extended where instruction.b == 0x1e:
 			indexRegister += UInt16(registers[instruction.x])
 			if indexRegister >= 0x1000 {
 				indexRegister &= 0x0fff
 				// TODO: implement an option to skip flagging this overlow
 				registers[0x0f] = 1
 			}
-		case 0x0f where instruction.b == 0x0a:
+		case .Extended where instruction.b == 0x0a:
 			fatalError("Get key instruction isn't implemented")
-		case 0x0f where instruction.b == 0x29:
+		case .Extended where instruction.b == 0x29:
 			indexRegister = Self.FontDataOffset + UInt16(registers[instruction.x] & 0x0f)
-		case 0x0f where instruction.b == 0x33:
+		case .Extended where instruction.b == 0x33:
 			let num = registers[instruction.x]
 			memory[indexRegister] = num / 100
 			memory[indexRegister + 1] = num / 10 % 10
 			memory[indexRegister + 2] = num % 10
-		case 0x0f where instruction.b == 0x55:
+		case .Extended where instruction.b == 0x55:
 			// TODO: implement an option to increment/decrement index register
 			for i in 0...instruction.x {
 				memory[indexRegister + i] = registers[i]
 			}
-		case 0x0f where instruction.b == 0x65:
+		case .Extended where instruction.b == 0x65:
 			for i in 0...instruction.x {
 				registers[i] = memory[indexRegister + i]
 			}

@@ -13,7 +13,7 @@ class SWIP8InstructionTests: XCTestCase {
 	private let sut = Instruction(a: 0x12, b: 0x34)
 
     func testFirstNibble() {
-		XCTAssertEqual(sut.o, 0x01)
+		XCTAssertEqual(sut.group, 0x01)
     }
 	
 	func testSecondNibble() {

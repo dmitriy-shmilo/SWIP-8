@@ -7,7 +7,13 @@
 
 import Foundation
 
-enum InstructionGroup: UInt8 {
+enum InstructionGroup: UInt8, ExpressibleByIntegerLiteral {
+	typealias IntegerLiteralType = UInt8
+	
+	init(integerLiteral value: UInt8) {
+		self.init(rawValue: value)!
+	}
+	
 	case Special = 0x00
 	case Jump = 0x01
 	case Call = 0x02
@@ -50,8 +56,9 @@ struct Instruction {
 		self.b = b
 	}
 
-	var o: UInt8 {
-		a >> 4
+	var group: InstructionGroup {
+		// force unwrap is fine, since InstructionGroup spans over all possible 4-bit values
+		.init(rawValue: a >> 4)!
 	}
 	
 	var x: UInt8 {
