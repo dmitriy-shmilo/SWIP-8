@@ -13,9 +13,10 @@
 		5DEABB502709C960007AB419 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 5DEABB4E2709C960007AB419 /* Main.storyboard */; };
 		5DEABB522709C964007AB419 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 5DEABB512709C964007AB419 /* Assets.xcassets */; };
 		5DEABB552709C964007AB419 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 5DEABB532709C964007AB419 /* LaunchScreen.storyboard */; };
-		5DEABB632709D3A0007AB419 /* SWIP8Tests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5DEABB622709D3A0007AB419 /* SWIP8Tests.swift */; };
+		5DEABB632709D3A0007AB419 /* SWIP8InstructionTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5DEABB622709D3A0007AB419 /* SWIP8InstructionTests.swift */; };
 		5DEABB6B2709D713007AB419 /* Emulator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5DEABB6A2709D713007AB419 /* Emulator.swift */; };
 		5DEABB6D2709D769007AB419 /* Instruction.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5DEABB6C2709D769007AB419 /* Instruction.swift */; };
+		5DEABB71270A0D69007AB419 /* SWIP8EmulatorTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5DEABB70270A0D69007AB419 /* SWIP8EmulatorTests.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -38,9 +39,10 @@
 		5DEABB542709C964007AB419 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		5DEABB562709C964007AB419 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		5DEABB602709D3A0007AB419 /* SWIP8Tests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = SWIP8Tests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
-		5DEABB622709D3A0007AB419 /* SWIP8Tests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SWIP8Tests.swift; sourceTree = "<group>"; };
+		5DEABB622709D3A0007AB419 /* SWIP8InstructionTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SWIP8InstructionTests.swift; sourceTree = "<group>"; };
 		5DEABB6A2709D713007AB419 /* Emulator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Emulator.swift; sourceTree = "<group>"; };
 		5DEABB6C2709D769007AB419 /* Instruction.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Instruction.swift; sourceTree = "<group>"; };
+		5DEABB70270A0D69007AB419 /* SWIP8EmulatorTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SWIP8EmulatorTests.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -97,7 +99,8 @@
 		5DEABB612709D3A0007AB419 /* SWIP8Tests */ = {
 			isa = PBXGroup;
 			children = (
-				5DEABB622709D3A0007AB419 /* SWIP8Tests.swift */,
+				5DEABB622709D3A0007AB419 /* SWIP8InstructionTests.swift */,
+				5DEABB70270A0D69007AB419 /* SWIP8EmulatorTests.swift */,
 			);
 			path = SWIP8Tests;
 			sourceTree = "<group>";
@@ -224,7 +227,8 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				5DEABB632709D3A0007AB419 /* SWIP8Tests.swift in Sources */,
+				5DEABB71270A0D69007AB419 /* SWIP8EmulatorTests.swift in Sources */,
+				5DEABB632709D3A0007AB419 /* SWIP8InstructionTests.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
