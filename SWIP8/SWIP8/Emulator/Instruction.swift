@@ -54,6 +54,20 @@ struct Instruction: Equatable {
 }
 
 extension Instruction {
+	var specialCode: SpecialCode? {
+		.init(rawValue: b)
+	}
+	
+	var arithmeticCode: ArithmeticCode? {
+		.init(rawValue: n)
+	}
+	
+	var extendedCode: ExtendedCode? {
+		.init(rawValue: b)
+	}
+}
+
+extension Instruction {
 	// MARK: - Make Special instructions
 	static func makeClearScreen() -> Instruction {
 		Instruction(group: .special, x: 0, y: 0, n: SpecialCode.clearScreen.rawValue)
