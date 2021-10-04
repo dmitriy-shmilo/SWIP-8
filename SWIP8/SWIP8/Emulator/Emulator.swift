@@ -7,6 +7,11 @@
 
 import Foundation
 
+protocol EmulatorDelegate: AnyObject {
+	// TODO: report rendered region
+	func emulatorDidRender(_ emulator: Emulator)
+}
+
 class Emulator {
 	static let ReservedMemorySize: UInt16 = 512
 	static let MemorySize: UInt16 = 4096
@@ -44,6 +49,7 @@ class Emulator {
 	private (set) var delayTimer: UInt8 = 0
 	private (set) var soundTimer: UInt8 = 0
 	private (set) var quit = false
+	weak var delegate: EmulatorDelegate?
 	
 	init() {
 		
@@ -69,6 +75,8 @@ class Emulator {
 		
 		delayTimer = 0
 		soundTimer = 0
+		
+		delegate?.emulatorDidRender(self)
 	}
 	
 	func load(rom: [UInt8]) throws {
@@ -182,6 +190,12 @@ class Emulator {
 		quit = false
 		while !quit {
 			try executeNextInstruction()
+			
+			// TODO: decouple from Thread
+			Thread.sleep(forTimeInterval: 1 / 700.0)
+			if Thread.current.isCancelled {
+				quit = true
+			}
 		}
 	}
 	
@@ -206,6 +220,8 @@ class Emulator {
 		display.withUnsafeMutableBytes { ptr in
 			_ = memset(ptr.baseAddress, 0, ptr.count)
 		}
+		
+		delegate?.emulatorDidRender(self)
 	}
 	
 	// MARK: - Execute instruction implementation
@@ -341,6 +357,8 @@ class Emulator {
 				registers[0x0f] = registers[0x0f] | bit & display[index]
 			}
 		}
+		
+		delegate?.emulatorDidRender(self)
 	}
 	
 	private func executeSkipIfKey(instruction: Instruction) throws {
