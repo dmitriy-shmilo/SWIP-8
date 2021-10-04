@@ -53,7 +53,7 @@ class Emulator {
 		indexRegister = Self.ReservedMemorySize
 		programCounter = Self.ReservedMemorySize
 		
-		clearScreen()
+		clearDisplay()
 		registers.withUnsafeMutableBytes { ptr in
 			_ = memset(ptr.baseAddress, 0, ptr.count)
 		}
@@ -127,90 +127,38 @@ class Emulator {
 	
 	func execute(instruction: Instruction) throws {
 		switch instruction.group {
-		case .Special where instruction.b == 0xe0:
-			clearScreen()
-		case .Special where instruction.b == 0xee:
-			if let returnTo = stack.popLast() {
-				programCounter = returnTo
-			} else {
-				quit = true
-			}
 		case .Special:
-			throw ExecutionError.NotSupported
+			try executeSpecial(instruction: instruction)
 		case .Jump:
-			programCounter = instruction.nnn
+			try executeJump(instruction: instruction)
 		case .Call:
-			// TODO: prevent stack from growing too tall
-			stack.append(programCounter)
-			programCounter = instruction.nnn
+			try executeCall(instruction: instruction)
 		case .SkipIf:
-			if registers[instruction.x] == instruction.b {
-				programCounter += 2
-			}
+			try executeSkipIf(instruction: instruction)
 		case .SkipIfNot:
-			if registers[instruction.x] != instruction.b {
-				programCounter += 2
-			}
+			try executeSkipIfNot(instruction: instruction)
 		case .SkipIfRegister:
-			if registers[instruction.x] == registers[instruction.y] {
-				programCounter += 2
-			}
+			try executeSkipIfRegister(instruction: instruction)
 		case .SetRegister:
-			registers[instruction.x] = instruction.b
+			executeSetRegister(instruction: instruction)
 		case .AddToRegister:
-			registers[instruction.x] &+= instruction.b
+			executeAddToRegister(instruction: instruction)
 		case .Arithmetic:
-			throw ExecutionError.NotSupported
+			try executeArithmetic(instruction: instruction)
 		case .SkipIfNotRegister:
-			if registers[instruction.x] != registers[instruction.y] {
-				programCounter += 2
-			}
+			try executeSkipIfNotRegister(instruction: instruction)
 		case .SetIndex:
-			indexRegister = instruction.nnn
+			executeSetIndex(instruction: instruction)
 		case .JumpMod:
-			// TODO: implement an option to increment by registers[x]
-			programCounter = instruction.nnn + registers[0]
+			try executeJumpMod(instruction: instruction)
 		case .Random:
-			registers[instruction.x] = UInt8.random(in: 0..<UInt8.max) & instruction.b
+			executeRandom(instruction: instruction)
 		case .Draw:
-			draw(x: registers[instruction.x], y: registers[instruction.y], rows: instruction.n)
-		case .SkipIfKey where instruction.b == 0x9e:
-			throw ExecutionError.NotSupported
-		case .SkipIfKey where instruction.b == 0xa1:
-			throw ExecutionError.NotSupported
-		case .Extended where instruction.b == 0x07:
-			registers[instruction.x] = delayTimer
-		case .Extended where instruction.b == 0x15:
-			delayTimer = registers[instruction.x]
-		case .Extended where instruction.b == 0x18:
-			soundTimer = registers[instruction.x]
-		case .Extended where instruction.b == 0x1e:
-			indexRegister += UInt16(registers[instruction.x])
-			if indexRegister >= 0x1000 {
-				indexRegister &= 0x0fff
-				// TODO: implement an option to skip flagging this overlow
-				registers[0x0f] = 1
-			}
-		case .Extended where instruction.b == 0x0a:
-			throw ExecutionError.NotSupported
-		case .Extended where instruction.b == 0x29:
-			indexRegister = Self.FontDataOffset + UInt16(registers[instruction.x] & 0x0f)
-		case .Extended where instruction.b == 0x33:
-			let num = registers[instruction.x]
-			memory[indexRegister] = num / 100
-			memory[indexRegister + 1] = num / 10 % 10
-			memory[indexRegister + 2] = num % 10
-		case .Extended where instruction.b == 0x55:
-			// TODO: implement an option to increment/decrement index register
-			for i in 0...instruction.x {
-				memory[indexRegister + i] = registers[i]
-			}
-		case .Extended where instruction.b == 0x65:
-			for i in 0...instruction.x {
-				registers[i] = memory[indexRegister + i]
-			}
-		default:
-			throw ExecutionError.NotSupported
+			executeDraw(instruction: instruction)
+		case .SkipIfKey:
+			try executeSkipIfKey(instruction: instruction)
+		case .Extended:
+			try executeExtended(instruction: instruction)
 		}
 	}
 	
@@ -220,7 +168,7 @@ class Emulator {
 	
 	func executeNextInstruction() throws {
 		let instruction = peekInstruction()
-		programCounter += 2
+		try advanceProgramCounter()
 		
 		if programCounter >= Self.MemorySize {
 			throw ExecutionError.InvalidIndex(index: programCounter)
@@ -236,17 +184,103 @@ class Emulator {
 		}
 	}
 	
-	private func clearScreen() {
+	private func advanceProgramCounter() throws {
+		// TODO: throw when out of bounds
+		programCounter += 2
+	}
+	
+	private func clearDisplay() {
 		display.withUnsafeMutableBytes { ptr in
 			_ = memset(ptr.baseAddress, 0, ptr.count)
 		}
 	}
 	
-	private func draw(x: UInt8, y: UInt8, rows: UInt8) {
-		let x = UInt16(x) % Self.ResolutionWidth
-		let y = UInt16(y) % Self.ResolutionHeight
+	// MARK: - Execute instruction implementation
+	private func executeSpecial(instruction: Instruction) throws {
+		// TODO: extract special instruction codes
+		switch instruction.b {
+		case 0xe0:
+			// clear screen
+			clearDisplay()
+		case 0xee:
+			// return
+			if let returnTo = stack.popLast() {
+				programCounter = returnTo
+			} else {
+				quit = true
+			}
+		default:
+			// sys call
+			throw ExecutionError.NotSupported
+		}
+	}
+	
+	private func executeJump(instruction: Instruction) throws {
+		// TODO: throw when accessing reserved memory
+		programCounter = instruction.nnn
+	}
+	
+	private func executeCall(instruction: Instruction) throws {
+		// TODO: throw on stack under- and overflow
+		stack.append(programCounter)
+		programCounter = instruction.nnn
+	}
+	
+	private func executeSkipIf(instruction: Instruction) throws {
+		if registers[instruction.x] == instruction.b {
+			try advanceProgramCounter()
+		}
+	}
+	
+	private func executeSkipIfNot(instruction: Instruction) throws {
+		if registers[instruction.x] != instruction.b {
+			try advanceProgramCounter()
+		}
+	}
+	
+	private func executeSkipIfRegister(instruction: Instruction) throws {
+		if registers[instruction.x] == registers[instruction.y] {
+			try advanceProgramCounter()
+		}
+	}
+	
+	private func executeSetRegister(instruction: Instruction) {
+		registers[instruction.x] = instruction.b
+	}
+	
+	private func executeAddToRegister(instruction: Instruction) {
+		registers[instruction.x] &+= instruction.b
+	}
+	
+	private func executeArithmetic(instruction: Instruction) throws {
+		throw ExecutionError.NotSupported
+	}
+	
+	private func executeSkipIfNotRegister(instruction: Instruction) throws {
+		if registers[instruction.x] != registers[instruction.y] {
+			try advanceProgramCounter()
+		}
+	}
+	
+	private func executeSetIndex(instruction: Instruction) {
+		indexRegister = instruction.nnn
+	}
+	
+	private func executeJumpMod(instruction: Instruction) throws {
+		// TODO: implement an option to increment by registers[x]
+		// TODO: throw when indexing into reserved memory
+		programCounter = instruction.nnn + registers[0]
+	}
+	
+	private func executeRandom(instruction: Instruction) {
+		registers[instruction.x] = UInt8.random(in: 0..<UInt8.max) & instruction.b
+	}
+	
+	private func executeDraw(instruction: Instruction) {
+		let x = UInt16(registers[instruction.x]) % Self.ResolutionWidth
+		let y = UInt16(registers[instruction.y]) % Self.ResolutionHeight
 		
-		let dy = min(UInt16(rows), Self.ResolutionHeight - y)
+		let dy = min(UInt16(instruction.n), Self.ResolutionHeight - y)
 		let dx = min(8, Self.ResolutionWidth - x)
 		registers[0x0f] = 0
 		
@@ -260,6 +294,57 @@ class Emulator {
 				display[index] ^= bit
 				registers[0x0f] = registers[0x0f] | bit & display[index]
 			}
+		}
+	}
+	
+	private func executeSkipIfKey(instruction: Instruction) throws {
+		switch instruction.b {
+		case 0x9e:
+			throw ExecutionError.NotSupported
+		case 0xa1:
+			throw ExecutionError.NotSupported
+		default:
+			throw ExecutionError.NotSupported
+		}
+	}
+	
+	private func executeExtended(instruction: Instruction) throws {
+		switch instruction.b {
+		case 0x07:
+			registers[instruction.x] = delayTimer
+		case 0x15:
+			delayTimer = registers[instruction.x]
+		case 0x18:
+			soundTimer = registers[instruction.x]
+		case 0x1e:
+			indexRegister += UInt16(registers[instruction.x])
+			if indexRegister >= 0x1000 {
+				indexRegister &= 0x0fff
+				// TODO: implement an option to skip flagging this overlow
+				registers[0x0f] = 1
+			}
+		case 0x0a:
+			throw ExecutionError.NotSupported
+		case 0x29:
+			indexRegister = Self.FontDataOffset + UInt16(registers[instruction.x] & 0x0f)
+		case 0x33:
+			let num = registers[instruction.x]
+			memory[indexRegister] = num / 100
+			memory[indexRegister + 1] = num / 10 % 10
+			memory[indexRegister + 2] = num % 10
+		case 0x55:
+			// TODO: implement an option to increment/decrement index register
+			// TODO: throw if writing into reserved memory
+			for i in 0...instruction.x {
+				memory[indexRegister + i] = registers[i]
+			}
+		case 0x65:
+			// TODO: consider throwing if reading from reserved memory
+			for i in 0...instruction.x {
+				registers[i] = memory[indexRegister + i]
+			}
+		default:
+			throw ExecutionError.NotSupported
 		}
 	}
 }
