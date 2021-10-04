@@ -162,7 +162,7 @@ class Emulator {
 		case .Arithmetic:
 			throw ExecutionError.NotSupported
 		case .SkipIfNotRegister:
-			if registers[instruction.x] == registers[instruction.y] {
+			if registers[instruction.x] != registers[instruction.y] {
 				programCounter += 2
 			}
 		case .SetIndex:
