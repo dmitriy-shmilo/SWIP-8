@@ -48,7 +48,7 @@ enum ArithmeticCode: UInt8, InstructionCode {
 }
 
 enum SpecialCode: UInt8, InstructionCode {
-	case clearScreen = 0x0e
+	case clearScreen = 0xe0
 	case popStack = 0xee
 }
 
