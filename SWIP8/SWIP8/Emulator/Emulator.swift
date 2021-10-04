@@ -266,7 +266,40 @@ class Emulator {
 	}
 	
 	private func executeArithmetic(instruction: Instruction) throws {
-		throw ExecutionError.NotSupported
+		switch instruction.arithmeticCode {
+		case .copy?:
+			registers[instruction.x] = registers[instruction.y]
+		case .or?:
+			registers[instruction.x] |= registers[instruction.y]
+		case .and?:
+			registers[instruction.x] &= registers[instruction.y]
+		case .xor?:
+			registers[instruction.x] ^= registers[instruction.y]
+		case .add?:
+			let (res, over) = registers[instruction.x].addingReportingOverflow(registers[instruction.y])
+			registers[instruction.x] = res
+			registers[0x0f] = over ? 1 : 0
+		case .subtract?:
+			let (res, over) = registers[instruction.x].subtractingReportingOverflow(registers[instruction.y])
+			registers[instruction.x] = res
+			registers[0x0f] = over ? 0 : 1
+		case .shiftRight?:
+			// FIXME: this should be an option
+			registers[instruction.x] = registers[instruction.y]
+			registers[0x0f] = registers[instruction.x] & 0b0000_0001
+			registers[instruction.x] >>= 1
+		case .revSubtract?:
+			let (res, over) = registers[instruction.y].subtractingReportingOverflow(registers[instruction.x])
+			registers[instruction.x] = res
+			registers[0x0f] = over ? 0 : 1
+		case .shiftLeft?:
+			// FIXME: this should be an option
+			registers[instruction.x] = registers[instruction.y]
+			registers[0x0f] = (registers[instruction.x] & 0b1000_0000) >> 7
+			registers[instruction.x] <<= 1
+		default:
+			throw ExecutionError.NotSupported
+		}
 	}
 	
 	private func executeSkipIfNotRegister(instruction: Instruction) throws {
