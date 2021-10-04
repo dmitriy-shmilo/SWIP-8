@@ -211,11 +211,11 @@ class Emulator {
 	// MARK: - Execute instruction implementation
 	private func executeSpecial(instruction: Instruction) throws {
 		// TODO: extract special instruction codes
-		switch instruction.b {
-		case 0xe0:
+		switch instruction.specialCode {
+		case .clearScreen?:
 			// clear screen
 			clearDisplay()
-		case 0xee:
+		case .popStack?:
 			// return
 			if let returnTo = stack.popLast() {
 				programCounter = returnTo
@@ -359,40 +359,40 @@ class Emulator {
 	}
 	
 	private func executeExtended(instruction: Instruction) throws {
-		switch instruction.b {
-		case 0x07:
+		switch instruction.extendedCode {
+		case .readDelayTimer?:
 			registers[instruction.x] = delayTimer
-		case 0x0a:
+		case .waitForKey?:
 			if let i = keyboard.firstIndex(where: { $0 > 0 }) {
 				registers[instruction.x] = UInt8(i)
 			} else {
 				programCounter -= 2
 			}
-		case 0x15:
+		case .setDelayTimer?:
 			delayTimer = registers[instruction.x]
-		case 0x18:
+		case .setSoundTimer?:
 			soundTimer = registers[instruction.x]
-		case 0x1e:
+		case .addToIndex?:
 			indexRegister += UInt16(registers[instruction.x])
 			if indexRegister >= 0x1000 {
 				indexRegister &= 0x0fff
 				// TODO: implement an option to skip flagging this overlow
 				registers[0x0f] = 1
 			}
-		case 0x29:
+		case .indexToChar?:
 			indexRegister = Self.FontDataOffset + UInt16(registers[instruction.x] & 0x0f)
-		case 0x33:
+		case .bcd:
 			let num = registers[instruction.x]
 			memory[indexRegister] = num / 100
 			memory[indexRegister + 1] = num / 10 % 10
 			memory[indexRegister + 2] = num % 10
-		case 0x55:
+		case .storeRegisters:
 			// TODO: implement an option to increment/decrement index register
 			// TODO: throw if writing into reserved memory
 			for i in 0...instruction.x {
 				memory[indexRegister + i] = registers[i]
 			}
-		case 0x65:
+		case .readRegisters:
 			// TODO: consider throwing if reading from reserved memory
 			for i in 0...instruction.x {
 				registers[i] = memory[indexRegister + i]
