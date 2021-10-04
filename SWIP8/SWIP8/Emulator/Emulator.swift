@@ -127,37 +127,37 @@ class Emulator {
 	
 	func execute(instruction: Instruction) throws {
 		switch instruction.group {
-		case .Special:
+		case .special:
 			try executeSpecial(instruction: instruction)
-		case .Jump:
+		case .jump:
 			try executeJump(instruction: instruction)
-		case .Call:
+		case .call:
 			try executeCall(instruction: instruction)
-		case .SkipIf:
+		case .skipIf:
 			try executeSkipIf(instruction: instruction)
-		case .SkipIfNot:
+		case .skipIfNot:
 			try executeSkipIfNot(instruction: instruction)
-		case .SkipIfRegister:
+		case .skipIfRegister:
 			try executeSkipIfRegister(instruction: instruction)
-		case .SetRegister:
+		case .setRegister:
 			executeSetRegister(instruction: instruction)
-		case .AddToRegister:
+		case .addToRegister:
 			executeAddToRegister(instruction: instruction)
-		case .Arithmetic:
+		case .arithmetic:
 			try executeArithmetic(instruction: instruction)
-		case .SkipIfNotRegister:
+		case .skipIfNotRegister:
 			try executeSkipIfNotRegister(instruction: instruction)
-		case .SetIndex:
+		case .setIndex:
 			executeSetIndex(instruction: instruction)
-		case .JumpMod:
+		case .jumpMod:
 			try executeJumpMod(instruction: instruction)
-		case .Random:
+		case .random:
 			executeRandom(instruction: instruction)
-		case .Draw:
+		case .draw:
 			executeDraw(instruction: instruction)
-		case .SkipIfKey:
+		case .skipIfKey:
 			try executeSkipIfKey(instruction: instruction)
-		case .Extended:
+		case .extended:
 			try executeExtended(instruction: instruction)
 		}
 	}

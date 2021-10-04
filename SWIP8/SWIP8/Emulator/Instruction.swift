@@ -7,31 +7,6 @@
 
 import Foundation
 
-enum InstructionGroup: UInt8, ExpressibleByIntegerLiteral {
-	typealias IntegerLiteralType = UInt8
-	
-	init(integerLiteral value: UInt8) {
-		self.init(rawValue: value)!
-	}
-	
-	case Special = 0x00
-	case Jump = 0x01
-	case Call = 0x02
-	case SkipIf = 0x03
-	case SkipIfNot = 0x04
-	case SkipIfRegister = 0x05
-	case SetRegister = 0x06
-	case AddToRegister = 0x07
-	case Arithmetic = 0x08
-	case SkipIfNotRegister = 0x09
-	case SetIndex = 0x0a
-	case JumpMod = 0x0b
-	case Random = 0x0c
-	case Draw = 0x0d
-	case SkipIfKey = 0x0e
-	case Extended = 0x0f
-}
-
 struct Instruction: Equatable {
 	let a: UInt8
 	let b: UInt8
@@ -79,106 +54,150 @@ struct Instruction: Equatable {
 }
 
 extension Instruction {
+	// MARK: - Make Special instructions
 	static func makeClearScreen() -> Instruction {
-		Instruction(group: .Special, x: 0, y: 0, n: 0x0e)
+		Instruction(group: .special, x: 0, y: 0, n: SpecialCode.clearScreen.rawValue)
 	}
 	
-	static func makeReturn() -> Instruction {
-		Instruction(group: .Special, x: 0, y: 0, n: 0xee)
-	}
-	
+	// MARK: - Make Jump instructions
 	static func makeJump(address: UInt16) -> Instruction {
-		Instruction(group: .Jump, combined: address)
-	}
-	
-	static func makeCall(address: UInt16) -> Instruction {
-		Instruction(group: .Call, combined: address)
-	}
-	
-	static func makeSkipIf(register: UInt8, value: UInt8) -> Instruction {
-		Instruction(group: .SkipIf, x: register, b: value)
-	}
-	
-	static func makeSkipIfNot(register: UInt8, value: UInt8) -> Instruction {
-		Instruction(group: .SkipIfNot, x: register, b: value)
-	}
-	
-	static func makeSkipIfRegister(registerX: UInt8, registerY: UInt8) -> Instruction {
-		Instruction(group: .SkipIfRegister, x: registerX, y: registerY, n: 0)
-	}
-	
-	static func makeSetRegister(register: UInt8, value: UInt8) -> Instruction {
-		Instruction(group: .SetRegister, x: register, b: value)
-	}
-	
-	static func makeAddToRegister(register: UInt8, value: UInt8) -> Instruction {
-		Instruction(group: .AddToRegister, x: register, b: value)
-	}
-	
-	// TODO: implement make arithmetic instructions
-	
-	static func makeSkipIfNotRegister(registerX: UInt8, registerY: UInt8) -> Instruction {
-		Instruction(group: .SkipIfNotRegister, x: registerX, y: registerY, n: 0)
-	}
-	
-	static func makeSetIndex(address: UInt16) -> Instruction {
-		Instruction(group: .SetIndex, combined: address)
+		Instruction(group: .jump, combined: address)
 	}
 	
 	static func makeJumpMod(address: UInt16) -> Instruction {
-		Instruction(group: .JumpMod, combined: address)
+		Instruction(group: .jumpMod, combined: address)
 	}
 	
-	static func makeRandom(register: UInt8, mod: UInt8) -> Instruction {
-		Instruction(group: .Random, x: register, b: mod)
+	// MARK: - Make subroutine instructions
+	static func makeCall(address: UInt16) -> Instruction {
+		Instruction(group: .call, combined: address)
 	}
 	
-	static func makeDraw(registerX: UInt8, registerY: UInt8, rows: UInt8) -> Instruction {
-		Instruction(group: .Draw, x: registerX, y: registerY, n: rows)
+	static func makeReturn() -> Instruction {
+		Instruction(group: .special, x: 0, y: 0, n: SpecialCode.popStack.rawValue)
+	}
+	
+	// MARK: - Make Skip instructions
+	static func makeSkipIf(register: UInt8, value: UInt8) -> Instruction {
+		Instruction(group: .skipIf, x: register, b: value)
+	}
+	
+	static func makeSkipIfNot(register: UInt8, value: UInt8) -> Instruction {
+		Instruction(group: .skipIfNot, x: register, b: value)
+	}
+	
+	static func makeSkipIfRegister(registerX: UInt8, registerY: UInt8) -> Instruction {
+		Instruction(group: .skipIfRegister, x: registerX, y: registerY, n: 0)
+	}
+	
+	static func makeSkipIfNotRegister(registerX: UInt8, registerY: UInt8) -> Instruction {
+		Instruction(group: .skipIfNotRegister, x: registerX, y: registerY, n: 0)
 	}
 	
 	static func makeSkipIfKeyPressed(registerX: UInt8) -> Instruction {
-		// TODO: move magic numbers into constants
-		Instruction(group: .SkipIfKey, x: registerX, b: 0x9e)
+		Instruction(group: .skipIfKey, x: registerX, b: SkipIfKeyState.pressed.rawValue)
 	}
 	
 	static func makeSkipIfKeyNotPressed(registerX: UInt8) -> Instruction {
-		Instruction(group: .SkipIfKey, x: registerX, b: 0xa1)
+		Instruction(group: .skipIfKey, x: registerX, b: SkipIfKeyState.notPressed.rawValue)
 	}
 	
-	static func makeReadDelayTimer(registerX: UInt8) -> Instruction {
-		Instruction(group: .Extended, x: registerX, b: 0x07)
+	// MARK: - Make register modification instructions
+	static func makeSetRegister(register: UInt8, value: UInt8) -> Instruction {
+		Instruction(group: .setRegister, x: register, b: value)
 	}
 	
-	static func makeWaitForKey(registerX: UInt8) -> Instruction {
-		Instruction(group: .Extended, x: registerX, b: 0x0a)
+	static func makeAddToRegister(register: UInt8, value: UInt8) -> Instruction {
+		Instruction(group: .addToRegister, x: register, b: value)
 	}
 	
-	static func makeSetDelayTimer(registerX: UInt8) -> Instruction {
-		Instruction(group: .Extended, x: registerX, b: 0x15)
+	// MARK: - Make arithmetic and boolean instructions
+	static func makeSetRegisterToRegister(registerX: UInt8, registerY: UInt8) -> Instruction {
+		Instruction(group: .arithmetic, x: registerX, y: registerY, n: ArithmeticCode.set.rawValue)
 	}
 	
-	static func makeSetSoundTimer(registerX: UInt8) -> Instruction {
-		Instruction(group: .Extended, x: registerX, b: 0x18)
+	static func makeOr(registerX: UInt8, registerY: UInt8) -> Instruction {
+		Instruction(group: .arithmetic, x: registerX, y: registerY, n: ArithmeticCode.or.rawValue)
+	}
+	
+	static func makeAnd(registerX: UInt8, registerY: UInt8) -> Instruction {
+		Instruction(group: .arithmetic, x: registerX, y: registerY, n: ArithmeticCode.and.rawValue)
+	}
+	
+	static func makeXor(registerX: UInt8, registerY: UInt8) -> Instruction {
+		Instruction(group: .arithmetic, x: registerX, y: registerY, n: ArithmeticCode.xor.rawValue)
+	}
+	
+	static func makeAdd(registerX: UInt8, registerY: UInt8) -> Instruction {
+		Instruction(group: .arithmetic, x: registerX, y: registerY, n: ArithmeticCode.add.rawValue)
+	}
+	
+	static func makeSubtract(registerX: UInt8, registerY: UInt8) -> Instruction {
+		Instruction(group: .arithmetic, x: registerX, y: registerY, n: ArithmeticCode.subtract.rawValue)
+	}
+	
+	static func makeShiftRight(registerX: UInt8, registerY: UInt8) -> Instruction {
+		Instruction(group: .arithmetic, x: registerX, y: registerY, n: ArithmeticCode.shiftRight.rawValue)
+	}
+	
+	static func makeReverseSubtract(registerX: UInt8, registerY: UInt8) -> Instruction {
+		Instruction(group: .arithmetic, x: registerX, y: registerY, n: ArithmeticCode.revSubtract.rawValue)
+	}
+	
+	static func makeShiftLeft(registerX: UInt8, registerY: UInt8) -> Instruction {
+		Instruction(group: .arithmetic, x: registerX, y: registerY, n: ArithmeticCode.shiftLeft.rawValue)
+	}
+	
+	// MARK: - Make index manipulation
+	static func makeSetIndex(address: UInt16) -> Instruction {
+		Instruction(group: .setIndex, combined: address)
 	}
 	
 	static func makeAddToIndex(registerX: UInt8) -> Instruction {
-		Instruction(group: .Extended, x: registerX, b: 0x1E)
+		Instruction(group: .extended, x: registerX, b: ExtendedCode.addToIndex.rawValue)
 	}
 	
 	static func makeIndexToChar(registerX: UInt8) -> Instruction {
-		Instruction(group: .Extended, x: registerX, b: 0x29)
+		Instruction(group: .extended, x: registerX, b: ExtendedCode.indexToChar.rawValue)
+	}
+	
+	// MARK: - Make random generator instructions
+	static func makeRandom(register: UInt8, mod: UInt8) -> Instruction {
+		Instruction(group: .random, x: register, b: mod)
+	}
+	
+	// MARK: - Make draw instructions
+	static func makeDraw(registerX: UInt8, registerY: UInt8, rows: UInt8) -> Instruction {
+		Instruction(group: .draw, x: registerX, y: registerY, n: rows)
+	}
+	
+	// MARK: - Make timer instructions
+	static func makeReadDelayTimer(registerX: UInt8) -> Instruction {
+		Instruction(group: .extended, x: registerX, b: ExtendedCode.readDelayTimer.rawValue)
+	}
+	
+	static func makeSetDelayTimer(registerX: UInt8) -> Instruction {
+		Instruction(group: .extended, x: registerX, b: ExtendedCode.setDelayTimer.rawValue)
+	}
+	
+	static func makeSetSoundTimer(registerX: UInt8) -> Instruction {
+		Instruction(group: .extended, x: registerX, b: ExtendedCode.setSoundTimer.rawValue)
+	}
+	
+	// MARK: - Make extended instructions
+	static func makeWaitForKey(registerX: UInt8) -> Instruction {
+		Instruction(group: .extended, x: registerX, b: ExtendedCode.waitForKey.rawValue)
 	}
 	
 	static func makeBCD(registerX: UInt8) -> Instruction {
-		Instruction(group: .Extended, x: registerX, b: 0x33)
+		Instruction(group: .extended, x: registerX, b: ExtendedCode.bcd.rawValue)
 	}
 	
 	static func makeStoreRegisters(registerX: UInt8) -> Instruction {
-		Instruction(group: .Extended, x: registerX, b: 0x55)
+		Instruction(group: .extended, x: registerX, b: ExtendedCode.storeRegisters.rawValue)
 	}
 	
 	static func makeReadRegisters(registerX: UInt8) -> Instruction {
-		Instruction(group: .Extended, x: registerX, b: 0x65)
+		Instruction(group: .extended, x: registerX, b: ExtendedCode.readRegisters.rawValue)
 	}
 }
