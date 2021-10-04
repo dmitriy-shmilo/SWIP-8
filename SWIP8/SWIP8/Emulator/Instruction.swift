@@ -55,7 +55,7 @@ struct Instruction: Equatable {
 		self.a = group.rawValue << 4 | x
 		self.b = b
 	}
-
+	
 	var group: InstructionGroup {
 		// force unwrap is fine, since InstructionGroup spans over all possible 4-bit values
 		.init(rawValue: a >> 4)!

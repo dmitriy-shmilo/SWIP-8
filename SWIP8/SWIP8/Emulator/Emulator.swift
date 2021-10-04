@@ -208,7 +208,6 @@ class Emulator {
 	
 	func executeNextInstruction() {
 		let instruction = peekInstruction()
-		print(instruction.group)
 		programCounter += 2
 		
 		if programCounter >= Self.MemorySize {
@@ -235,18 +234,18 @@ class Emulator {
 	private func draw(x: UInt8, y: UInt8, rows: UInt8) {
 		let x = UInt16(x) % Self.ResolutionWidth
 		let y = UInt16(y) % Self.ResolutionHeight
-
+		
 		let dy = min(UInt16(rows), Self.ResolutionHeight - y)
 		let dx = min(8, Self.ResolutionWidth - x)
 		registers[0x0f] = 0
-
+		
 		for i in 0..<dy {
 			let byte = memory[indexRegister + i]
-
+			
 			for j in 0..<dx {
 				let bit = (byte >> (dx - j - 1)) & 0x01
 				let index = (y + i) * Self.ResolutionWidth + x + UInt16(j)
-
+				
 				display[index] ^= bit
 				registers[0x0f] = registers[0x0f] | bit & display[index]
 			}

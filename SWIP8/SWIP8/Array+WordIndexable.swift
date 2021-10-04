@@ -10,7 +10,7 @@ import Foundation
 protocol WordIndexable {
 	associatedtype Element
 	associatedtype SubSequence
-
+	
 	subscript(byte: UInt16) -> Element { get set }
 	subscript(range: Range<UInt16>) -> SubSequence { get }
 }
