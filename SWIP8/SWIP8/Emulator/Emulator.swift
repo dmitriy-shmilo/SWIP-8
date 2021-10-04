@@ -161,7 +161,7 @@ class Emulator {
 		case .Random:
 			registers[instruction.x] = UInt8.random(in: 0..<UInt8.max) & instruction.b
 		case .Draw:
-			fatalError("Draw call isn't implemented")
+			draw(x: registers[instruction.x], y: registers[instruction.y], rows: instruction.n)
 		case .SkipIfKey where instruction.b == 0x9e:
 			fatalError("Skip if key pressed isn't implemented")
 		case .SkipIfKey where instruction.b == 0xa1:
@@ -229,6 +229,27 @@ class Emulator {
 	private func clearScreen() {
 		display.withUnsafeMutableBytes { ptr in
 			_ = memset(ptr.baseAddress, 0, ptr.count)
+		}
+	}
+	
+	private func draw(x: UInt8, y: UInt8, rows: UInt8) {
+		let x = UInt16(x) % Self.ResolutionWidth
+		let y = UInt16(y) % Self.ResolutionHeight
+
+		let dy = min(UInt16(rows), Self.ResolutionHeight - y)
+		let dx = min(8, Self.ResolutionWidth - x)
+		registers[0x0f] = 0
+
+		for i in 0..<dy {
+			let byte = memory[indexRegister + i]
+
+			for j in 0..<dx {
+				let bit = (byte >> (dx - j - 1)) & 0x01
+				let index = (y + i) * Self.ResolutionWidth + x + UInt16(j)
+
+				display[index] ^= bit
+				registers[0x0f] = registers[0x0f] | bit & display[index]
+			}
 		}
 	}
 }
