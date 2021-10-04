@@ -7,34 +7,6 @@
 
 import Foundation
 
-func +(a: UInt16, b: UInt8) -> UInt16 {
-	a + UInt16(b)
-}
-
-extension Array {
-	subscript(word: UInt16) -> Element {
-		get {
-			self[Int(word)]
-		}
-		set {
-			self[Int(word)] = newValue
-		}
-	}
-	
-	subscript(byte: UInt8) -> Element {
-		get {
-			self[Int(byte)]
-		}
-		set {
-			self[Int(byte)] = newValue
-		}
-	}
-	
-	subscript(range: Range<UInt16>) -> SubSequence {
-		self[Int(range.startIndex)..<Int(range.endIndex)]
-	}
-}
-
 class Emulator {
 	static let ReservedMemorySize: UInt16 = 512
 	static let MemorySize: UInt16 = 4096
