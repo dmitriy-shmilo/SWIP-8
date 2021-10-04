@@ -36,6 +36,13 @@ extension Array {
 }
 
 class Emulator {
+	static let ReservedMemorySize: UInt16 = 512
+	static let MemorySize: UInt16 = 4096
+	static let RegisterCount = 16
+	static let ResolutionHeight: UInt16 = 32
+	static let ResolutionWidth: UInt16 = 64
+	
+	private static let FontDataOffset: UInt16 = 0x00
 	private static let FontData: [UInt8] = [
 		0xF0, 0x90, 0x90, 0x90, 0xF0, // 0
 		0x20, 0x60, 0x20, 0x20, 0x70, // 1
@@ -54,15 +61,7 @@ class Emulator {
 		0xF0, 0x80, 0xF0, 0x80, 0xF0, // E
 		0xF0, 0x80, 0xF0, 0x80, 0x80  // F
 	]
-
-	private static let FontDataOffset: UInt16 = 0x00
-	private static let ReservedMemorySize: UInt16 = 512
-	private static let MemorySize: UInt16 = 4096
-	private static let RegisterCount = 16
-	private static let ResolutionHeight: UInt16 = 32
-	private static let ResolutionWidth: UInt16 = 64
 	
-
 	private (set) var memory = Array<UInt8>(repeating: 0, count: Int(MemorySize))
 	private (set) var display = Array<UInt8>(repeating: 0, count: Int(ResolutionWidth * ResolutionHeight))
 	private (set) var registers = Array<UInt8>(repeating: 0, count: RegisterCount)
@@ -202,19 +201,28 @@ class Emulator {
 			fatalError("Unknown instruction: \(instruction)")
 		}
 	}
-
+	
+	func peekInstruction() -> Instruction {
+		Instruction(a: memory[programCounter], b: memory[programCounter + 1])
+	}
+	
+	func executeNextInstruction() {
+		let instruction = peekInstruction()
+		print(instruction.group)
+		programCounter += 2
+		
+		if programCounter >= Self.MemorySize {
+			fatalError("PC (\(programCounter)) indexes out of memory.")
+		}
+		
+		execute(instruction: instruction)
+	}
+	
 	// TODO: throw errors instead of crashing
 	func run() {
 		quit = false
 		while !quit {
-			let instruction = Instruction(a: memory[programCounter], b: memory[programCounter + 1])
-			programCounter += 2
-			
-			if programCounter >= Self.MemorySize {
-				fatalError("PC (\(programCounter)) indexes out of memory.")
-			}
-			
-			execute(instruction: instruction)
+			executeNextInstruction()
 		}
 	}
 	

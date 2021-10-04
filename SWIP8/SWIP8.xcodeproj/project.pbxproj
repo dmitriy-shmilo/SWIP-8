@@ -17,6 +17,7 @@
 		5DEABB6B2709D713007AB419 /* Emulator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5DEABB6A2709D713007AB419 /* Emulator.swift */; };
 		5DEABB6D2709D769007AB419 /* Instruction.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5DEABB6C2709D769007AB419 /* Instruction.swift */; };
 		5DEABB71270A0D69007AB419 /* SWIP8EmulatorExecuteTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5DEABB70270A0D69007AB419 /* SWIP8EmulatorExecuteTests.swift */; };
+		5DEABB73270A30EF007AB419 /* SWIP8EmulatorLoadTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5DEABB72270A30EF007AB419 /* SWIP8EmulatorLoadTests.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -43,6 +44,7 @@
 		5DEABB6A2709D713007AB419 /* Emulator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Emulator.swift; sourceTree = "<group>"; };
 		5DEABB6C2709D769007AB419 /* Instruction.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Instruction.swift; sourceTree = "<group>"; };
 		5DEABB70270A0D69007AB419 /* SWIP8EmulatorExecuteTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SWIP8EmulatorExecuteTests.swift; sourceTree = "<group>"; };
+		5DEABB72270A30EF007AB419 /* SWIP8EmulatorLoadTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SWIP8EmulatorLoadTests.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -101,6 +103,7 @@
 			children = (
 				5DEABB622709D3A0007AB419 /* SWIP8InstructionTests.swift */,
 				5DEABB70270A0D69007AB419 /* SWIP8EmulatorExecuteTests.swift */,
+				5DEABB72270A30EF007AB419 /* SWIP8EmulatorLoadTests.swift */,
 			);
 			path = SWIP8Tests;
 			sourceTree = "<group>";
@@ -227,6 +230,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				5DEABB73270A30EF007AB419 /* SWIP8EmulatorLoadTests.swift in Sources */,
 				5DEABB71270A0D69007AB419 /* SWIP8EmulatorExecuteTests.swift in Sources */,
 				5DEABB632709D3A0007AB419 /* SWIP8InstructionTests.swift in Sources */,
 			);
