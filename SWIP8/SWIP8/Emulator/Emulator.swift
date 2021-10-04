@@ -71,9 +71,16 @@ class Emulator {
 	}
 	
 	func load(rom: [UInt8]) throws {
+		// each instruction is two bytes in length
+		// TODO: There might be an odd number of data bytes, need to verify with the spec
+		guard rom.count.isMultiple(of: 2) && rom.count > 0 else {
+			throw LoadError.InvalidInputLength
+		}
+		
 		guard rom.count <= Self.MemorySize - Self.ReservedMemorySize else {
 			throw LoadError.NotEnoughMemory
 		}
+		
 		reset()
 		memory.replaceSubrange(
 			Int(Self.ReservedMemorySize)..<Int(Self.ReservedMemorySize) + rom.count,
@@ -109,6 +116,12 @@ class Emulator {
 				throw LoadError.InvalidCharacter(string: String(char))
 			}
 		}
+		
+		// there's an incomplete byte left lingering
+		if step != totalSteps {
+			throw LoadError.InvalidInputLength
+		}
+		
 		try load(rom: bytes)
 	}
 	

@@ -15,6 +15,7 @@ enum LoadError: EmulationError {
 	case Unknown
 	case NotEnoughMemory
 	case InvalidCharacter(string: String)
+	case InvalidInputLength
 }
 
 enum ExecutionError: EmulationError {
