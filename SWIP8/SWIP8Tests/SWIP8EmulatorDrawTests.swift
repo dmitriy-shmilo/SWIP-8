@@ -216,4 +216,21 @@ class SWIP8EmulatorDrawTests: XCTestCase {
 			}
 		}
 	}
+	
+	func testClearScreen() throws {
+		try sut.load(rom: [0b1000_0000, 0x00])
+		try sut.execute(instruction: .makeSetRegister(register: 0, value: 0)) // x = 0
+		try sut.execute(instruction: .makeSetRegister(register: 1, value: 0)) // y = 0
+		try sut.execute(instruction: .makeDraw(registerX: 0, registerY: 1, rows: 1)) // draw one pixel
+		try sut.execute(instruction: .makeClearScreen())
+		
+		
+		// the whole screen should be empty
+		for x in 0..<Emulator.ResolutionWidth {
+			for y in 0..<Emulator.ResolutionHeight {
+				let pixel = sut.getPixel(x: x, y: y)
+				XCTAssertEqual(pixel, 0, "Pixel at (\(x),\(y)) should not be set")
+			}
+		}
+	}
 }
