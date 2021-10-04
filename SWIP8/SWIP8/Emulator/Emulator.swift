@@ -85,6 +85,34 @@ class Emulator {
 		}
 	}
 	
+	func load(string: String) {
+		let totalSteps = 1
+		var bytes = [UInt8]()
+		var step = totalSteps
+		var byte: UInt8 = 0
+		
+		for char in string {
+			if CharacterSet.whitespacesAndNewlines.contains(char.unicodeScalars.first!) {
+				continue
+			}
+			
+			if let digit = char.hexDigitValue {
+				byte |= UInt8(digit)
+				if step == 0 {
+					bytes.append(byte)
+					byte = 0
+					step = totalSteps
+				} else {
+					byte <<= 4
+					step -= 1
+				}
+			} else {
+				fatalError("Unknown character \(char)")
+			}
+		}
+		load(rom: bytes)
+	}
+	
 	func execute(instruction: Instruction) {
 		switch instruction.group {
 		case .Special where instruction.b == 0xe0:
