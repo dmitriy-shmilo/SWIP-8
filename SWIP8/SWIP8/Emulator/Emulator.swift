@@ -184,6 +184,11 @@ class Emulator {
 		}
 	}
 	
+	func getPixel(x: UInt16, y: UInt16) -> UInt8 {
+		// TODO: extract display into a separate class
+		display[x + y * Self.ResolutionWidth]
+	}
+	
 	private func advanceProgramCounter() throws {
 		// TODO: throw when out of bounds
 		programCounter += 2

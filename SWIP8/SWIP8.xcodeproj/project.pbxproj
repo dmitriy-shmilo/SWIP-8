@@ -11,6 +11,7 @@
 		5DD80ED9270AEA4F006ADDFA /* Array+WordIndexable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5DD80ED8270AEA4F006ADDFA /* Array+WordIndexable.swift */; };
 		5DD80EDB270AF29A006ADDFA /* UInt16.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5DD80EDA270AF29A006ADDFA /* UInt16.swift */; };
 		5DD80EDD270B0782006ADDFA /* EmulationError.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5DD80EDC270B0782006ADDFA /* EmulationError.swift */; };
+		5DD80EDF270B1966006ADDFA /* SWIP8EmulatorDrawTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5DD80EDE270B1966006ADDFA /* SWIP8EmulatorDrawTests.swift */; };
 		5DEABB492709C960007AB419 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5DEABB482709C960007AB419 /* AppDelegate.swift */; };
 		5DEABB4B2709C960007AB419 /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5DEABB4A2709C960007AB419 /* SceneDelegate.swift */; };
 		5DEABB4D2709C960007AB419 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5DEABB4C2709C960007AB419 /* ViewController.swift */; };
@@ -39,6 +40,7 @@
 		5DD80ED8270AEA4F006ADDFA /* Array+WordIndexable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Array+WordIndexable.swift"; sourceTree = "<group>"; };
 		5DD80EDA270AF29A006ADDFA /* UInt16.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UInt16.swift; sourceTree = "<group>"; };
 		5DD80EDC270B0782006ADDFA /* EmulationError.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EmulationError.swift; sourceTree = "<group>"; };
+		5DD80EDE270B1966006ADDFA /* SWIP8EmulatorDrawTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SWIP8EmulatorDrawTests.swift; sourceTree = "<group>"; };
 		5DEABB452709C960007AB419 /* SWIP8.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = SWIP8.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		5DEABB482709C960007AB419 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		5DEABB4A2709C960007AB419 /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
@@ -112,6 +114,7 @@
 		5DEABB612709D3A0007AB419 /* SWIP8Tests */ = {
 			isa = PBXGroup;
 			children = (
+				5DD80EDE270B1966006ADDFA /* SWIP8EmulatorDrawTests.swift */,
 				5DEABB622709D3A0007AB419 /* SWIP8InstructionTests.swift */,
 				5DEABB70270A0D69007AB419 /* SWIP8EmulatorExecuteTests.swift */,
 				5DEABB72270A30EF007AB419 /* SWIP8EmulatorLoadTests.swift */,
@@ -246,6 +249,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				5DD80EDF270B1966006ADDFA /* SWIP8EmulatorDrawTests.swift in Sources */,
 				5DEABB73270A30EF007AB419 /* SWIP8EmulatorLoadTests.swift in Sources */,
 				5DEABB71270A0D69007AB419 /* SWIP8EmulatorExecuteTests.swift in Sources */,
 				5DEABB632709D3A0007AB419 /* SWIP8InstructionTests.swift in Sources */,
