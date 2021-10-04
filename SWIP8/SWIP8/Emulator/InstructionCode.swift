@@ -36,7 +36,7 @@ enum SkipIfKeyState: UInt8, InstructionCode {
 }
 
 enum ArithmeticCode: UInt8, InstructionCode {
-	case set = 0x00
+	case copy = 0x00
 	case or = 0x01
 	case and = 0x02
 	case xor = 0x03

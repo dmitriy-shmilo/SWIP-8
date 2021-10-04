@@ -112,8 +112,8 @@ extension Instruction {
 	}
 	
 	// MARK: - Make arithmetic and boolean instructions
-	static func makeSetRegisterToRegister(registerX: UInt8, registerY: UInt8) -> Instruction {
-		Instruction(group: .arithmetic, x: registerX, y: registerY, n: ArithmeticCode.set.rawValue)
+	static func makeCopyRegister(registerX: UInt8, from registerY: UInt8) -> Instruction {
+		Instruction(group: .arithmetic, x: registerX, y: registerY, n: ArithmeticCode.copy.rawValue)
 	}
 	
 	static func makeOr(registerX: UInt8, registerY: UInt8) -> Instruction {
