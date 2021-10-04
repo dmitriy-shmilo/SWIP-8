@@ -30,16 +30,6 @@ class SWIP8EmulatorExecuteTests: XCTestCase {
 		XCTAssertEqual(sut.indexRegister, address, "Index register should point to a given address")
 	}
 	
-	func testSetRegister() throws {
-		for i in 0..<sut.registers.count {
-			try sut.execute(instruction: .makeSetRegister(register: UInt8(i), value: UInt8(i) + 1))
-		}
-		
-		for i in 0..<sut.registers.count {
-			XCTAssertEqual(sut.registers[i], UInt8(i + 1), "Register #\(i) should contain \(i + 1)")
-		}
-	}
-	
 	func testBCD() throws {
 		let value: UInt8 = 123
 		let address: UInt16 = 0x0200
