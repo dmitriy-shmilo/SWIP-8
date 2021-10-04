@@ -30,7 +30,7 @@ enum InstructionGroup: UInt8, InstructionCode {
 	case extended = 0x0f
 }
 
-enum SkipIfKeyState: UInt8, InstructionCode {
+enum KeyStateCode: UInt8, InstructionCode {
 	case pressed = 0x9e
 	case notPressed = 0xa1
 }
