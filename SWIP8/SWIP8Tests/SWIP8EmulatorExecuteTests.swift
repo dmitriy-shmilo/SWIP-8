@@ -19,7 +19,7 @@ class SWIP8EmulatorExecuteTests: XCTestCase {
 	func testJump() throws {
 		let address: UInt16 = 0x0ff0
 
-		sut.execute(instruction: .makeJump(address: address))
+		try sut.execute(instruction: .makeJump(address: address))
 		XCTAssertEqual(sut.programCounter, address, "PC should point to address after jump")
 		XCTAssertEqual(sut.stack.count, 0, "Expected call stack to remain empty after jump")
 	}
@@ -28,23 +28,23 @@ class SWIP8EmulatorExecuteTests: XCTestCase {
 		let routineAddress: UInt16 = 0x0ff0
 		let originalAddress = sut.programCounter
 
-		sut.execute(instruction: .makeCall(address: routineAddress))
+		try sut.execute(instruction: .makeCall(address: routineAddress))
 		XCTAssertEqual(sut.stack.count, 1, "Expected call stack to grow by one after call")
 		XCTAssertEqual(sut.programCounter, routineAddress, "PC should point to routine address after call")
-		sut.execute(instruction: .makeReturn())
+		try sut.execute(instruction: .makeReturn())
 		XCTAssertEqual(sut.stack.count, 0, "Expected call stack to be empty after return")
 		XCTAssertEqual(sut.programCounter, originalAddress, "PC should point to original address after return")
     }
 	
 	func testSetIndex() throws {
 		let address: UInt16 = 0x0ff0
-		sut.execute(instruction: .makeSetIndex(address: address))
+		try sut.execute(instruction: .makeSetIndex(address: address))
 		XCTAssertEqual(sut.indexRegister, address, "Index register should point to a given address")
 	}
 	
 	func testSetRegister() throws {
 		for i in 0..<sut.registers.count {
-			sut.execute(instruction: .makeSetRegister(register: UInt8(i), value: UInt8(i) + 1))
+			try sut.execute(instruction: .makeSetRegister(register: UInt8(i), value: UInt8(i) + 1))
 		}
 		
 		for i in 0..<sut.registers.count {
@@ -56,9 +56,9 @@ class SWIP8EmulatorExecuteTests: XCTestCase {
 		let value: UInt8 = 123
 		let address: UInt16 = 0x0200
 
-		sut.execute(instruction: .makeSetIndex(address: address))
-		sut.execute(instruction: .makeSetRegister(register: 0, value: value))
-		sut.execute(instruction: .makeBCD(registerX: 0))
+		try sut.execute(instruction: .makeSetIndex(address: address))
+		try sut.execute(instruction: .makeSetRegister(register: 0, value: value))
+		try sut.execute(instruction: .makeBCD(registerX: 0))
 		
 		XCTAssertEqual(sut.memory[address], 1)
 		XCTAssertEqual(sut.memory[address + 1], 2)
@@ -69,8 +69,8 @@ class SWIP8EmulatorExecuteTests: XCTestCase {
 		let value: UInt8 = 123
 		let pc = sut.programCounter
 
-		sut.execute(instruction: .makeSetRegister(register: 0, value: value))
-		sut.execute(instruction: .makeSkipIf(register: 0, value: value))
+		try sut.execute(instruction: .makeSetRegister(register: 0, value: value))
+		try sut.execute(instruction: .makeSkipIf(register: 0, value: value))
 		
 		XCTAssertEqual(sut.programCounter, pc + 2, "PC should've been advanced by one instruction")
 	}
@@ -79,8 +79,8 @@ class SWIP8EmulatorExecuteTests: XCTestCase {
 		let value: UInt8 = 123
 		let pc = sut.programCounter
 
-		sut.execute(instruction: .makeSetRegister(register: 0, value: value))
-		sut.execute(instruction: .makeSkipIf(register: 0, value: value + 1))
+		try sut.execute(instruction: .makeSetRegister(register: 0, value: value))
+		try sut.execute(instruction: .makeSkipIf(register: 0, value: value + 1))
 		
 		XCTAssertEqual(sut.programCounter, pc, "PC should've been unaffected by a skip instruction")
 	}
@@ -89,8 +89,8 @@ class SWIP8EmulatorExecuteTests: XCTestCase {
 		let value: UInt8 = 123
 		let pc = sut.programCounter
 
-		sut.execute(instruction: .makeSetRegister(register: 0, value: value))
-		sut.execute(instruction: .makeSkipIfNot(register: 0, value: value + 1))
+		try sut.execute(instruction: .makeSetRegister(register: 0, value: value))
+		try sut.execute(instruction: .makeSkipIfNot(register: 0, value: value + 1))
 		
 		XCTAssertEqual(sut.programCounter, pc + 2, "PC should've been advanced by one instruction")
 	}
@@ -99,8 +99,8 @@ class SWIP8EmulatorExecuteTests: XCTestCase {
 		let value: UInt8 = 123
 		let pc = sut.programCounter
 
-		sut.execute(instruction: .makeSetRegister(register: 0, value: value))
-		sut.execute(instruction: .makeSkipIfNot(register: 0, value: value))
+		try sut.execute(instruction: .makeSetRegister(register: 0, value: value))
+		try sut.execute(instruction: .makeSkipIfNot(register: 0, value: value))
 		
 		XCTAssertEqual(sut.programCounter, pc, "PC should've been unaffected by a skip instruction")
 	}
@@ -109,9 +109,9 @@ class SWIP8EmulatorExecuteTests: XCTestCase {
 		let value: UInt8 = 123
 		let pc = sut.programCounter
 
-		sut.execute(instruction: .makeSetRegister(register: 0, value: value))
-		sut.execute(instruction: .makeSetRegister(register: 1, value: value))
-		sut.execute(instruction: .makeSkipIfRegister(registerX: 0, registerY: 1))
+		try sut.execute(instruction: .makeSetRegister(register: 0, value: value))
+		try sut.execute(instruction: .makeSetRegister(register: 1, value: value))
+		try sut.execute(instruction: .makeSkipIfRegister(registerX: 0, registerY: 1))
 		
 		XCTAssertEqual(sut.programCounter, pc + 2, "PC should've been advanced by one instruction")
 	}
@@ -120,9 +120,9 @@ class SWIP8EmulatorExecuteTests: XCTestCase {
 		let value: UInt8 = 123
 		let pc = sut.programCounter
 
-		sut.execute(instruction: .makeSetRegister(register: 0, value: value))
-		sut.execute(instruction: .makeSetRegister(register: 1, value: value + 1))
-		sut.execute(instruction: .makeSkipIfRegister(registerX: 0, registerY: 1))
+		try sut.execute(instruction: .makeSetRegister(register: 0, value: value))
+		try sut.execute(instruction: .makeSetRegister(register: 1, value: value + 1))
+		try sut.execute(instruction: .makeSkipIfRegister(registerX: 0, registerY: 1))
 		
 		XCTAssertEqual(sut.programCounter, pc, "PC should've been unaffected by a skip instruction")
 	}
@@ -131,9 +131,9 @@ class SWIP8EmulatorExecuteTests: XCTestCase {
 		let value: UInt8 = 123
 		let pc = sut.programCounter
 
-		sut.execute(instruction: .makeSetRegister(register: 0, value: value))
-		sut.execute(instruction: .makeSetRegister(register: 1, value: value + 1))
-		sut.execute(instruction: .makeSkipIfNotRegister(registerX: 0, registerY: 1))
+		try sut.execute(instruction: .makeSetRegister(register: 0, value: value))
+		try sut.execute(instruction: .makeSetRegister(register: 1, value: value + 1))
+		try sut.execute(instruction: .makeSkipIfNotRegister(registerX: 0, registerY: 1))
 		
 		XCTAssertEqual(sut.programCounter, pc + 2, "PC should've been advanced by one instruction")
 	}
@@ -142,9 +142,9 @@ class SWIP8EmulatorExecuteTests: XCTestCase {
 		let value: UInt8 = 123
 		let pc = sut.programCounter
 
-		sut.execute(instruction: .makeSetRegister(register: 0, value: value))
-		sut.execute(instruction: .makeSetRegister(register: 1, value: value))
-		sut.execute(instruction: .makeSkipIfNotRegister(registerX: 0, registerY: 1))
+		try sut.execute(instruction: .makeSetRegister(register: 0, value: value))
+		try sut.execute(instruction: .makeSetRegister(register: 1, value: value))
+		try sut.execute(instruction: .makeSkipIfNotRegister(registerX: 0, registerY: 1))
 		
 		XCTAssertEqual(sut.programCounter, pc, "PC should've been unaffected by a skip instruction")
 	}

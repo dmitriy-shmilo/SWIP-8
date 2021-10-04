@@ -70,10 +70,9 @@ class Emulator {
 		soundTimer = 0
 	}
 	
-	func load(rom: [UInt8]) {
-		// TODO: throw an error instead of crashing
-		guard rom.count < Self.MemorySize - Self.ReservedMemorySize else {
-			fatalError("Rom size is larger than memory allows.")
+	func load(rom: [UInt8]) throws {
+		guard rom.count <= Self.MemorySize - Self.ReservedMemorySize else {
+			throw LoadError.NotEnoughMemory
 		}
 		reset()
 		memory.replaceSubrange(
@@ -85,7 +84,7 @@ class Emulator {
 		}
 	}
 	
-	func load(string: String) {
+	func load(string: String) throws {
 		let totalSteps = 1
 		var bytes = [UInt8]()
 		var step = totalSteps
@@ -107,13 +106,13 @@ class Emulator {
 					step -= 1
 				}
 			} else {
-				fatalError("Unknown character \(char)")
+				throw LoadError.InvalidCharacter(string: String(char))
 			}
 		}
-		load(rom: bytes)
+		try load(rom: bytes)
 	}
 	
-	func execute(instruction: Instruction) {
+	func execute(instruction: Instruction) throws {
 		switch instruction.group {
 		case .Special where instruction.b == 0xe0:
 			clearScreen()
@@ -124,7 +123,7 @@ class Emulator {
 				quit = true
 			}
 		case .Special:
-			fatalError("Jump to machine code isn't supported")
+			throw ExecutionError.NotSupported
 		case .Jump:
 			programCounter = instruction.nnn
 		case .Call:
@@ -148,7 +147,7 @@ class Emulator {
 		case .AddToRegister:
 			registers[instruction.x] &+= instruction.b
 		case .Arithmetic:
-			fatalError("Boolean and arithmetic operations aren't implemented")
+			throw ExecutionError.NotSupported
 		case .SkipIfNotRegister:
 			if registers[instruction.x] == registers[instruction.y] {
 				programCounter += 2
@@ -163,9 +162,9 @@ class Emulator {
 		case .Draw:
 			draw(x: registers[instruction.x], y: registers[instruction.y], rows: instruction.n)
 		case .SkipIfKey where instruction.b == 0x9e:
-			fatalError("Skip if key pressed isn't implemented")
+			throw ExecutionError.NotSupported
 		case .SkipIfKey where instruction.b == 0xa1:
-			fatalError("Skip if key not pressed isn't implemented")
+			throw ExecutionError.NotSupported
 		case .Extended where instruction.b == 0x07:
 			registers[instruction.x] = delayTimer
 		case .Extended where instruction.b == 0x15:
@@ -180,7 +179,7 @@ class Emulator {
 				registers[0x0f] = 1
 			}
 		case .Extended where instruction.b == 0x0a:
-			fatalError("Get key instruction isn't implemented")
+			throw ExecutionError.NotSupported
 		case .Extended where instruction.b == 0x29:
 			indexRegister = Self.FontDataOffset + UInt16(registers[instruction.x] & 0x0f)
 		case .Extended where instruction.b == 0x33:
@@ -198,7 +197,7 @@ class Emulator {
 				registers[i] = memory[indexRegister + i]
 			}
 		default:
-			fatalError("Unknown instruction: \(instruction)")
+			throw ExecutionError.NotSupported
 		}
 	}
 	
@@ -206,22 +205,21 @@ class Emulator {
 		Instruction(a: memory[programCounter], b: memory[programCounter + 1])
 	}
 	
-	func executeNextInstruction() {
+	func executeNextInstruction() throws {
 		let instruction = peekInstruction()
 		programCounter += 2
 		
 		if programCounter >= Self.MemorySize {
-			fatalError("PC (\(programCounter)) indexes out of memory.")
+			throw ExecutionError.InvalidIndex(index: programCounter)
 		}
 		
-		execute(instruction: instruction)
+		try execute(instruction: instruction)
 	}
 	
-	// TODO: throw errors instead of crashing
-	func run() {
+	func run() throws {
 		quit = false
 		while !quit {
-			executeNextInstruction()
+			try executeNextInstruction()
 		}
 	}
 	
