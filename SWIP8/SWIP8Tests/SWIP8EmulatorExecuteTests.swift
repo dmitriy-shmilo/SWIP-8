@@ -64,5 +64,89 @@ class SWIP8EmulatorExecuteTests: XCTestCase {
 		XCTAssertEqual(sut.memory[address + 1], 2)
 		XCTAssertEqual(sut.memory[address + 2], 3)
 	}
+	
+	func testSkipIfSkips() throws {
+		let value: UInt8 = 123
+		let pc = sut.programCounter
+
+		sut.execute(instruction: .makeSetRegister(register: 0, value: value))
+		sut.execute(instruction: .makeSkipIf(register: 0, value: value))
+		
+		XCTAssertEqual(sut.programCounter, pc + 2, "PC should've been advanced by one instruction")
+	}
+	
+	func testSkipIfDoesntSkip() throws {
+		let value: UInt8 = 123
+		let pc = sut.programCounter
+
+		sut.execute(instruction: .makeSetRegister(register: 0, value: value))
+		sut.execute(instruction: .makeSkipIf(register: 0, value: value + 1))
+		
+		XCTAssertEqual(sut.programCounter, pc, "PC should've been unaffected by a skip instruction")
+	}
+	
+	func testSkipIfNotSkips() throws {
+		let value: UInt8 = 123
+		let pc = sut.programCounter
+
+		sut.execute(instruction: .makeSetRegister(register: 0, value: value))
+		sut.execute(instruction: .makeSkipIfNot(register: 0, value: value + 1))
+		
+		XCTAssertEqual(sut.programCounter, pc + 2, "PC should've been advanced by one instruction")
+	}
+	
+	func testSkipIfNotDoesntSkip() throws {
+		let value: UInt8 = 123
+		let pc = sut.programCounter
+
+		sut.execute(instruction: .makeSetRegister(register: 0, value: value))
+		sut.execute(instruction: .makeSkipIfNot(register: 0, value: value))
+		
+		XCTAssertEqual(sut.programCounter, pc, "PC should've been unaffected by a skip instruction")
+	}
+	
+	func testSkipIfRegisterSkips() throws {
+		let value: UInt8 = 123
+		let pc = sut.programCounter
+
+		sut.execute(instruction: .makeSetRegister(register: 0, value: value))
+		sut.execute(instruction: .makeSetRegister(register: 1, value: value))
+		sut.execute(instruction: .makeSkipIfRegister(registerX: 0, registerY: 1))
+		
+		XCTAssertEqual(sut.programCounter, pc + 2, "PC should've been advanced by one instruction")
+	}
+	
+	func testSkipIfRegisterDoesntSkip() throws {
+		let value: UInt8 = 123
+		let pc = sut.programCounter
+
+		sut.execute(instruction: .makeSetRegister(register: 0, value: value))
+		sut.execute(instruction: .makeSetRegister(register: 1, value: value + 1))
+		sut.execute(instruction: .makeSkipIfRegister(registerX: 0, registerY: 1))
+		
+		XCTAssertEqual(sut.programCounter, pc, "PC should've been unaffected by a skip instruction")
+	}
+	
+	func testSkipIfNotRegisterSkips() throws {
+		let value: UInt8 = 123
+		let pc = sut.programCounter
+
+		sut.execute(instruction: .makeSetRegister(register: 0, value: value))
+		sut.execute(instruction: .makeSetRegister(register: 1, value: value + 1))
+		sut.execute(instruction: .makeSkipIfNotRegister(registerX: 0, registerY: 1))
+		
+		XCTAssertEqual(sut.programCounter, pc + 2, "PC should've been advanced by one instruction")
+	}
+	
+	func testSkipIfNotRegisterDoesntSkip() throws {
+		let value: UInt8 = 123
+		let pc = sut.programCounter
+
+		sut.execute(instruction: .makeSetRegister(register: 0, value: value))
+		sut.execute(instruction: .makeSetRegister(register: 1, value: value))
+		sut.execute(instruction: .makeSkipIfNotRegister(registerX: 0, registerY: 1))
+		
+		XCTAssertEqual(sut.programCounter, pc, "PC should've been unaffected by a skip instruction")
+	}
 
 }
