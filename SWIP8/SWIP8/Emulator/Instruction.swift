@@ -32,7 +32,7 @@ enum InstructionGroup: UInt8, ExpressibleByIntegerLiteral {
 	case Extended = 0x0f
 }
 
-struct Instruction {
+struct Instruction: Equatable {
 	let a: UInt8
 	let b: UInt8
 	
