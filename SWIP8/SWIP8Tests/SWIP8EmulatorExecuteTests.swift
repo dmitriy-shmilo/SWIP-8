@@ -24,18 +24,6 @@ class SWIP8EmulatorExecuteTests: XCTestCase {
 		XCTAssertEqual(sut.stack.count, 0, "Expected call stack to remain empty after jump")
 	}
 	
-    func testCallReturn() throws {
-		let routineAddress: UInt16 = 0x0ff0
-		let originalAddress = sut.programCounter
-
-		try sut.execute(instruction: .makeCall(address: routineAddress))
-		XCTAssertEqual(sut.stack.count, 1, "Expected call stack to grow by one after call")
-		XCTAssertEqual(sut.programCounter, routineAddress, "PC should point to routine address after call")
-		try sut.execute(instruction: .makeReturn())
-		XCTAssertEqual(sut.stack.count, 0, "Expected call stack to be empty after return")
-		XCTAssertEqual(sut.programCounter, originalAddress, "PC should point to original address after return")
-    }
-	
 	func testSetIndex() throws {
 		let address: UInt16 = 0x0ff0
 		try sut.execute(instruction: .makeSetIndex(address: address))
