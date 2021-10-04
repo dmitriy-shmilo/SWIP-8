@@ -37,6 +37,7 @@ class Emulator {
 	private (set) var memory = Array<UInt8>(repeating: 0, count: Int(MemorySize))
 	private (set) var display = Array<UInt8>(repeating: 0, count: Int(ResolutionWidth * ResolutionHeight))
 	private (set) var registers = Array<UInt8>(repeating: 0, count: RegisterCount)
+	private (set) var keyboard = [UInt8](repeating: 0, count: 16)
 	private (set) var programCounter: UInt16 = ReservedMemorySize
 	private (set) var indexRegister: UInt16 = ReservedMemorySize
 	private (set) var stack = Array<UInt16>()
@@ -189,6 +190,13 @@ class Emulator {
 		display[x + y * Self.ResolutionWidth]
 	}
 	
+	func set(key: UInt8, pressed state: Bool) throws {
+		guard key < keyboard.count else {
+			throw ExecutionError.NotSupported
+		}
+		keyboard[key] = state ? 1 : 0
+	}
+	
 	private func advanceProgramCounter() throws {
 		// TODO: throw when out of bounds
 		programCounter += 2
@@ -303,11 +311,15 @@ class Emulator {
 	}
 	
 	private func executeSkipIfKey(instruction: Instruction) throws {
-		switch instruction.b {
-		case 0x9e:
-			throw ExecutionError.NotSupported
-		case 0xa1:
-			throw ExecutionError.NotSupported
+		switch instruction.keyStateCode {
+		case .pressed?:
+			if keyboard[registers[instruction.x]] == 1 {
+				try advanceProgramCounter()
+			}
+		case .notPressed?:
+			if keyboard[registers[instruction.x]] == 0 {
+				try advanceProgramCounter()
+			}
 		default:
 			throw ExecutionError.NotSupported
 		}
@@ -317,6 +329,12 @@ class Emulator {
 		switch instruction.b {
 		case 0x07:
 			registers[instruction.x] = delayTimer
+		case 0x0a:
+			if let i = keyboard.firstIndex(where: { $0 > 0 }) {
+				registers[instruction.x] = UInt8(i)
+			} else {
+				programCounter -= 2
+			}
 		case 0x15:
 			delayTimer = registers[instruction.x]
 		case 0x18:
@@ -328,8 +346,6 @@ class Emulator {
 				// TODO: implement an option to skip flagging this overlow
 				registers[0x0f] = 1
 			}
-		case 0x0a:
-			throw ExecutionError.NotSupported
 		case 0x29:
 			indexRegister = Self.FontDataOffset + UInt16(registers[instruction.x] & 0x0f)
 		case 0x33:

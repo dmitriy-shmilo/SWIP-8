@@ -65,6 +65,10 @@ extension Instruction {
 	var extendedCode: ExtendedCode? {
 		.init(rawValue: b)
 	}
+	
+	var keyStateCode: KeyStateCode? {
+		.init(rawValue: b)
+	}
 }
 
 extension Instruction {
@@ -109,11 +113,11 @@ extension Instruction {
 	}
 	
 	static func makeSkipIfKeyPressed(registerX: UInt8) -> Instruction {
-		Instruction(group: .skipIfKey, x: registerX, b: SkipIfKeyState.pressed.rawValue)
+		Instruction(group: .skipIfKey, x: registerX, b: KeyStateCode.pressed.rawValue)
 	}
 	
 	static func makeSkipIfKeyNotPressed(registerX: UInt8) -> Instruction {
-		Instruction(group: .skipIfKey, x: registerX, b: SkipIfKeyState.notPressed.rawValue)
+		Instruction(group: .skipIfKey, x: registerX, b: KeyStateCode.notPressed.rawValue)
 	}
 	
 	// MARK: - Make register modification instructions
