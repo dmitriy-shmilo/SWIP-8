@@ -61,4 +61,14 @@ class SWIP8InstructionTests: XCTestCase {
 		let sut = Instruction(a: 0x00, b: 0xff)
 		XCTAssertEqual(sut.extendedCode, nil)
 	}
+	
+	func testKeyStateCode() {
+		let sut = Instruction.makeSkipIfKeyPressed(registerX: 0)
+		XCTAssertEqual(sut.keyStateCode, .pressed)
+	}
+	
+	func testUnknownKeyStateCode() {
+		let sut = Instruction(a: 0x00, b: 0xff)
+		XCTAssertEqual(sut.keyStateCode, nil)
+	}
 }
