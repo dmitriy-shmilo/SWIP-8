@@ -47,4 +47,46 @@ class SWIP8EmulatorLoadTests: XCTestCase {
 		sut.load(rom: rom)
 		XCTAssertEqual(sut.memory.last ?? 0, 0x02, "Last byte of loaded memory should be preserved")
 	}
+	
+	func testLoadEmptyString() throws {
+		let rom = ""
+		XCTAssertThrowsError(sut.load(string: rom), "Loading an empty string should be an error")
+	}
+	
+	func testLoadString() throws {
+		let rom = "01020304"
+		let pc = sut.programCounter
+		sut.load(string: rom)
+		
+		for (i, byte) in [UInt8](arrayLiteral: 0x01, 0x02, 0x03, 0x04).enumerated() {
+			XCTAssertEqual(sut.memory[pc + UInt16(i)], byte, "\(i) program byte should be \(byte)")
+		}
+	}
+	
+	func testLoadInvalidCharacterString() throws {
+		let rom = "0102030g"
+		XCTAssertThrowsError(sut.load(string: rom), "Loading string with an invalid character should throw an error")
+	}
+	
+	func testLoadInvalidDigitCountString() throws {
+		let rom = "0102030"
+		XCTAssertThrowsError(sut.load(string: rom), "Loading string with odd number of digits should throw an error")
+	}
+	
+	func testLoadInvalidByteCountString() throws {
+		let rom = "010203"
+		XCTAssertThrowsError(sut.load(string: rom), "Loading string with odd number of bytes should throw an error")
+	}
+	
+	func testLoadWhitespaceAndNewlinesString() throws {
+		let rom = "\t0102 0304\n\t0102 0304\n"
+		let pc = sut.programCounter
+		sut.load(string: rom)
+		
+		for (i, byte) in [UInt8](
+			arrayLiteral: 0x01, 0x02, 0x03, 0x04, 0x01, 0x02, 0x03, 0x04
+		).enumerated() {
+			XCTAssertEqual(sut.memory[pc + UInt16(i)], byte, "\(i) program byte should be \(byte)")
+		}
+	}
 }
