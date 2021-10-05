@@ -22,4 +22,5 @@ enum ExecutionError: EmulationError {
 	case Unknown
 	case NotSupported
 	case InvalidIndex(index: UInt16)
+	case InvalidIndexRange(start: UInt16, end: UInt16)
 }

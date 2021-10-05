@@ -221,6 +221,19 @@ class Emulator {
 		}
 	}
 	
+	private func ensureSafeIndex<Width: BinaryInteger>(
+		_ index: UInt16,
+		withWidth width: Width = 1
+	) throws {
+		if index < Self.ReservedMemorySize {
+			throw ExecutionError.InvalidIndex(index: index)
+		}
+		
+		if index + UInt16(width) > Self.MemorySize {
+			throw ExecutionError.InvalidIndexRange(start: index, end: index + UInt16(width) - 1)
+		}
+	}
+	
 	private func advanceProgramCounter() throws {
 		// TODO: throw when out of bounds
 		programCounter += 2
@@ -410,18 +423,19 @@ class Emulator {
 		case .indexToChar?:
 			indexRegister = Self.FontDataOffset + UInt16(registers[instruction.x] & 0x0f)
 		case .bcd:
+			try ensureSafeIndex(indexRegister, withWidth: 3)
 			let num = registers[instruction.x]
 			memory[indexRegister] = num / 100
 			memory[indexRegister + 1] = num / 10 % 10
 			memory[indexRegister + 2] = num % 10
 		case .storeRegisters:
-			// TODO: implement an option to increment/decrement index register
-			// TODO: throw if writing into reserved memory
+			// TODO: implement an option to increment index register
+			try ensureSafeIndex(indexRegister, withWidth: instruction.x)
 			for i in 0...instruction.x {
 				memory[indexRegister + i] = registers[i]
 			}
 		case .loadRegisters:
-			// TODO: consider throwing if reading from reserved memory
+			try ensureSafeIndex(indexRegister, withWidth: instruction.x)
 			for i in 0...instruction.x {
 				registers[i] = memory[indexRegister + i]
 			}
