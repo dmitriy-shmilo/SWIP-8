@@ -1,5 +1,5 @@
 //
-//  SWIP8JumpTests.swift
+//  EmulatorJumpTests.swift
 //  SWIP8Tests
 //
 //  Created by Dmitriy Shmilo on 05.10.2021.
@@ -8,7 +8,7 @@
 import XCTest
 @testable import SWIP8
 
-class SWIP8JumpTests: XCTestCase {
+class EmulatorJumpTests: XCTestCase {
 
 	var sut = Emulator()
 

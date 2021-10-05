@@ -1,5 +1,5 @@
 //
-//  SWIP8Tests.swift
+//  InstructionTests.swift
 //  SWIP8Tests
 //
 //  Created by Dmitriy Shmilo on 03.10.2021.
@@ -8,7 +8,7 @@
 import XCTest
 @testable import SWIP8
 
-class SWIP8InstructionTests: XCTestCase {
+class InstructionTests: XCTestCase {
 
 	private let sut = Instruction(a: 0x12, b: 0x34)
 

@@ -1,5 +1,5 @@
 //
-//  SWIP8RegisterTests.swift
+//  EmulatorRegisterTests.swift
 //  SWIP8Tests
 //
 //  Created by Dmitriy Shmilo on 05.10.2021.
@@ -8,7 +8,7 @@
 import XCTest
 @testable import SWIP8
 
-class SWIP8RegisterTests: XCTestCase {
+class EmulatorRegisterTests: XCTestCase {
 	
 	let sut = Emulator()
 	

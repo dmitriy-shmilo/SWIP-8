@@ -1,5 +1,5 @@
 //
-//  SWIP8RandomTests.swift
+//  EmulatorRandomTests.swift
 //  SWIP8Tests
 //
 //  Created by Dmitriy Shmilo on 05.10.2021.
@@ -8,7 +8,7 @@
 import XCTest
 @testable import SWIP8
 
-class SWIP8RandomTests: XCTestCase {
+class EmulatorRandomTests: XCTestCase {
 
 	var sut = Emulator()
 

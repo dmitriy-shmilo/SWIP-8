@@ -1,5 +1,5 @@
 //
-//  SWIP8IndexTests.swift
+//  EmulatorIndexTests.swift
 //  SWIP8Tests
 //
 //  Created by Dmitriy Shmilo on 05.10.2021.
@@ -10,7 +10,7 @@ import Foundation
 import XCTest
 @testable import SWIP8
 
-class SWIP8IndexTests: XCTestCase {
+class EmulatorIndexTests: XCTestCase {
 	
 	let sut = Emulator()
 	
