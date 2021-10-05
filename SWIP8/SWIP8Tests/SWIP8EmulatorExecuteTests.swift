@@ -24,12 +24,6 @@ class SWIP8EmulatorExecuteTests: XCTestCase {
 		XCTAssertEqual(sut.stack.count, 0, "Expected call stack to remain empty after jump")
 	}
 	
-	func testSetIndex() throws {
-		let address: UInt16 = 0x0ff0
-		try sut.execute(instruction: .makeSetIndex(address: address))
-		XCTAssertEqual(sut.indexRegister, address, "Index register should point to a given address")
-	}
-	
 	func testBCD() throws {
 		let value: UInt8 = 123
 		let address: UInt16 = 0x0200
