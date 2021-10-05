@@ -23,6 +23,7 @@
 		5DD80EF9270BB51B006ADDFA /* EmulatorIndexTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5DD80EF8270BB51B006ADDFA /* EmulatorIndexTests.swift */; };
 		5DD80EFB270C213C006ADDFA /* EmulatorJumpTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5DD80EFA270C213C006ADDFA /* EmulatorJumpTests.swift */; };
 		5DD80EFD270C2602006ADDFA /* EmulatorRandomTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5DD80EFC270C2602006ADDFA /* EmulatorRandomTests.swift */; };
+		5DD80EFF270C34AC006ADDFA /* EmulatorTimerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5DD80EFE270C34AC006ADDFA /* EmulatorTimerTests.swift */; };
 		5DEABB492709C960007AB419 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5DEABB482709C960007AB419 /* AppDelegate.swift */; };
 		5DEABB4B2709C960007AB419 /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5DEABB4A2709C960007AB419 /* SceneDelegate.swift */; };
 		5DEABB4D2709C960007AB419 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5DEABB4C2709C960007AB419 /* ViewController.swift */; };
@@ -63,6 +64,7 @@
 		5DD80EF8270BB51B006ADDFA /* EmulatorIndexTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EmulatorIndexTests.swift; sourceTree = "<group>"; };
 		5DD80EFA270C213C006ADDFA /* EmulatorJumpTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EmulatorJumpTests.swift; sourceTree = "<group>"; };
 		5DD80EFC270C2602006ADDFA /* EmulatorRandomTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EmulatorRandomTests.swift; sourceTree = "<group>"; };
+		5DD80EFE270C34AC006ADDFA /* EmulatorTimerTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EmulatorTimerTests.swift; sourceTree = "<group>"; };
 		5DEABB452709C960007AB419 /* SWIP8.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = SWIP8.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		5DEABB482709C960007AB419 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		5DEABB4A2709C960007AB419 /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
@@ -150,6 +152,7 @@
 				5DD80EF8270BB51B006ADDFA /* EmulatorIndexTests.swift */,
 				5DD80EFA270C213C006ADDFA /* EmulatorJumpTests.swift */,
 				5DD80EFC270C2602006ADDFA /* EmulatorRandomTests.swift */,
+				5DD80EFE270C34AC006ADDFA /* EmulatorTimerTests.swift */,
 			);
 			path = SWIP8Tests;
 			sourceTree = "<group>";
@@ -285,6 +288,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				5DD80EFF270C34AC006ADDFA /* EmulatorTimerTests.swift in Sources */,
 				5DD80EDF270B1966006ADDFA /* EmulatorDrawTests.swift in Sources */,
 				5DD80EEB270BA3F8006ADDFA /* EmulatorKeyboardTests.swift in Sources */,
 				5DD80EFB270C213C006ADDFA /* EmulatorJumpTests.swift in Sources */,
