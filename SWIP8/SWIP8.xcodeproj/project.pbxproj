@@ -11,29 +11,29 @@
 		5DD80ED9270AEA4F006ADDFA /* Array+WordIndexable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5DD80ED8270AEA4F006ADDFA /* Array+WordIndexable.swift */; };
 		5DD80EDB270AF29A006ADDFA /* UInt16.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5DD80EDA270AF29A006ADDFA /* UInt16.swift */; };
 		5DD80EDD270B0782006ADDFA /* EmulationError.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5DD80EDC270B0782006ADDFA /* EmulationError.swift */; };
-		5DD80EDF270B1966006ADDFA /* SWIP8EmulatorDrawTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5DD80EDE270B1966006ADDFA /* SWIP8EmulatorDrawTests.swift */; };
+		5DD80EDF270B1966006ADDFA /* EmulatorDrawTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5DD80EDE270B1966006ADDFA /* EmulatorDrawTests.swift */; };
 		5DD80EE1270B2D32006ADDFA /* InstructionCode.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5DD80EE0270B2D32006ADDFA /* InstructionCode.swift */; };
-		5DD80EEB270BA3F8006ADDFA /* SWIP8KeyboardTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5DD80EEA270BA3F7006ADDFA /* SWIP8KeyboardTests.swift */; };
-		5DD80EED270BA520006ADDFA /* SWIP8ArithmeticTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5DD80EEC270BA520006ADDFA /* SWIP8ArithmeticTests.swift */; };
+		5DD80EEB270BA3F8006ADDFA /* EmulatorKeyboardTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5DD80EEA270BA3F7006ADDFA /* EmulatorKeyboardTests.swift */; };
+		5DD80EED270BA520006ADDFA /* EmulatorArithmeticTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5DD80EEC270BA520006ADDFA /* EmulatorArithmeticTests.swift */; };
 		5DD80EF0270BA821006ADDFA /* UIColor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5DD80EEE270BA820006ADDFA /* UIColor.swift */; };
 		5DD80EF1270BA821006ADDFA /* BitScreenView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5DD80EEF270BA820006ADDFA /* BitScreenView.swift */; };
-		5DD80EF3270BAF13006ADDFA /* SWIP8SubroutineTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5DD80EF2270BAF13006ADDFA /* SWIP8SubroutineTests.swift */; };
-		5DD80EF5270BB1C8006ADDFA /* SWIP8SkipTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5DD80EF4270BB1C8006ADDFA /* SWIP8SkipTests.swift */; };
-		5DD80EF7270BB3C1006ADDFA /* SWIP8RegisterTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5DD80EF6270BB3C1006ADDFA /* SWIP8RegisterTests.swift */; };
-		5DD80EF9270BB51B006ADDFA /* SWIP8IndexTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5DD80EF8270BB51B006ADDFA /* SWIP8IndexTests.swift */; };
-		5DD80EFB270C213C006ADDFA /* SWIP8JumpTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5DD80EFA270C213C006ADDFA /* SWIP8JumpTests.swift */; };
-		5DD80EFD270C2602006ADDFA /* SWIP8RandomTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5DD80EFC270C2602006ADDFA /* SWIP8RandomTests.swift */; };
+		5DD80EF3270BAF13006ADDFA /* EmulatorSubroutineTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5DD80EF2270BAF13006ADDFA /* EmulatorSubroutineTests.swift */; };
+		5DD80EF5270BB1C8006ADDFA /* EmulatorSkipTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5DD80EF4270BB1C8006ADDFA /* EmulatorSkipTests.swift */; };
+		5DD80EF7270BB3C1006ADDFA /* EmulatorRegisterTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5DD80EF6270BB3C1006ADDFA /* EmulatorRegisterTests.swift */; };
+		5DD80EF9270BB51B006ADDFA /* EmulatorIndexTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5DD80EF8270BB51B006ADDFA /* EmulatorIndexTests.swift */; };
+		5DD80EFB270C213C006ADDFA /* EmulatorJumpTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5DD80EFA270C213C006ADDFA /* EmulatorJumpTests.swift */; };
+		5DD80EFD270C2602006ADDFA /* EmulatorRandomTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5DD80EFC270C2602006ADDFA /* EmulatorRandomTests.swift */; };
 		5DEABB492709C960007AB419 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5DEABB482709C960007AB419 /* AppDelegate.swift */; };
 		5DEABB4B2709C960007AB419 /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5DEABB4A2709C960007AB419 /* SceneDelegate.swift */; };
 		5DEABB4D2709C960007AB419 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5DEABB4C2709C960007AB419 /* ViewController.swift */; };
 		5DEABB502709C960007AB419 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 5DEABB4E2709C960007AB419 /* Main.storyboard */; };
 		5DEABB522709C964007AB419 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 5DEABB512709C964007AB419 /* Assets.xcassets */; };
 		5DEABB552709C964007AB419 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 5DEABB532709C964007AB419 /* LaunchScreen.storyboard */; };
-		5DEABB632709D3A0007AB419 /* SWIP8InstructionTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5DEABB622709D3A0007AB419 /* SWIP8InstructionTests.swift */; };
+		5DEABB632709D3A0007AB419 /* InstructionTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5DEABB622709D3A0007AB419 /* InstructionTests.swift */; };
 		5DEABB6B2709D713007AB419 /* Emulator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5DEABB6A2709D713007AB419 /* Emulator.swift */; };
 		5DEABB6D2709D769007AB419 /* Instruction.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5DEABB6C2709D769007AB419 /* Instruction.swift */; };
-		5DEABB71270A0D69007AB419 /* SWIP8ExtendedTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5DEABB70270A0D69007AB419 /* SWIP8ExtendedTests.swift */; };
-		5DEABB73270A30EF007AB419 /* SWIP8EmulatorLoadTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5DEABB72270A30EF007AB419 /* SWIP8EmulatorLoadTests.swift */; };
+		5DEABB71270A0D69007AB419 /* EmulatorExtendedTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5DEABB70270A0D69007AB419 /* EmulatorExtendedTests.swift */; };
+		5DEABB73270A30EF007AB419 /* EmulatorLoadTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5DEABB72270A30EF007AB419 /* EmulatorLoadTests.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -51,18 +51,18 @@
 		5DD80ED8270AEA4F006ADDFA /* Array+WordIndexable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Array+WordIndexable.swift"; sourceTree = "<group>"; };
 		5DD80EDA270AF29A006ADDFA /* UInt16.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UInt16.swift; sourceTree = "<group>"; };
 		5DD80EDC270B0782006ADDFA /* EmulationError.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EmulationError.swift; sourceTree = "<group>"; };
-		5DD80EDE270B1966006ADDFA /* SWIP8EmulatorDrawTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SWIP8EmulatorDrawTests.swift; sourceTree = "<group>"; };
+		5DD80EDE270B1966006ADDFA /* EmulatorDrawTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EmulatorDrawTests.swift; sourceTree = "<group>"; };
 		5DD80EE0270B2D32006ADDFA /* InstructionCode.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InstructionCode.swift; sourceTree = "<group>"; };
-		5DD80EEA270BA3F7006ADDFA /* SWIP8KeyboardTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SWIP8KeyboardTests.swift; sourceTree = "<group>"; };
-		5DD80EEC270BA520006ADDFA /* SWIP8ArithmeticTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SWIP8ArithmeticTests.swift; sourceTree = "<group>"; };
+		5DD80EEA270BA3F7006ADDFA /* EmulatorKeyboardTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = EmulatorKeyboardTests.swift; sourceTree = "<group>"; };
+		5DD80EEC270BA520006ADDFA /* EmulatorArithmeticTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = EmulatorArithmeticTests.swift; sourceTree = "<group>"; };
 		5DD80EEE270BA820006ADDFA /* UIColor.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UIColor.swift; sourceTree = "<group>"; };
 		5DD80EEF270BA820006ADDFA /* BitScreenView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BitScreenView.swift; sourceTree = "<group>"; };
-		5DD80EF2270BAF13006ADDFA /* SWIP8SubroutineTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SWIP8SubroutineTests.swift; sourceTree = "<group>"; };
-		5DD80EF4270BB1C8006ADDFA /* SWIP8SkipTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SWIP8SkipTests.swift; sourceTree = "<group>"; };
-		5DD80EF6270BB3C1006ADDFA /* SWIP8RegisterTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SWIP8RegisterTests.swift; sourceTree = "<group>"; };
-		5DD80EF8270BB51B006ADDFA /* SWIP8IndexTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SWIP8IndexTests.swift; sourceTree = "<group>"; };
-		5DD80EFA270C213C006ADDFA /* SWIP8JumpTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SWIP8JumpTests.swift; sourceTree = "<group>"; };
-		5DD80EFC270C2602006ADDFA /* SWIP8RandomTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SWIP8RandomTests.swift; sourceTree = "<group>"; };
+		5DD80EF2270BAF13006ADDFA /* EmulatorSubroutineTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EmulatorSubroutineTests.swift; sourceTree = "<group>"; };
+		5DD80EF4270BB1C8006ADDFA /* EmulatorSkipTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EmulatorSkipTests.swift; sourceTree = "<group>"; };
+		5DD80EF6270BB3C1006ADDFA /* EmulatorRegisterTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EmulatorRegisterTests.swift; sourceTree = "<group>"; };
+		5DD80EF8270BB51B006ADDFA /* EmulatorIndexTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EmulatorIndexTests.swift; sourceTree = "<group>"; };
+		5DD80EFA270C213C006ADDFA /* EmulatorJumpTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EmulatorJumpTests.swift; sourceTree = "<group>"; };
+		5DD80EFC270C2602006ADDFA /* EmulatorRandomTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EmulatorRandomTests.swift; sourceTree = "<group>"; };
 		5DEABB452709C960007AB419 /* SWIP8.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = SWIP8.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		5DEABB482709C960007AB419 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		5DEABB4A2709C960007AB419 /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
@@ -72,11 +72,11 @@
 		5DEABB542709C964007AB419 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		5DEABB562709C964007AB419 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		5DEABB602709D3A0007AB419 /* SWIP8Tests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = SWIP8Tests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
-		5DEABB622709D3A0007AB419 /* SWIP8InstructionTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SWIP8InstructionTests.swift; sourceTree = "<group>"; };
+		5DEABB622709D3A0007AB419 /* InstructionTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InstructionTests.swift; sourceTree = "<group>"; };
 		5DEABB6A2709D713007AB419 /* Emulator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Emulator.swift; sourceTree = "<group>"; };
 		5DEABB6C2709D769007AB419 /* Instruction.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Instruction.swift; sourceTree = "<group>"; };
-		5DEABB70270A0D69007AB419 /* SWIP8ExtendedTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SWIP8ExtendedTests.swift; sourceTree = "<group>"; };
-		5DEABB72270A30EF007AB419 /* SWIP8EmulatorLoadTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SWIP8EmulatorLoadTests.swift; sourceTree = "<group>"; };
+		5DEABB70270A0D69007AB419 /* EmulatorExtendedTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EmulatorExtendedTests.swift; sourceTree = "<group>"; };
+		5DEABB72270A30EF007AB419 /* EmulatorLoadTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EmulatorLoadTests.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -138,18 +138,18 @@
 		5DEABB612709D3A0007AB419 /* SWIP8Tests */ = {
 			isa = PBXGroup;
 			children = (
-				5DD80EEC270BA520006ADDFA /* SWIP8ArithmeticTests.swift */,
-				5DD80EDE270B1966006ADDFA /* SWIP8EmulatorDrawTests.swift */,
-				5DEABB70270A0D69007AB419 /* SWIP8ExtendedTests.swift */,
-				5DEABB72270A30EF007AB419 /* SWIP8EmulatorLoadTests.swift */,
-				5DEABB622709D3A0007AB419 /* SWIP8InstructionTests.swift */,
-				5DD80EEA270BA3F7006ADDFA /* SWIP8KeyboardTests.swift */,
-				5DD80EF2270BAF13006ADDFA /* SWIP8SubroutineTests.swift */,
-				5DD80EF4270BB1C8006ADDFA /* SWIP8SkipTests.swift */,
-				5DD80EF6270BB3C1006ADDFA /* SWIP8RegisterTests.swift */,
-				5DD80EF8270BB51B006ADDFA /* SWIP8IndexTests.swift */,
-				5DD80EFA270C213C006ADDFA /* SWIP8JumpTests.swift */,
-				5DD80EFC270C2602006ADDFA /* SWIP8RandomTests.swift */,
+				5DD80EEC270BA520006ADDFA /* EmulatorArithmeticTests.swift */,
+				5DD80EDE270B1966006ADDFA /* EmulatorDrawTests.swift */,
+				5DEABB70270A0D69007AB419 /* EmulatorExtendedTests.swift */,
+				5DEABB72270A30EF007AB419 /* EmulatorLoadTests.swift */,
+				5DEABB622709D3A0007AB419 /* InstructionTests.swift */,
+				5DD80EEA270BA3F7006ADDFA /* EmulatorKeyboardTests.swift */,
+				5DD80EF2270BAF13006ADDFA /* EmulatorSubroutineTests.swift */,
+				5DD80EF4270BB1C8006ADDFA /* EmulatorSkipTests.swift */,
+				5DD80EF6270BB3C1006ADDFA /* EmulatorRegisterTests.swift */,
+				5DD80EF8270BB51B006ADDFA /* EmulatorIndexTests.swift */,
+				5DD80EFA270C213C006ADDFA /* EmulatorJumpTests.swift */,
+				5DD80EFC270C2602006ADDFA /* EmulatorRandomTests.swift */,
 			);
 			path = SWIP8Tests;
 			sourceTree = "<group>";
@@ -285,18 +285,18 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				5DD80EDF270B1966006ADDFA /* SWIP8EmulatorDrawTests.swift in Sources */,
-				5DD80EEB270BA3F8006ADDFA /* SWIP8KeyboardTests.swift in Sources */,
-				5DD80EFB270C213C006ADDFA /* SWIP8JumpTests.swift in Sources */,
-				5DD80EF9270BB51B006ADDFA /* SWIP8IndexTests.swift in Sources */,
-				5DD80EFD270C2602006ADDFA /* SWIP8RandomTests.swift in Sources */,
-				5DEABB73270A30EF007AB419 /* SWIP8EmulatorLoadTests.swift in Sources */,
-				5DD80EF3270BAF13006ADDFA /* SWIP8SubroutineTests.swift in Sources */,
-				5DD80EF5270BB1C8006ADDFA /* SWIP8SkipTests.swift in Sources */,
-				5DD80EED270BA520006ADDFA /* SWIP8ArithmeticTests.swift in Sources */,
-				5DEABB71270A0D69007AB419 /* SWIP8ExtendedTests.swift in Sources */,
-				5DD80EF7270BB3C1006ADDFA /* SWIP8RegisterTests.swift in Sources */,
-				5DEABB632709D3A0007AB419 /* SWIP8InstructionTests.swift in Sources */,
+				5DD80EDF270B1966006ADDFA /* EmulatorDrawTests.swift in Sources */,
+				5DD80EEB270BA3F8006ADDFA /* EmulatorKeyboardTests.swift in Sources */,
+				5DD80EFB270C213C006ADDFA /* EmulatorJumpTests.swift in Sources */,
+				5DD80EF9270BB51B006ADDFA /* EmulatorIndexTests.swift in Sources */,
+				5DD80EFD270C2602006ADDFA /* EmulatorRandomTests.swift in Sources */,
+				5DEABB73270A30EF007AB419 /* EmulatorLoadTests.swift in Sources */,
+				5DD80EF3270BAF13006ADDFA /* EmulatorSubroutineTests.swift in Sources */,
+				5DD80EF5270BB1C8006ADDFA /* EmulatorSkipTests.swift in Sources */,
+				5DD80EED270BA520006ADDFA /* EmulatorArithmeticTests.swift in Sources */,
+				5DEABB71270A0D69007AB419 /* EmulatorExtendedTests.swift in Sources */,
+				5DD80EF7270BB3C1006ADDFA /* EmulatorRegisterTests.swift in Sources */,
+				5DEABB632709D3A0007AB419 /* InstructionTests.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
