@@ -157,7 +157,7 @@ class Emulator {
 		case .skipIfNotRegister:
 			try executeSkipIfNotRegister(instruction: instruction)
 		case .setIndex:
-			executeSetIndex(instruction: instruction)
+			try executeSetIndex(instruction: instruction)
 		case .jumpWithOffset:
 			try executeJumpWithOffset(instruction: instruction)
 		case .random:
@@ -178,10 +178,6 @@ class Emulator {
 	func executeNextInstruction() throws {
 		let instruction = peekInstruction()
 		try advanceProgramCounter()
-		
-		if programCounter >= Self.MemorySize {
-			throw ExecutionError.InvalidIndex(index: programCounter)
-		}
 		
 		try execute(instruction: instruction)
 	}
@@ -221,10 +217,11 @@ class Emulator {
 		}
 	}
 	
-	private func ensureSafeIndex<Width: BinaryInteger>(
+	private func ensureSafeIndexRange<Width: BinaryInteger>(
 		_ index: UInt16,
-		withWidth width: Width = 1
+		withWidth width: Width
 	) throws {
+		// TODO: find out if reserved memory is actually off-limits
 		if index < Self.ReservedMemorySize {
 			throw ExecutionError.InvalidIndex(index: index)
 		}
@@ -234,8 +231,14 @@ class Emulator {
 		}
 	}
 	
+	private func ensureSafeIndex(_ index: UInt16) throws {
+		if index < Self.ReservedMemorySize || index >= Self.MemorySize {
+			throw ExecutionError.InvalidIndex(index: index)
+		}
+	}
+	
 	private func advanceProgramCounter() throws {
-		// TODO: throw when out of bounds
+		try ensureSafeIndexRange(programCounter + 2, withWidth: 2)
 		programCounter += 2
 	}
 	
@@ -268,11 +271,12 @@ class Emulator {
 	}
 	
 	private func executeJump(instruction: Instruction) throws {
-		// TODO: throw when accessing reserved memory
+		try ensureSafeIndex(instruction.nnn)
 		programCounter = instruction.nnn
 	}
 	
 	private func executeCall(instruction: Instruction) throws {
+		try ensureSafeIndex(instruction.nnn)
 		// TODO: throw on stack under- and overflow
 		stack.append(programCounter)
 		programCounter = instruction.nnn
@@ -347,13 +351,14 @@ class Emulator {
 		}
 	}
 	
-	private func executeSetIndex(instruction: Instruction) {
+	private func executeSetIndex(instruction: Instruction) throws {
+		try ensureSafeIndex(instruction.nnn)
 		indexRegister = instruction.nnn
 	}
 	
 	private func executeJumpWithOffset(instruction: Instruction) throws {
 		// TODO: implement an option to increment by registers[x]
-		// TODO: throw when indexing into reserved memory
+		try ensureSafeIndex(programCounter + registers[0])
 		programCounter = instruction.nnn + registers[0]
 	}
 	
@@ -420,22 +425,23 @@ class Emulator {
 				// TODO: implement an option to skip flagging this overlow
 				registers[0x0f] = 1
 			}
+			try ensureSafeIndex(indexRegister)
 		case .indexToChar?:
 			indexRegister = Self.FontDataOffset + UInt16(registers[instruction.x] & 0x0f)
 		case .bcd:
-			try ensureSafeIndex(indexRegister, withWidth: 3)
+			try ensureSafeIndexRange(indexRegister, withWidth: 3)
 			let num = registers[instruction.x]
 			memory[indexRegister] = num / 100
 			memory[indexRegister + 1] = num / 10 % 10
 			memory[indexRegister + 2] = num % 10
 		case .storeRegisters:
 			// TODO: implement an option to increment index register
-			try ensureSafeIndex(indexRegister, withWidth: instruction.x)
+			try ensureSafeIndexRange(indexRegister, withWidth: instruction.x)
 			for i in 0...instruction.x {
 				memory[indexRegister + i] = registers[i]
 			}
 		case .loadRegisters:
-			try ensureSafeIndex(indexRegister, withWidth: instruction.x)
+			try ensureSafeIndexRange(indexRegister, withWidth: instruction.x)
 			for i in 0...instruction.x {
 				registers[i] = memory[indexRegister + i]
 			}
