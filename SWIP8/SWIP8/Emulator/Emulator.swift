@@ -211,6 +211,16 @@ class Emulator {
 		keyboard[key] = state ? 1 : 0
 	}
 	
+	func tickTimers() {
+		if delayTimer > 0 {
+			delayTimer -= 1
+		}
+		
+		if soundTimer > 0 {
+			soundTimer -= 1
+		}
+	}
+	
 	private func advanceProgramCounter() throws {
 		// TODO: throw when out of bounds
 		programCounter += 2
