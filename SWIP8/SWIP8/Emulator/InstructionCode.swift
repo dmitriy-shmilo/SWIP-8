@@ -23,7 +23,7 @@ enum InstructionGroup: UInt8, InstructionCode {
 	case arithmetic = 0x08
 	case skipIfNotRegister = 0x09
 	case setIndex = 0x0a
-	case jumpMod = 0x0b
+	case jumpWithOffset = 0x0b
 	case random = 0x0c
 	case draw = 0x0d
 	case skipIfKey = 0x0e

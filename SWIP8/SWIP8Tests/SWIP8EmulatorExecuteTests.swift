@@ -15,14 +15,6 @@ class SWIP8EmulatorExecuteTests: XCTestCase {
     override func setUpWithError() throws {
 		sut.reset()
     }
-
-	func testJump() throws {
-		let address: UInt16 = 0x0ff0
-
-		try sut.execute(instruction: .makeJump(address: address))
-		XCTAssertEqual(sut.programCounter, address, "PC should point to address after jump")
-		XCTAssertEqual(sut.stack.count, 0, "Expected call stack to remain empty after jump")
-	}
 	
 	func testBCD() throws {
 		let value: UInt8 = 123

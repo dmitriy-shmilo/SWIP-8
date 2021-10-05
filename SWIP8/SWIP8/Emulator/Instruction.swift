@@ -82,8 +82,8 @@ extension Instruction {
 		Instruction(group: .jump, combined: address)
 	}
 	
-	static func makeJumpMod(address: UInt16) -> Instruction {
-		Instruction(group: .jumpMod, combined: address)
+	static func makeJumpWithOffset(address: UInt16) -> Instruction {
+		Instruction(group: .jumpWithOffset, combined: address)
 	}
 	
 	// MARK: - Make subroutine instructions

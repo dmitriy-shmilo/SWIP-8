@@ -158,8 +158,8 @@ class Emulator {
 			try executeSkipIfNotRegister(instruction: instruction)
 		case .setIndex:
 			executeSetIndex(instruction: instruction)
-		case .jumpMod:
-			try executeJumpMod(instruction: instruction)
+		case .jumpWithOffset:
+			try executeJumpWithOffset(instruction: instruction)
 		case .random:
 			executeRandom(instruction: instruction)
 		case .draw:
@@ -328,7 +328,7 @@ class Emulator {
 		indexRegister = instruction.nnn
 	}
 	
-	private func executeJumpMod(instruction: Instruction) throws {
+	private func executeJumpWithOffset(instruction: Instruction) throws {
 		// TODO: implement an option to increment by registers[x]
 		// TODO: throw when indexing into reserved memory
 		programCounter = instruction.nnn + registers[0]

@@ -21,6 +21,7 @@
 		5DD80EF5270BB1C8006ADDFA /* SWIP8SkipTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5DD80EF4270BB1C8006ADDFA /* SWIP8SkipTests.swift */; };
 		5DD80EF7270BB3C1006ADDFA /* SWIP8RegisterTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5DD80EF6270BB3C1006ADDFA /* SWIP8RegisterTests.swift */; };
 		5DD80EF9270BB51B006ADDFA /* SWIP8IndexTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5DD80EF8270BB51B006ADDFA /* SWIP8IndexTests.swift */; };
+		5DD80EFB270C213C006ADDFA /* SWIP8JumpTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5DD80EFA270C213C006ADDFA /* SWIP8JumpTests.swift */; };
 		5DEABB492709C960007AB419 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5DEABB482709C960007AB419 /* AppDelegate.swift */; };
 		5DEABB4B2709C960007AB419 /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5DEABB4A2709C960007AB419 /* SceneDelegate.swift */; };
 		5DEABB4D2709C960007AB419 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5DEABB4C2709C960007AB419 /* ViewController.swift */; };
@@ -59,6 +60,7 @@
 		5DD80EF4270BB1C8006ADDFA /* SWIP8SkipTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SWIP8SkipTests.swift; sourceTree = "<group>"; };
 		5DD80EF6270BB3C1006ADDFA /* SWIP8RegisterTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SWIP8RegisterTests.swift; sourceTree = "<group>"; };
 		5DD80EF8270BB51B006ADDFA /* SWIP8IndexTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SWIP8IndexTests.swift; sourceTree = "<group>"; };
+		5DD80EFA270C213C006ADDFA /* SWIP8JumpTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SWIP8JumpTests.swift; sourceTree = "<group>"; };
 		5DEABB452709C960007AB419 /* SWIP8.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = SWIP8.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		5DEABB482709C960007AB419 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		5DEABB4A2709C960007AB419 /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
@@ -144,6 +146,7 @@
 				5DD80EF4270BB1C8006ADDFA /* SWIP8SkipTests.swift */,
 				5DD80EF6270BB3C1006ADDFA /* SWIP8RegisterTests.swift */,
 				5DD80EF8270BB51B006ADDFA /* SWIP8IndexTests.swift */,
+				5DD80EFA270C213C006ADDFA /* SWIP8JumpTests.swift */,
 			);
 			path = SWIP8Tests;
 			sourceTree = "<group>";
@@ -281,6 +284,7 @@
 			files = (
 				5DD80EDF270B1966006ADDFA /* SWIP8EmulatorDrawTests.swift in Sources */,
 				5DD80EEB270BA3F8006ADDFA /* SWIP8KeyboardTests.swift in Sources */,
+				5DD80EFB270C213C006ADDFA /* SWIP8JumpTests.swift in Sources */,
 				5DD80EF9270BB51B006ADDFA /* SWIP8IndexTests.swift in Sources */,
 				5DEABB73270A30EF007AB419 /* SWIP8EmulatorLoadTests.swift in Sources */,
 				5DD80EF3270BAF13006ADDFA /* SWIP8SubroutineTests.swift in Sources */,
