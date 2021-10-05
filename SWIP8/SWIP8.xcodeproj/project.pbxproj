@@ -32,7 +32,7 @@
 		5DEABB632709D3A0007AB419 /* SWIP8InstructionTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5DEABB622709D3A0007AB419 /* SWIP8InstructionTests.swift */; };
 		5DEABB6B2709D713007AB419 /* Emulator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5DEABB6A2709D713007AB419 /* Emulator.swift */; };
 		5DEABB6D2709D769007AB419 /* Instruction.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5DEABB6C2709D769007AB419 /* Instruction.swift */; };
-		5DEABB71270A0D69007AB419 /* SWIP8EmulatorExecuteTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5DEABB70270A0D69007AB419 /* SWIP8EmulatorExecuteTests.swift */; };
+		5DEABB71270A0D69007AB419 /* SWIP8ExtendedTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5DEABB70270A0D69007AB419 /* SWIP8ExtendedTests.swift */; };
 		5DEABB73270A30EF007AB419 /* SWIP8EmulatorLoadTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5DEABB72270A30EF007AB419 /* SWIP8EmulatorLoadTests.swift */; };
 /* End PBXBuildFile section */
 
@@ -75,7 +75,7 @@
 		5DEABB622709D3A0007AB419 /* SWIP8InstructionTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SWIP8InstructionTests.swift; sourceTree = "<group>"; };
 		5DEABB6A2709D713007AB419 /* Emulator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Emulator.swift; sourceTree = "<group>"; };
 		5DEABB6C2709D769007AB419 /* Instruction.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Instruction.swift; sourceTree = "<group>"; };
-		5DEABB70270A0D69007AB419 /* SWIP8EmulatorExecuteTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SWIP8EmulatorExecuteTests.swift; sourceTree = "<group>"; };
+		5DEABB70270A0D69007AB419 /* SWIP8ExtendedTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SWIP8ExtendedTests.swift; sourceTree = "<group>"; };
 		5DEABB72270A30EF007AB419 /* SWIP8EmulatorLoadTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SWIP8EmulatorLoadTests.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -140,7 +140,7 @@
 			children = (
 				5DD80EEC270BA520006ADDFA /* SWIP8ArithmeticTests.swift */,
 				5DD80EDE270B1966006ADDFA /* SWIP8EmulatorDrawTests.swift */,
-				5DEABB70270A0D69007AB419 /* SWIP8EmulatorExecuteTests.swift */,
+				5DEABB70270A0D69007AB419 /* SWIP8ExtendedTests.swift */,
 				5DEABB72270A30EF007AB419 /* SWIP8EmulatorLoadTests.swift */,
 				5DEABB622709D3A0007AB419 /* SWIP8InstructionTests.swift */,
 				5DD80EEA270BA3F7006ADDFA /* SWIP8KeyboardTests.swift */,
@@ -294,7 +294,7 @@
 				5DD80EF3270BAF13006ADDFA /* SWIP8SubroutineTests.swift in Sources */,
 				5DD80EF5270BB1C8006ADDFA /* SWIP8SkipTests.swift in Sources */,
 				5DD80EED270BA520006ADDFA /* SWIP8ArithmeticTests.swift in Sources */,
-				5DEABB71270A0D69007AB419 /* SWIP8EmulatorExecuteTests.swift in Sources */,
+				5DEABB71270A0D69007AB419 /* SWIP8ExtendedTests.swift in Sources */,
 				5DD80EF7270BB3C1006ADDFA /* SWIP8RegisterTests.swift in Sources */,
 				5DEABB632709D3A0007AB419 /* SWIP8InstructionTests.swift in Sources */,
 			);

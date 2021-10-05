@@ -61,5 +61,5 @@ enum ExtendedCode: UInt8, InstructionCode {
 	case indexToChar = 0x29
 	case bcd = 0x33
 	case storeRegisters = 0x55
-	case readRegisters = 0x65
+	case loadRegisters = 0x65
 }

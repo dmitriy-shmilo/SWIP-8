@@ -410,7 +410,7 @@ class Emulator {
 			for i in 0...instruction.x {
 				memory[indexRegister + i] = registers[i]
 			}
-		case .readRegisters:
+		case .loadRegisters:
 			// TODO: consider throwing if reading from reserved memory
 			for i in 0...instruction.x {
 				registers[i] = memory[indexRegister + i]

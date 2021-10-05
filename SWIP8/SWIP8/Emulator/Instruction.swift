@@ -215,7 +215,7 @@ extension Instruction {
 		Instruction(group: .extended, x: registerX, b: ExtendedCode.storeRegisters.rawValue)
 	}
 	
-	static func makeReadRegisters(registerX: UInt8) -> Instruction {
-		Instruction(group: .extended, x: registerX, b: ExtendedCode.readRegisters.rawValue)
+	static func makeLoadRegisters(registerX: UInt8) -> Instruction {
+		Instruction(group: .extended, x: registerX, b: ExtendedCode.loadRegisters.rawValue)
 	}
 }
