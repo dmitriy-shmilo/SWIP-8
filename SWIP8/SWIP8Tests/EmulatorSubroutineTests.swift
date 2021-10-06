@@ -21,10 +21,10 @@ class EmulatorSubroutineTests: XCTestCase {
 		let routineAddress: UInt16 = 0x0ff0
 		
 		try sut.execute(instruction: .makeCall(address: routineAddress))
-		XCTAssertEqual(sut.stack.count, 1, "Expected call stack to grow by one after call")
+		XCTAssertEqual(sut.currentStack, 1, "Expected call stack to grow by one after call")
 		XCTAssertEqual(sut.programCounter, routineAddress, "PC should point to routine address after call")
 		try sut.execute(instruction: .makeCall(address: routineAddress))
-		XCTAssertEqual(sut.stack.count, 2, "Expected call stack to grow by one after call")
+		XCTAssertEqual(sut.currentStack, 2, "Expected call stack to grow by one after call")
 		XCTAssertEqual(sut.programCounter, routineAddress, "PC should point to routine address after call")
 	}
 	
@@ -35,20 +35,11 @@ class EmulatorSubroutineTests: XCTestCase {
 		try sut.execute(instruction: .makeCall(address: routineAddress))
 		try sut.execute(instruction: .makeCall(address: routineAddress))
 		try sut.execute(instruction: .makeReturn())
-		XCTAssertEqual(sut.stack.count, 1, "Expected call stack to decrement after return")
+		XCTAssertEqual(sut.currentStack, 1, "Expected call stack to decrement after return")
 		XCTAssertEqual(sut.programCounter, routineAddress, "PC should point to previous address after return")
 		try sut.execute(instruction: .makeReturn())
-		XCTAssertEqual(sut.stack.count, 0, "Expected call stack to be empty after return")
+		XCTAssertEqual(sut.currentStack, 0, "Expected call stack to be empty after return")
 		XCTAssertEqual(sut.programCounter, originalAddress, "PC should point to original address after return")
-	}
-	
-	func testTerminate() throws {
-		let routineAddress: UInt16 = 0x0ff0
-		
-		try sut.execute(instruction: .makeCall(address: routineAddress))
-		try sut.execute(instruction: .makeReturn())
-		try sut.execute(instruction: .makeReturn())
-		XCTAssertEqual(sut.quit, true, "Expected emulator to stop after stack underflow")
 	}
 	
 	func testCallInvalid() throws {
@@ -61,16 +52,38 @@ class EmulatorSubroutineTests: XCTestCase {
 	}
 	
 	func testStackOverflow() throws {
-		let routineAddress: UInt16 = 0x00f0
+		let routineAddress: UInt16 = 0x0ff0
 		
 		
 		XCTAssertThrowsError(
-			{
+			try {
 				for _ in 0...100 {
 					try self.sut.execute(instruction: .makeCall(address: routineAddress))
 				}
-			},
+			}(),
 			"Expected an error when stack overflows"
 		)
+	}
+	
+	func testStackUnderflow() throws {
+		let routineAddress: UInt16 = 0x0ff0
+		
+		try self.sut.execute(instruction: .makeCall(address: routineAddress))
+		try self.sut.execute(instruction: .makeReturn())
+		XCTAssertThrowsError(
+			try self.sut.execute(instruction: .makeReturn()),
+			"Expected an error when stack underflows"
+		)
+	}
+	
+	func testStackResets() throws {
+		let routineAddress: UInt16 = 0x0ff0
+		
+		try self.sut.execute(instruction: .makeCall(address: routineAddress))
+		try self.sut.execute(instruction: .makeReturn())
+		sut.reset()
+		
+		XCTAssertEqual(sut.currentStack, 0, "Current stack pointer should be reset")
+		XCTAssertNil(sut.stack.first(where: { $0 > 0 }), "Stack should be zeroed-out after reset")
 	}
 }

@@ -18,6 +18,7 @@ class Emulator {
 	static let RegisterCount = 16
 	static let ResolutionHeight: UInt16 = 32
 	static let ResolutionWidth: UInt16 = 64
+	static let MaxStackSize: UInt16 = 16
 	
 	private static let FontDataOffset: UInt16 = 0x00
 	private static let FontData: [UInt8] = [
@@ -45,10 +46,12 @@ class Emulator {
 	private (set) var keyboard = [UInt8](repeating: 0, count: 16)
 	private (set) var programCounter: UInt16 = ReservedMemorySize
 	private (set) var indexRegister: UInt16 = ReservedMemorySize
-	private (set) var stack = Array<UInt16>()
+	private (set) var stack = [UInt16](repeating: 0, count: Int(MaxStackSize))
+	private (set) var currentStack = 0
 	private (set) var delayTimer: UInt8 = 0
 	private (set) var soundTimer: UInt8 = 0
 	private (set) var quit = false
+	
 	weak var delegate: EmulatorDelegate?
 	
 	init() {
@@ -61,6 +64,9 @@ class Emulator {
 		programCounter = Self.ReservedMemorySize
 		
 		clearDisplay()
+		stack.withUnsafeMutableBytes { ptr in
+			_ = memset(ptr.baseAddress, 0, ptr.count)
+		}
 		registers.withUnsafeMutableBytes { ptr in
 			_ = memset(ptr.baseAddress, 0, ptr.count)
 		}
@@ -71,8 +77,8 @@ class Emulator {
 			Int(Self.FontDataOffset)..<Int(Self.FontDataOffset) + Self.FontData.count,
 			with: Self.FontData
 		)
-		stack.removeAll(keepingCapacity: true)
 		
+		currentStack = 0
 		delayTimer = 0
 		soundTimer = 0
 		
@@ -251,19 +257,17 @@ class Emulator {
 	}
 	
 	// MARK: - Execute instruction implementation
+	
 	private func executeSpecial(instruction: Instruction) throws {
-		// TODO: extract special instruction codes
 		switch instruction.specialCode {
-		case .clearScreen?:
-			// clear screen
+		case .clearScreen:
 			clearDisplay()
-		case .popStack?:
-			// return
-			if let returnTo = stack.popLast() {
-				programCounter = returnTo
-			} else {
-				quit = true
+		case .popStack:
+			if currentStack == 0 {
+				throw ExecutionError.StackUnderflow
 			}
+			currentStack -= 1
+			programCounter = stack[currentStack]
 		default:
 			// sys call
 			throw ExecutionError.NotSupported
@@ -276,10 +280,13 @@ class Emulator {
 	}
 	
 	private func executeCall(instruction: Instruction) throws {
+		if currentStack >= Self.MaxStackSize {
+			throw ExecutionError.StackOverflow
+		}
 		try ensureSafeIndex(instruction.nnn)
-		// TODO: throw on stack under- and overflow
-		stack.append(programCounter)
+		stack[currentStack] = programCounter
 		programCounter = instruction.nnn
+		currentStack += 1
 	}
 	
 	private func executeSkipIf(instruction: Instruction) throws {
