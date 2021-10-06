@@ -391,7 +391,7 @@ class Emulator {
 			let byte = memory[indexRegister + i]
 			
 			for j in 0..<dx {
-				let bit = (byte >> (dx - j - 1)) & 0x01
+				let bit = (byte >> (8 - j - 1)) & 0x01
 				let index = (y + i) * Self.ResolutionWidth + x + UInt16(j)
 				
 				display[index] ^= bit
