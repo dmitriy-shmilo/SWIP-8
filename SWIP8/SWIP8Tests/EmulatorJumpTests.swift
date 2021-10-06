@@ -21,16 +21,7 @@ class EmulatorJumpTests: XCTestCase {
 
 		try sut.execute(instruction: .makeJump(address: address))
 		XCTAssertEqual(sut.programCounter, address, "PC should point to \(address) after jump")
-		XCTAssertEqual(sut.stack.count, 0, "Expected call stack to remain empty after jump")
-	}
-	
-	func testJumpOutOfBounds() throws {
-		let address: UInt16 = 0xfff0
-
-		XCTAssertThrowsError(
-			try sut.execute(instruction: .makeJump(address: address)),
-			"Expexted an error when jumping outside of addressable memory"
-		)
+		XCTAssertEqual(sut.currentStack, 0, "Expected call stack to remain empty after jump")
 	}
 	
 	func testJumpReserved() throws {
