@@ -190,7 +190,13 @@ class Emulator {
 	
 	func run() throws {
 		quit = false
+		var timers = 0.0
 		while !quit {
+			timers += 1.0 / 700.0
+			if timers >= 1.0 / 60.0 {
+				timers += 0.0
+				tickTimers()
+			}
 			try executeNextInstruction()
 			
 			// TODO: decouple from Thread
