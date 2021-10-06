@@ -449,7 +449,7 @@ class Emulator {
 			}
 			try ensureSafeIndex(indexRegister)
 		case .indexToChar?:
-			indexRegister = Self.FontDataOffset + UInt16(registers[instruction.x] & 0x0f)
+			indexRegister = Self.FontDataOffset + UInt16(registers[instruction.x] & 0x0f) * 5
 		case .bcd:
 			try ensureSafeIndexRange(indexRegister, withWidth: 3)
 			let num = registers[instruction.x]
