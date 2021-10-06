@@ -101,9 +101,6 @@ class Emulator {
 			Int(Self.ReservedMemorySize)..<Int(Self.ReservedMemorySize) + rom.count,
 			with: rom
 		)
-		for i in 0..<UInt16(rom.count) {
-			memory[Self.ReservedMemorySize + i] = rom[i]
-		}
 	}
 	
 	func load(string: String) throws {
