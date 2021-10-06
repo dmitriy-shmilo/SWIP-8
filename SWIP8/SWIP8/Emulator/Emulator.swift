@@ -103,6 +103,18 @@ class Emulator {
 		)
 	}
 	
+	func load(instructions: Instruction...) throws {
+		var rom = [UInt8]()
+		rom.reserveCapacity(instructions.count * 2)
+		
+		for i in instructions {
+			rom.append(i.a)
+			rom.append(i.b)
+		}
+		
+		try load(rom: rom)
+	}
+	
 	func load(string: String) throws {
 		let totalSteps = 1
 		var bytes = [UInt8]()

@@ -89,4 +89,13 @@ class EmulatorLoadTests: XCTestCase {
 			XCTAssertEqual(sut.memory[pc + UInt16(i)], byte, "\(i) program byte should be \(byte)")
 		}
 	}
+	
+	func testLoadInstruction() throws {
+		try sut.load(instructions: .makeWaitForKey(registerX: 0), .makeReturn())
+		for (i, byte) in [UInt8](
+			arrayLiteral: 0xf0, 0x0a, 0x00, 0xee
+		).enumerated() {
+			XCTAssertEqual(sut.memory[sut.programCounter + UInt16(i)], byte, "\(i) program byte should be \(byte)")
+		}
+	}
 }
