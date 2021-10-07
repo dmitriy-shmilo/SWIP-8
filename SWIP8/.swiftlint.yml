@@ -8,3 +8,6 @@ opt_in_rules:
   - fatal_error_message
   - file_name
   - first_where
+
+cyclomatic_complexity:
+  ignores_case_statements: true
