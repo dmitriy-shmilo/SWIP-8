@@ -88,7 +88,7 @@ class Emulator {
 	func load(rom: [UInt8]) throws {
 		// each instruction is two bytes in length
 		// TODO: There might be an odd number of data bytes, need to verify with the spec
-		guard rom.count.isMultiple(of: 2) && rom.count > 0 else {
+		guard rom.count.isMultiple(of: 2) && !rom.isEmpty else {
 			throw LoadError.InvalidInputLength
 		}
 		
