@@ -40,9 +40,9 @@ class Emulator {
 		0xF0, 0x80, 0xF0, 0x80, 0x80  // F
 	]
 
-	private (set) var memory = Array<UInt8>(repeating: 0, count: Int(MemorySize))
-	private (set) var display = Array<UInt8>(repeating: 0, count: Int(ResolutionWidth * ResolutionHeight))
-	private (set) var registers = Array<UInt8>(repeating: 0, count: RegisterCount)
+	private (set) var memory = [UInt8](repeating: 0, count: Int(MemorySize))
+	private (set) var display = [UInt8](repeating: 0, count: Int(ResolutionWidth * ResolutionHeight))
+	private (set) var registers = [UInt8](repeating: 0, count: RegisterCount)
 	private (set) var keyboard = [UInt8](repeating: 0, count: 16)
 	private (set) var programCounter: UInt16 = ReservedMemorySize
 	private (set) var indexRegister: UInt16 = ReservedMemorySize

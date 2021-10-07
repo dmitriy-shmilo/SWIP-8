@@ -36,13 +36,13 @@ class EmulatorLoadTests: XCTestCase {
 
 	func testLoadExceedingMemory() throws {
 		let availableMemory = sut.memory.count
-		let rom = Array<UInt8>(repeating: 0x01, count: availableMemory)
+		let rom = [UInt8](repeating: 0x01, count: availableMemory)
 		XCTAssertThrowsError(try sut.load(rom: rom), "Loading a rom, which exceeds available memory, shoud be an error")
 	}
 
 	func testLoadExactlyFitting() throws {
 		let availableMemory = sut.memory.count
-		var rom = Array<UInt8>(repeating: 0x01, count: availableMemory - Int(Emulator.ReservedMemorySize))
+		var rom = [UInt8](repeating: 0x01, count: availableMemory - Int(Emulator.ReservedMemorySize))
 		rom[rom.count - 1] = 0x02
 		try sut.load(rom: rom)
 		XCTAssertEqual(sut.memory.last ?? 0, 0x02, "Last byte of loaded memory should be preserved")

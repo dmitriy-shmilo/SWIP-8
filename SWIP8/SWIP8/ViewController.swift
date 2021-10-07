@@ -29,16 +29,14 @@ d01f 7008 a275 d01f 1228 ff00 ff00 3c00
 f300 e300 43e0 00e0 0080 0080 0080 0080
 00e0 00e0
 """)
-		}
-		catch {
+		} catch {
 			print(error)
 		}
 
 		emuThread = Thread(block: { [weak emu] in
 			do {
 				try emu?.run()
-			}
-			catch {
+			} catch {
 				print(error)
 			}
 		})

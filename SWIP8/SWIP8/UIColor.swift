@@ -10,10 +10,10 @@ import CoreGraphics
 
 extension UIColor {
 	func inverseColor () -> UIColor {
-		var r:CGFloat = 0.0
-		var g:CGFloat = 0.0
-		var b:CGFloat = 0.0
-		var a:CGFloat = 0.0
+		var r: CGFloat = 0.0
+		var g: CGFloat = 0.0
+		var b: CGFloat = 0.0
+		var a: CGFloat = 0.0
 
 		if self.getRed(&r, green: &g, blue: &b, alpha: &a) {
 			return .init(red: 1.0 - r, green: 1.0 - g, blue: 1.0 - b, alpha: a)
@@ -22,10 +22,10 @@ extension UIColor {
 	}
 
 	func inverseCGColor () -> CGColor {
-		var r:CGFloat = 0.0
-		var g:CGFloat = 0.0
-		var b:CGFloat = 0.0
-		var a:CGFloat = 0.0
+		var r: CGFloat = 0.0
+		var g: CGFloat = 0.0
+		var b: CGFloat = 0.0
+		var a: CGFloat = 0.0
 
 		if self.getRed(&r, green: &g, blue: &b, alpha: &a) {
 			return .init(red: 1.0 - r, green: 1.0 - g, blue: 1.0 - b, alpha: a)

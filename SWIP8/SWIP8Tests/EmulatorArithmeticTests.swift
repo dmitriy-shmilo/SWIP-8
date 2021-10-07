@@ -61,7 +61,11 @@ class EmulatorArithmeticTests: XCTestCase {
 		try sut.execute(instruction: .makeSetRegister(register: 0, value: 250))
 		try sut.execute(instruction: .makeSetRegister(register: 1, value: 250))
 		try sut.execute(instruction: .makeAdd(registerX: 0, registerY: 1))
-		XCTAssertEqual(sut.registers[0], UInt8(250) &+ UInt8(250), "Register 0 should be equal to the sum of both registers, wrapped around")
+		XCTAssertEqual(
+			sut.registers[0],
+			UInt8(250) &+ UInt8(250),
+			"Register 0 should be equal to the sum of both registers, wrapped around"
+		)
 		XCTAssertEqual(sut.registers[1], 250, "Register 1 should remain unaffected")
 		XCTAssertEqual(sut.registers[0x0f], 1, "Register F should be set to 1 due to overflow")
 	}
@@ -79,7 +83,11 @@ class EmulatorArithmeticTests: XCTestCase {
 		try sut.execute(instruction: .makeSetRegister(register: 0, value: 50))
 		try sut.execute(instruction: .makeSetRegister(register: 1, value: 60))
 		try sut.execute(instruction: .makeSubtract(registerX: 0, registerY: 1))
-		XCTAssertEqual(sut.registers[0], 246, "Register 0 should be equal to the difference between register 0 and 1 with wrapping")
+		XCTAssertEqual(
+			sut.registers[0],
+			246,
+			"Register 0 should be equal to the difference between register 0 and 1 with wrapping"
+		)
 		XCTAssertEqual(sut.registers[1], 60, "Register 1 should remain unaffected")
 		XCTAssertEqual(sut.registers[0x0f], 0, "Register F should be set to 0 due to underflow")
 	}
@@ -97,7 +105,11 @@ class EmulatorArithmeticTests: XCTestCase {
 		try sut.execute(instruction: .makeSetRegister(register: 0, value: 60))
 		try sut.execute(instruction: .makeSetRegister(register: 1, value: 50))
 		try sut.execute(instruction: .makeReverseSubtract(registerX: 0, registerY: 1))
-		XCTAssertEqual(sut.registers[0], 246, "Register 0 should be equal to the difference between register 1 and 0 with wrapping")
+		XCTAssertEqual(
+			sut.registers[0],
+			246,
+			"Register 0 should be equal to the difference between register 1 and 0 with wrapping"
+		)
 		XCTAssertEqual(sut.registers[1], 50, "Register 1 should remain unaffected")
 		XCTAssertEqual(sut.registers[0x0f], 0, "Register F should be set to 0 due to underflow")
 	}

@@ -8,7 +8,7 @@
 import Foundation
 
 extension UInt16 {
-	static func +(a: UInt16, b: UInt8) -> UInt16 {
+	static func + (a: UInt16, b: UInt8) -> UInt16 {
 		a + UInt16(b)
 	}
 }
