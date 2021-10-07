@@ -1,0 +1,10 @@
+disabled_rules:
+  - identifier_name
+
+opt_in_rules:
+  - empty_count
+  - convenience_type
+  - empty_string
+  - fatal_error_message
+  - file_name
+  - first_where
