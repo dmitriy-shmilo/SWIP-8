@@ -31,7 +31,19 @@ class EmulatorLoadTests: XCTestCase {
 
 	func testLoadOdd() throws {
 		let rom: [UInt8] = [0x01, 0x02, 0x03]
-		XCTAssertThrowsError(try sut.load(rom: rom), "Loading a rom with odd number of bytes shoud be an error")
+		try sut.load(rom: rom)
+
+		XCTAssertEqual(
+			sut.memory[sut.programCounter + 2],
+			0x03,
+			"Last odd byte should be loaded into memory"
+		)
+
+		XCTAssertEqual(
+			sut.memory[sut.programCounter + 3],
+			0x00,
+			"Last instruction should be padded with zero"
+		)
 	}
 
 	func testLoadExceedingMemory() throws {
@@ -75,7 +87,19 @@ class EmulatorLoadTests: XCTestCase {
 
 	func testLoadInvalidByteCountString() throws {
 		let rom = "010203"
-		XCTAssertThrowsError(try sut.load(string: rom), "Loading string with odd number of bytes should throw an error")
+		try sut.load(string: rom)
+
+		XCTAssertEqual(
+			sut.memory[sut.programCounter + 2],
+			0x03,
+			"Last odd byte should be loaded into memory"
+		)
+
+		XCTAssertEqual(
+			sut.memory[sut.programCounter + 3],
+			0x00,
+			"Last instruction should be padded with zero"
+		)
 	}
 
 	func testLoadWhitespaceAndNewlinesString() throws {
