@@ -23,7 +23,7 @@ class EmulatorJumpTests: XCTestCase {
 		XCTAssertEqual(sut.programCounter, address, "PC should point to \(address) after jump")
 		XCTAssertEqual(sut.currentStack, 0, "Expected call stack to remain empty after jump")
 	}
-	
+
 	func testJumpReserved() throws {
 		let address: UInt16 = 0x000f
 
@@ -32,7 +32,7 @@ class EmulatorJumpTests: XCTestCase {
 			"Expexted an error when jumping into reserved memory"
 		)
 	}
-	
+
 	func testJumpWithOffset() throws {
 		let address: UInt16 = sut.programCounter + 8
 
@@ -40,7 +40,7 @@ class EmulatorJumpTests: XCTestCase {
 		try sut.execute(instruction: .makeJumpWithOffset(address: address))
 		XCTAssertEqual(sut.programCounter, address + 8, "PC should point to given address with V0 value as offset")
 	}
-	
+
 	func testJumpWithOffsetOutOfBounds() throws {
 		let address: UInt16 = 0x0fff
 
@@ -50,7 +50,7 @@ class EmulatorJumpTests: XCTestCase {
 			"Expected an error when jumping out of addressable memory"
 		)
 	}
-	
+
 	func testJumpWithOffsetReserved() throws {
 		let address: UInt16 = 0x000f
 
@@ -60,16 +60,16 @@ class EmulatorJumpTests: XCTestCase {
 			"Expected an error when jumping into reserved memory"
 		)
 	}
-	
+
 	func testJumpWithOffsetAlt() throws {
 		let address: UInt16 = 0x0200
-		
+
 		XCTFail("Expected an option to toggle jump with offset modes")
 		try sut.execute(instruction: .makeSetRegister(register: 2, value: 8))
 		try sut.execute(instruction: .makeJumpWithOffset(address: address))
 		XCTAssertEqual(sut.programCounter, address + 8, "PC should point to given address with VX value as offset")
 	}
-	
+
 	func testJumpWithOffsetAltOutOfBounds() throws {
 		let address: UInt16 = 0x0eff
 
@@ -80,7 +80,7 @@ class EmulatorJumpTests: XCTestCase {
 			"Expected an error when jumping out of addressable memory"
 		)
 	}
-	
+
 	func testJumpWithOffsetAltReserved() throws {
 		let address: UInt16 = 0x010f
 

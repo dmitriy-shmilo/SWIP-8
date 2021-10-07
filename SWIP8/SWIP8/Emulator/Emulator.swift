@@ -19,7 +19,7 @@ class Emulator {
 	static let ResolutionHeight: UInt16 = 32
 	static let ResolutionWidth: UInt16 = 64
 	static let MaxStackSize: UInt16 = 16
-	
+
 	private static let FontDataOffset: UInt16 = 0x00
 	private static let FontData: [UInt8] = [
 		0xF0, 0x90, 0x90, 0x90, 0xF0, // 0
@@ -39,7 +39,7 @@ class Emulator {
 		0xF0, 0x80, 0xF0, 0x80, 0xF0, // E
 		0xF0, 0x80, 0xF0, 0x80, 0x80  // F
 	]
-	
+
 	private (set) var memory = Array<UInt8>(repeating: 0, count: Int(MemorySize))
 	private (set) var display = Array<UInt8>(repeating: 0, count: Int(ResolutionWidth * ResolutionHeight))
 	private (set) var registers = Array<UInt8>(repeating: 0, count: RegisterCount)
@@ -51,18 +51,18 @@ class Emulator {
 	private (set) var delayTimer: UInt8 = 0
 	private (set) var soundTimer: UInt8 = 0
 	private (set) var quit = false
-	
+
 	weak var delegate: EmulatorDelegate?
-	
+
 	init() {
-		
+
 	}
-	
+
 	func reset() {
 		quit = true
 		indexRegister = Self.ReservedMemorySize
 		programCounter = Self.ReservedMemorySize
-		
+
 		clearDisplay()
 		stack.withUnsafeMutableBytes { ptr in
 			_ = memset(ptr.baseAddress, 0, ptr.count)
@@ -77,55 +77,55 @@ class Emulator {
 			Int(Self.FontDataOffset)..<Int(Self.FontDataOffset) + Self.FontData.count,
 			with: Self.FontData
 		)
-		
+
 		currentStack = 0
 		delayTimer = 0
 		soundTimer = 0
-		
+
 		delegate?.emulatorDidRender(self)
 	}
-	
+
 	func load(rom: [UInt8]) throws {
 		// each instruction is two bytes in length
 		// TODO: There might be an odd number of data bytes, need to verify with the spec
 		guard rom.count.isMultiple(of: 2) && !rom.isEmpty else {
 			throw LoadError.InvalidInputLength
 		}
-		
+
 		guard rom.count <= Self.MemorySize - Self.ReservedMemorySize else {
 			throw LoadError.NotEnoughMemory
 		}
-		
+
 		reset()
 		memory.replaceSubrange(
 			Int(Self.ReservedMemorySize)..<Int(Self.ReservedMemorySize) + rom.count,
 			with: rom
 		)
 	}
-	
+
 	func load(instructions: Instruction...) throws {
 		var rom = [UInt8]()
 		rom.reserveCapacity(instructions.count * 2)
-		
+
 		for i in instructions {
 			rom.append(i.a)
 			rom.append(i.b)
 		}
-		
+
 		try load(rom: rom)
 	}
-	
+
 	func load(string: String) throws {
 		let totalSteps = 1
 		var bytes = [UInt8]()
 		var step = totalSteps
 		var byte: UInt8 = 0
-		
+
 		for char in string {
 			if CharacterSet.whitespacesAndNewlines.contains(char.unicodeScalars.first!) {
 				continue
 			}
-			
+
 			if let digit = char.hexDigitValue {
 				byte |= UInt8(digit)
 				if step == 0 {
@@ -140,15 +140,15 @@ class Emulator {
 				throw LoadError.InvalidCharacter(string: String(char))
 			}
 		}
-		
+
 		// there's an incomplete byte left lingering
 		if step != totalSteps {
 			throw LoadError.InvalidInputLength
 		}
-		
+
 		try load(rom: bytes)
 	}
-	
+
 	func execute(instruction: Instruction) throws {
 		switch instruction.group {
 		case .special:
@@ -185,18 +185,18 @@ class Emulator {
 			try executeExtended(instruction: instruction)
 		}
 	}
-	
+
 	func peekInstruction() -> Instruction {
 		Instruction(a: memory[programCounter], b: memory[programCounter + 1])
 	}
-	
+
 	func executeNextInstruction() throws {
 		let instruction = peekInstruction()
 		try advanceProgramCounter()
-		
+
 		try execute(instruction: instruction)
 	}
-	
+
 	func run() throws {
 		quit = false
 		var timers = 0.0
@@ -207,7 +207,7 @@ class Emulator {
 				tickTimers()
 			}
 			try executeNextInstruction()
-			
+
 			// TODO: decouple from Thread
 			Thread.sleep(forTimeInterval: 1 / 700.0)
 			if Thread.current.isCancelled {
@@ -215,29 +215,29 @@ class Emulator {
 			}
 		}
 	}
-	
+
 	func getPixel(x: UInt16, y: UInt16) -> UInt8 {
 		// TODO: extract display into a separate class
 		display[x + y * Self.ResolutionWidth]
 	}
-	
+
 	func set(key: UInt8, pressed state: Bool) throws {
 		guard key < keyboard.count else {
 			throw ExecutionError.NotSupported
 		}
 		keyboard[key] = state ? 1 : 0
 	}
-	
+
 	func tickTimers() {
 		if delayTimer > 0 {
 			delayTimer -= 1
 		}
-		
+
 		if soundTimer > 0 {
 			soundTimer -= 1
 		}
 	}
-	
+
 	private func ensureSafeIndexRange<Width: BinaryInteger>(
 		_ index: UInt16,
 		withWidth width: Width
@@ -246,33 +246,33 @@ class Emulator {
 		if index < Self.ReservedMemorySize {
 			throw ExecutionError.InvalidIndex(index: index)
 		}
-		
+
 		if index + UInt16(width) > Self.MemorySize {
 			throw ExecutionError.InvalidIndexRange(start: index, end: index + UInt16(width) - 1)
 		}
 	}
-	
+
 	private func ensureSafeIndex(_ index: UInt16) throws {
 		if index < Self.ReservedMemorySize || index >= Self.MemorySize {
 			throw ExecutionError.InvalidIndex(index: index)
 		}
 	}
-	
+
 	private func advanceProgramCounter() throws {
 		try ensureSafeIndexRange(programCounter + 2, withWidth: 2)
 		programCounter += 2
 	}
-	
+
 	private func clearDisplay() {
 		display.withUnsafeMutableBytes { ptr in
 			_ = memset(ptr.baseAddress, 0, ptr.count)
 		}
-		
+
 		delegate?.emulatorDidRender(self)
 	}
-	
+
 	// MARK: - Execute instruction implementation
-	
+
 	private func executeSpecial(instruction: Instruction) throws {
 		switch instruction.specialCode {
 		case .clearScreen:
@@ -288,12 +288,12 @@ class Emulator {
 			throw ExecutionError.NotSupported
 		}
 	}
-	
+
 	private func executeJump(instruction: Instruction) throws {
 		try ensureSafeIndex(instruction.nnn)
 		programCounter = instruction.nnn
 	}
-	
+
 	private func executeCall(instruction: Instruction) throws {
 		if currentStack >= Self.MaxStackSize {
 			throw ExecutionError.StackOverflow
@@ -303,33 +303,33 @@ class Emulator {
 		programCounter = instruction.nnn
 		currentStack += 1
 	}
-	
+
 	private func executeSkipIf(instruction: Instruction) throws {
 		if registers[instruction.x] == instruction.b {
 			try advanceProgramCounter()
 		}
 	}
-	
+
 	private func executeSkipIfNot(instruction: Instruction) throws {
 		if registers[instruction.x] != instruction.b {
 			try advanceProgramCounter()
 		}
 	}
-	
+
 	private func executeSkipIfRegister(instruction: Instruction) throws {
 		if registers[instruction.x] == registers[instruction.y] {
 			try advanceProgramCounter()
 		}
 	}
-	
+
 	private func executeSetRegister(instruction: Instruction) {
 		registers[instruction.x] = instruction.b
 	}
-	
+
 	private func executeAddToRegister(instruction: Instruction) {
 		registers[instruction.x] &+= instruction.b
 	}
-	
+
 	private func executeArithmetic(instruction: Instruction) throws {
 		switch instruction.arithmeticCode {
 		case .copy?:
@@ -366,51 +366,51 @@ class Emulator {
 			throw ExecutionError.NotSupported
 		}
 	}
-	
+
 	private func executeSkipIfNotRegister(instruction: Instruction) throws {
 		if registers[instruction.x] != registers[instruction.y] {
 			try advanceProgramCounter()
 		}
 	}
-	
+
 	private func executeSetIndex(instruction: Instruction) throws {
 		try ensureSafeIndex(instruction.nnn)
 		indexRegister = instruction.nnn
 	}
-	
+
 	private func executeJumpWithOffset(instruction: Instruction) throws {
 		// TODO: implement an option to increment by registers[x]
 		try ensureSafeIndex(programCounter + registers[0])
 		programCounter = instruction.nnn + registers[0]
 	}
-	
+
 	private func executeRandom(instruction: Instruction) {
 		registers[instruction.x] = UInt8.random(in: 0..<UInt8.max) & instruction.b
 	}
-	
+
 	private func executeDraw(instruction: Instruction) {
 		let x = UInt16(registers[instruction.x]) % Self.ResolutionWidth
 		let y = UInt16(registers[instruction.y]) % Self.ResolutionHeight
-		
+
 		let dy = min(UInt16(instruction.n), Self.ResolutionHeight - y)
 		let dx = min(8, Self.ResolutionWidth - x)
 		registers[0x0f] = 0
-		
+
 		for i in 0..<dy {
 			let byte = memory[indexRegister + i]
-			
+
 			for j in 0..<dx {
 				let bit = (byte >> (8 - j - 1)) & 0x01
 				let index = (y + i) * Self.ResolutionWidth + x + UInt16(j)
-				
+
 				display[index] ^= bit
 				registers[0x0f] = registers[0x0f] | bit & display[index]
 			}
 		}
-		
+
 		delegate?.emulatorDidRender(self)
 	}
-	
+
 	private func executeSkipIfKey(instruction: Instruction) throws {
 		switch instruction.keyStateCode {
 		case .pressed?:
@@ -425,7 +425,7 @@ class Emulator {
 			throw ExecutionError.NotSupported
 		}
 	}
-	
+
 	private func executeExtended(instruction: Instruction) throws {
 		switch instruction.extendedCode {
 		case .readDelayTimer?:

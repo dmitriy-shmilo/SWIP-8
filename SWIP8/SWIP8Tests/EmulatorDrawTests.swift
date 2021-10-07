@@ -9,20 +9,19 @@ import XCTest
 @testable import SWIP8
 
 class EmulatorDrawTests: XCTestCase {
-	
+
 	let sut = Emulator()
-	
+
 	override func setUpWithError() throws {
 		sut.reset()
 	}
-	
+
 	func testDrawPixel() throws {
 		try sut.load(rom: [0b1000_0000, 0x00])
 		try sut.execute(instruction: .makeSetRegister(register: 0, value: 0)) // x = 0
 		try sut.execute(instruction: .makeSetRegister(register: 1, value: 0)) // y = 0
 		try sut.execute(instruction: .makeDraw(registerX: 0, registerY: 1, rows: 1))
-		
-		
+
 		for x in 0..<Emulator.ResolutionWidth {
 			for y in 0..<Emulator.ResolutionHeight {
 				let pixel = sut.getPixel(x: x, y: y)
@@ -34,14 +33,13 @@ class EmulatorDrawTests: XCTestCase {
 			}
 		}
 	}
-	
+
 	func testDrawPixelOnRightEdge() throws {
 		try sut.load(rom: [0b1000_0000, 0x00])
 		try sut.execute(instruction: .makeSetRegister(register: 0, value: UInt8(Emulator.ResolutionWidth - 1))) // x = 63
 		try sut.execute(instruction: .makeSetRegister(register: 1, value: 3)) // y = 3
 		try sut.execute(instruction: .makeDraw(registerX: 0, registerY: 1, rows: 1))
-		
-		
+
 		for x in 0..<Emulator.ResolutionWidth {
 			for y in 0..<Emulator.ResolutionHeight {
 				let pixel = sut.getPixel(x: x, y: y)
@@ -53,14 +51,13 @@ class EmulatorDrawTests: XCTestCase {
 			}
 		}
 	}
-	
+
 	func testDrawNoRows() throws {
 		try sut.load(rom: [0b1000_0000, 0x00])
 		try sut.execute(instruction: .makeSetRegister(register: 0, value: 0)) // x = 0
 		try sut.execute(instruction: .makeSetRegister(register: 1, value: 0)) // y = 0
 		try sut.execute(instruction: .makeDraw(registerX: 0, registerY: 1, rows: 0))
-		
-		
+
 		for x in 0..<Emulator.ResolutionWidth {
 			for y in 0..<Emulator.ResolutionHeight {
 				let pixel = sut.getPixel(x: x, y: y)
@@ -68,14 +65,13 @@ class EmulatorDrawTests: XCTestCase {
 			}
 		}
 	}
-	
+
 	func testDrawPixelWraps() throws {
 		try sut.load(rom: [0b1000_0000, 0x00])
 		try sut.execute(instruction: .makeSetRegister(register: 0, value: UInt8(Emulator.ResolutionWidth + 1))) // x = 1
 		try sut.execute(instruction: .makeSetRegister(register: 1, value: UInt8(Emulator.ResolutionHeight + 3))) // y = 3
 		try sut.execute(instruction: .makeDraw(registerX: 0, registerY: 1, rows: 1))
-		
-		
+
 		for x in 0..<Emulator.ResolutionWidth {
 			for y in 0..<Emulator.ResolutionHeight {
 				let pixel = sut.getPixel(x: x, y: y)
@@ -87,14 +83,13 @@ class EmulatorDrawTests: XCTestCase {
 			}
 		}
 	}
-	
+
 	func testDrawHLine() throws {
 		try sut.load(rom: [0xff, 0x00])
 		try sut.execute(instruction: .makeSetRegister(register: 0, value: 1)) // x = 1
 		try sut.execute(instruction: .makeSetRegister(register: 1, value: 2)) // y = 2
 		try sut.execute(instruction: .makeDraw(registerX: 0, registerY: 1, rows: 1))
-		
-		
+
 		// screen should be empty with an 8px horizontal line starting at (1, 2)
 		for x in 0..<Emulator.ResolutionWidth {
 			for y in 0..<Emulator.ResolutionHeight {
@@ -107,14 +102,13 @@ class EmulatorDrawTests: XCTestCase {
 			}
 		}
 	}
-	
+
 	func testDrawClippedHLine() throws {
 		try sut.load(rom: [0xff, 0x00])
 		try sut.execute(instruction: .makeSetRegister(register: 0, value: UInt8(Emulator.ResolutionWidth) - 5)) // x = 59
 		try sut.execute(instruction: .makeSetRegister(register: 1, value: 2)) // y = 2
 		try sut.execute(instruction: .makeDraw(registerX: 0, registerY: 1, rows: 1))
-		
-		
+
 		// screen should be empty with a 4px horizontal line starting at (-4, 2)
 		for x in 0..<Emulator.ResolutionWidth {
 			for y in 0..<Emulator.ResolutionHeight {
@@ -127,14 +121,13 @@ class EmulatorDrawTests: XCTestCase {
 			}
 		}
 	}
-	
+
 	func testDrawRect() throws {
 		try sut.load(rom: [0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff])
 		try sut.execute(instruction: .makeSetRegister(register: 0, value: 1)) // x = 1
 		try sut.execute(instruction: .makeSetRegister(register: 1, value: 2)) // y = 2
 		try sut.execute(instruction: .makeDraw(registerX: 0, registerY: 1, rows: 8))
-		
-		
+
 		// screen should be empty with an 8x8px rectangle line starting at (1, 2)
 		for x in 0..<Emulator.ResolutionWidth {
 			for y in 0..<Emulator.ResolutionHeight {
@@ -147,13 +140,13 @@ class EmulatorDrawTests: XCTestCase {
 			}
 		}
 	}
-	
+
 	func testDrawClippedRect() throws {
 		try sut.load(rom: [0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff])
 		try sut.execute(instruction: .makeSetRegister(register: 0, value: UInt8(Emulator.ResolutionWidth) - 6)) // x = 57
 		try sut.execute(instruction: .makeSetRegister(register: 1, value: UInt8(Emulator.ResolutionHeight) - 5)) // y = 27
 		try sut.execute(instruction: .makeDraw(registerX: 0, registerY: 1, rows: 8))
-		
+
 		// screen should be empty with a 4x4px rectangle line starting at (-6, -4)
 		for x in 0..<Emulator.ResolutionWidth {
 			for y in 0..<Emulator.ResolutionHeight {
@@ -167,16 +160,16 @@ class EmulatorDrawTests: XCTestCase {
 			}
 		}
 	}
-	
+
 	func testDrawGrid() throws {
 		try sut.load(rom: [0b0101_0101, 0b1010_1010])
-		
+
 		for i: UInt8 in 0..<4 {
 			try sut.execute(instruction: .makeSetRegister(register: 0, value: 0)) // x = 0
 			try sut.execute(instruction: .makeSetRegister(register: 1, value: i * 2)) // y = 0, 2, 4, 6
 			try sut.execute(instruction: .makeDraw(registerX: 0, registerY: 1, rows: 2))
 		}
-		
+
 		// screen should be empty with an 8x8px alternating grid starting at (0,0)
 		for x in 0..<Emulator.ResolutionWidth {
 			for y in 0..<Emulator.ResolutionHeight {
@@ -191,15 +184,14 @@ class EmulatorDrawTests: XCTestCase {
 			}
 		}
 	}
-	
+
 	func testEraseRect() throws {
 		try sut.load(rom: [0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff])
 		try sut.execute(instruction: .makeSetRegister(register: 0, value: 1)) // x = 1
 		try sut.execute(instruction: .makeSetRegister(register: 1, value: 2)) // y = 2
 		try sut.execute(instruction: .makeDraw(registerX: 0, registerY: 1, rows: 8))
 		try sut.execute(instruction: .makeDraw(registerX: 0, registerY: 1, rows: 8))
-		
-		
+
 		// screen should be empty
 		for x in 0..<Emulator.ResolutionWidth {
 			for y in 0..<Emulator.ResolutionHeight {
@@ -208,17 +200,17 @@ class EmulatorDrawTests: XCTestCase {
 			}
 		}
 	}
-	
+
 	func testPartialEraseRect() throws {
 		try sut.load(rom: [0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff])
 		try sut.execute(instruction: .makeSetRegister(register: 0, value: 1)) // x = 1
 		try sut.execute(instruction: .makeSetRegister(register: 1, value: 2)) // y = 2
 		try sut.execute(instruction: .makeDraw(registerX: 0, registerY: 1, rows: 8))
-		
+
 		try sut.execute(instruction: .makeSetRegister(register: 0, value: 2)) // x = 2
 		try sut.execute(instruction: .makeSetRegister(register: 1, value: 3)) // y = 3
 		try sut.execute(instruction: .makeDraw(registerX: 0, registerY: 1, rows: 8))
-		
+
 		// screen should be empty with vertical lines originating from (1, 2) and (8, 3)
 		// and horizontal ones originating from (1, 2) and (2, 9)
 		for x in 0..<Emulator.ResolutionWidth {
@@ -235,15 +227,14 @@ class EmulatorDrawTests: XCTestCase {
 			}
 		}
 	}
-	
+
 	func testClearScreen() throws {
 		try sut.load(rom: [0b1000_0000, 0x00])
 		try sut.execute(instruction: .makeSetRegister(register: 0, value: 0)) // x = 0
 		try sut.execute(instruction: .makeSetRegister(register: 1, value: 0)) // y = 0
 		try sut.execute(instruction: .makeDraw(registerX: 0, registerY: 1, rows: 1)) // draw one pixel
 		try sut.execute(instruction: .makeClearScreen())
-		
-		
+
 		// the whole screen should be empty
 		for x in 0..<Emulator.ResolutionWidth {
 			for y in 0..<Emulator.ResolutionHeight {

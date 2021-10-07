@@ -8,11 +8,11 @@
 import UIKit
 
 class ViewController: UIViewController, EmulatorDelegate {
-	
+
 	@IBOutlet var screenView: BitScreenView!
 	private let emu = Emulator()
 	private var emuThread: Thread?
-	
+
 	override func viewDidLoad() {
 		super.viewDidLoad()
 		do {
@@ -33,7 +33,7 @@ f300 e300 43e0 00e0 0080 0080 0080 0080
 		catch {
 			print(error)
 		}
-		
+
 		emuThread = Thread(block: { [weak emu] in
 			do {
 				try emu?.run()
@@ -44,11 +44,11 @@ f300 e300 43e0 00e0 0080 0080 0080 0080
 		})
 		emuThread!.start()
 	}
-	
+
 	override func viewWillDisappear(_ animated: Bool) {
 		emuThread?.cancel()
 	}
-	
+
 	func emulatorDidRender(_ emulator: Emulator) {
 		// TODO: prevent array copies
 		screenView.bitScreen = emulator.display
@@ -58,4 +58,3 @@ f300 e300 43e0 00e0 0080 0080 0080 0080
 		}
 	}
 }
-

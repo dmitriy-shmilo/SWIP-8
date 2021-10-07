@@ -8,7 +8,6 @@
 import Foundation
 
 protocol InstructionCode {
-	
 }
 
 enum InstructionGroup: UInt8, InstructionCode {

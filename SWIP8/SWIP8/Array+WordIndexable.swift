@@ -10,7 +10,7 @@ import Foundation
 protocol WordIndexable {
 	associatedtype Element
 	associatedtype SubSequence
-	
+
 	subscript(byte: UInt16) -> Element { get set }
 	subscript(range: Range<UInt16>) -> SubSequence { get }
 }
@@ -24,7 +24,7 @@ extension Array: WordIndexable {
 			self[Int(word)] = newValue
 		}
 	}
-	
+
 	subscript(range: Range<UInt16>) -> SubSequence {
 		self[Int(range.startIndex)..<Int(range.endIndex)]
 	}

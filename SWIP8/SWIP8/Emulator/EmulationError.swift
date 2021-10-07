@@ -8,7 +8,6 @@
 import Foundation
 
 protocol EmulationError: Error {
-	
 }
 
 enum LoadError: EmulationError {

@@ -10,7 +10,7 @@ import Foundation
 protocol ByteIndexable {
 	associatedtype Element
 	associatedtype SubSequence
-	
+
 	subscript(byte: UInt8) -> Element { get set }
 	subscript(range: Range<UInt8>) -> SubSequence { get }
 }
@@ -24,7 +24,7 @@ extension Array: ByteIndexable {
 			self[Int(byte)] = newValue
 		}
 	}
-	
+
 	subscript(range: Range<UInt8>) -> SubSequence {
 		self[Int(range.startIndex)..<Int(range.endIndex)]
 	}
