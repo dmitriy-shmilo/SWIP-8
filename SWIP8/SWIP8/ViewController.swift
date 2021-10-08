@@ -9,6 +9,27 @@ import UIKit
 
 class ViewController: UIViewController, EmulatorDelegate {
 
+	// pong program, taken from https://github.com/loktar00/chip8/tree/master/roms
+	private static let rom = """
+22f6 6b0c 6c3f 6d0c a2ea dab6 dcd6 6e00
+22d4 6603 6802 6060 f015 f007 3000 121a
+c717 7708 69ff a2f0 d671 a2ea dab6 dcd6
+6001 e0a1 7bfe 6004 e0a1 7b02 601f 8b02
+dab6 600c e0a1 7dfe 600d e0a1 7d02 601f
+8d02 dcd6 a2f0 d671 8684 8794 603f 8602
+611f 8712 4600 1278 463f 1282 471f 69ff
+4700 6901 d671 122a 6802 6301 8070 80b5
+128a 68fe 630a 8070 80d5 3f01 12a2 6102
+8015 3f01 12ba 8015 3f01 12c8 8015 3f01
+12c2 6020 f018 22d4 8e34 22d4 663e 3301
+6603 68fe 3301 6802 1216 79ff 49fe 69ff
+12c8 7901 4902 6901 6004 f018 7601 4640
+76fe 126c a2f2 fe33 f265 f129 6414 6500
+d455 7415 f229 d455 00ee 8080 8080 8080
+8000 0000 0000 6b20 6c00 a2ea dbc1 7c01
+3c20 12fc 6a00 00ee
+"""
+
 	@IBOutlet var screenView: BitScreenView!
 	private let emu = Emulator()
 	private var emuThread: Thread?
@@ -17,18 +38,8 @@ class ViewController: UIViewController, EmulatorDelegate {
 		super.viewDidLoad()
 		do {
 			emu.delegate = self
-			// load IBM logo
-			try emu.load(string: """
-00e0 a22a 600c 6108 d01f 7009 a239 d01f
-a248 7008 d01f 7004 a257 d01f 7008 a266
-d01f 7008 a275 d01f 1228 ff00 ff00 3c00
-3c00 3c00 3c00 ff00 ffff 00ff 0038 003f
-003f 0038 00ff 00ff 8000 e000 e000 8000
-8000 e000 e000 80f8 00fc 003e 003f 003b
-0039 00f8 00f8 0300 0700 0f00 bf00 fb00
-f300 e300 43e0 00e0 0080 0080 0080 0080
-00e0 00e0
-""")
+
+			try emu.load(string: Self.rom)
 		} catch {
 			print(error)
 		}
@@ -54,5 +65,14 @@ f300 e300 43e0 00e0 0080 0080 0080 0080
 		DispatchQueue.main.async { [weak self] in
 			self?.screenView.setNeedsDisplay()
 		}
+	}
+
+	@IBAction private func buttonDown(_ sender: UIButton) {
+		// TODO: implement a thread-safe event queue
+		try? emu.set(key: UInt8(sender.tag), pressed: true)
+	}
+
+	@IBAction private func buttonUp(_ sender: UIButton) {
+		try? emu.set(key: UInt8(sender.tag), pressed: false)
 	}
 }
