@@ -10,12 +10,13 @@ import UIKit
 @IBDesignable
 class BitScreenView: UIView {
 	private static let DefaultBackgroundColor: UIColor = .systemBackground
-	// TODO: create a screen struct
-	var bitScreen = [UInt8]()
-	@IBInspectable
-	var resolutionWidth: Int = 64
-	@IBInspectable
-	var resoltionHeight: Int = 32
+
+	var bitScreen: BitScreen? {
+		didSet {
+			setupScreen()
+		}
+	}
+
 	@IBInspectable
 	var pixelOnColor: UIColor = .white
 	@IBInspectable
@@ -46,7 +47,7 @@ class BitScreenView: UIView {
 			return
 		}
 
-		guard bitScreen.count >= resolutionWidth * resoltionHeight else {
+		guard let bitScreen = bitScreen else {
 			return
 		}
 
@@ -65,9 +66,9 @@ class BitScreenView: UIView {
 		ctx.setFillColor(cgBackground)
 		ctx.fill(bounds)
 
-		for y in 0..<resoltionHeight {
-			for x in 0..<resolutionWidth {
-				if bitScreen[x + y * resolutionWidth] == 0 {
+		for y in 0..<bitScreen.height {
+			for x in 0..<bitScreen.width {
+				if bitScreen[(x, y)] == 0 {
 					ctx.setFillColor(cgPixOff)
 				} else {
 					ctx.setFillColor(cgPixOn)
@@ -83,10 +84,22 @@ class BitScreenView: UIView {
 	}
 
 	private func setup() {
+		setupColors()
+		setupScreen()
+	}
+
+	private func setupScreen() {
+		guard let bitScreen = bitScreen else {
+			return
+		}
+
+		cgResolutionWidth = CGFloat(bitScreen.width)
+		cgResolutionHeight = CGFloat(bitScreen.height)
+	}
+
+	private func setupColors() {
 		cgBackground = backgroundColor?.cgColor ?? Self.DefaultBackgroundColor.cgColor
 		cgPixOn = pixelOnColor.cgColor
 		cgPixOff = pixelOffColor.cgColor
-		cgResolutionWidth = CGFloat(resolutionWidth)
-		cgResolutionHeight = CGFloat(resoltionHeight)
 	}
 }

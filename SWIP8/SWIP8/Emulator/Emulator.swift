@@ -16,6 +16,7 @@ class Emulator {
 	static let ReservedMemorySize: UInt16 = 512
 	static let MemorySize: UInt16 = 4096
 	static let RegisterCount = 16
+	// TODO: turn resolution into an option
 	static let ResolutionHeight: UInt16 = 32
 	static let ResolutionWidth: UInt16 = 64
 	static let MaxStackSize: UInt16 = 16
@@ -41,7 +42,7 @@ class Emulator {
 	]
 
 	private (set) var memory = [UInt8](repeating: 0, count: Int(MemorySize))
-	private (set) var display = [UInt8](repeating: 0, count: Int(ResolutionWidth * ResolutionHeight))
+	private (set) var display: BitScreen
 	private (set) var registers = [UInt8](repeating: 0, count: RegisterCount)
 	private (set) var keyboard = [UInt8](repeating: 0, count: 16)
 	private (set) var programCounter: UInt16 = ReservedMemorySize
@@ -55,7 +56,7 @@ class Emulator {
 	weak var delegate: EmulatorDelegate?
 
 	init() {
-
+		display = BitScreen(width: Self.ResolutionWidth, height: Self.ResolutionHeight)
 	}
 
 	func reset() {
@@ -262,10 +263,7 @@ class Emulator {
 	}
 
 	private func clearDisplay() {
-		display.withUnsafeMutableBytes { ptr in
-			_ = memset(ptr.baseAddress, 0, ptr.count)
-		}
-
+		display.reset()
 		delegate?.emulatorDidRender(self)
 	}
 

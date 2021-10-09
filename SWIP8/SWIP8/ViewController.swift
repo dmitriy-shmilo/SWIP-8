@@ -38,8 +38,8 @@ d455 7415 f229 d455 00ee 8080 8080 8080
 		super.viewDidLoad()
 		do {
 			emu.delegate = self
-
 			try emu.load(string: Self.rom)
+			screenView.bitScreen = emu.display
 		} catch {
 			print(error)
 		}
