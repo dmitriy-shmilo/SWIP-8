@@ -66,21 +66,31 @@ class BitScreenView: UIView {
 		ctx.setFillColor(cgBackground)
 		ctx.fill(bounds)
 
-		for y in 0..<bitScreen.height {
-			for x in 0..<bitScreen.width {
-				if bitScreen[(x, y)] == 0 {
-					ctx.setFillColor(cgPixOff)
-				} else {
-					ctx.setFillColor(cgPixOn)
-				}
+		ctx.setFillColor(cgPixOff)
+		ctx.fill(CGRect(
+			x: horizontalOffset,
+			y: verticalOffset,
+			width: bitSize * cgResolutionWidth,
+			height: bitSize * cgResolutionHeight
+		))
 
-				ctx.fill(CGRect(
-					x: CGFloat(x) * bitSize + horizontalOffset,
-					y: CGFloat(y) * bitSize + verticalOffset,
-					width: bitSize,
-					height: bitSize))
+		let rects = bitScreen.enumerated()
+			.filter { $0.1 != 0 }
+			.map {
+				(x: UInt16($0.0) % bitScreen.width, y: UInt16($0.0) / bitScreen.width)
 			}
-		}
+			.map {
+				CGRect(
+					x: CGFloat($0.x) * bitSize + horizontalOffset,
+					y: CGFloat($0.y) * bitSize + verticalOffset,
+					width: bitSize,
+					height: bitSize
+				)
+			}
+		ctx.beginPath()
+		ctx.addRects(rects)
+		ctx.setFillColor(cgPixOn)
+		ctx.fillPath()
 	}
 
 	private func setup() {

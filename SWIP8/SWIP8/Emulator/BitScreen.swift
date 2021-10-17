@@ -7,7 +7,7 @@
 
 import Foundation
 
-struct BitScreen: Screen {
+struct BitScreen: Screen, Sequence {
 	private var buffer: [UInt8]
 
 	private (set) var width: UInt16
@@ -17,7 +17,7 @@ struct BitScreen: Screen {
 	init(width: UInt16, height: UInt16) {
 		self.width = width
 		self.height = height
-		self.buffer = [UInt8](repeating: 0, count: Int(width * height))
+		buffer = [UInt8](repeating: 0, count: Int(width * height))
 	}
 
 	subscript(index: UInt16) -> UInt8 {
@@ -33,5 +33,9 @@ struct BitScreen: Screen {
 		buffer.withUnsafeMutableBytes { ptr in
 			_ = memset(ptr.baseAddress, 0, ptr.count)
 		}
+	}
+
+	func makeIterator() -> IndexingIterator<[UInt8]> {
+		buffer.makeIterator()
 	}
 }
