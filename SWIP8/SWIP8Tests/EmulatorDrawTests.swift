@@ -243,4 +243,31 @@ class EmulatorDrawTests: XCTestCase {
 			}
 		}
 	}
+
+	func testDelegateCalled() throws {
+		class DrawDelegate: EmulatorDelegate {
+			private var expectation: XCTestExpectation
+			init(expectation: XCTestExpectation) {
+				self.expectation = expectation
+			}
+			func emulatorDidRender(_ emulator: Emulator, x: UInt16, y: UInt16, width: UInt16, height: UInt16) {
+				XCTAssertEqual(x, 1)
+				XCTAssertEqual(y, 2)
+				XCTAssertEqual(width, 8)
+				XCTAssertEqual(height, 1)
+				expectation.fulfill()
+			}
+		}
+
+		let expectation = expectation(description: "Draw Delegate")
+		let delegate = DrawDelegate(expectation: expectation)
+		try sut.load(rom: [0xff, 0x00])
+		try sut.execute(instruction: .makeSetRegister(register: 0, value: 1)) // x = 1
+		try sut.execute(instruction: .makeSetRegister(register: 1, value: 2)) // y = 2
+
+		sut.delegate = delegate
+		try sut.execute(instruction: .makeDraw(registerX: 0, registerY: 1, rows: 1))
+
+		wait(for: [expectation], timeout: 0)
+	}
 }

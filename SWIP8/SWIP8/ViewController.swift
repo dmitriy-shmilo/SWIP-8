@@ -58,7 +58,12 @@ d455 7415 f229 d455 00ee 8080 8080 8080
 		emuThread?.cancel()
 	}
 
-	func emulatorDidRender(_ emulator: Emulator) {
+	func emulatorDidRender(
+		_ emulator: Emulator,
+		x: UInt16,
+		y: UInt16,
+		width: UInt16,
+		height: UInt16) {
 		// TODO: prevent array copies
 		screenView.bitScreen = emulator.display
 		// TODO: pass an invalidated rectangle only

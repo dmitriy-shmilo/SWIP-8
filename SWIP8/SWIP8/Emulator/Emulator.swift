@@ -8,8 +8,13 @@
 import Foundation
 
 protocol EmulatorDelegate: AnyObject {
-	// TODO: report rendered region
-	func emulatorDidRender(_ emulator: Emulator)
+	func emulatorDidRender(
+		_ emulator: Emulator,
+		x: UInt16,
+		y: UInt16,
+		width: UInt16,
+		height: UInt16
+	)
 }
 
 class Emulator {
@@ -83,7 +88,7 @@ class Emulator {
 		delayTimer = 0
 		soundTimer = 0
 
-		delegate?.emulatorDidRender(self)
+		delegate?.emulatorDidRender(self, x: 0, y: 0, width: Self.ResolutionWidth, height: Self.ResolutionHeight)
 	}
 
 	func load(rom: [UInt8]) throws {
@@ -264,7 +269,7 @@ class Emulator {
 
 	private func clearDisplay() {
 		display.reset()
-		delegate?.emulatorDidRender(self)
+		delegate?.emulatorDidRender(self, x: 0, y: 0, width: Self.ResolutionWidth, height: Self.ResolutionHeight)
 	}
 
 	// MARK: - Execute instruction implementation
@@ -404,7 +409,7 @@ class Emulator {
 			}
 		}
 
-		delegate?.emulatorDidRender(self)
+		delegate?.emulatorDidRender(self, x: x, y: y, width: dx, height: dy)
 	}
 
 	private func executeSkipIfKey(instruction: Instruction) throws {
