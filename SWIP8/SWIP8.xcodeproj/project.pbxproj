@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		5D698559271EA80C0046F280 /* EmulatorFlags.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D698558271EA80C0046F280 /* EmulatorFlags.swift */; };
 		5D96E7B6271D11C500CFFDB8 /* Emulator+Load.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D96E7B5271D11C500CFFDB8 /* Emulator+Load.swift */; };
 		5D96E7B8271D122F00CFFDB8 /* Emulator+Run.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D96E7B7271D122F00CFFDB8 /* Emulator+Run.swift */; };
 		5DD80ED7270AEA42006ADDFA /* Array+ByteIndexable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5DD80ED6270AEA42006ADDFA /* Array+ByteIndexable.swift */; };
@@ -52,6 +53,7 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		5D698558271EA80C0046F280 /* EmulatorFlags.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EmulatorFlags.swift; sourceTree = "<group>"; };
 		5D96E7B5271D11C500CFFDB8 /* Emulator+Load.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Emulator+Load.swift"; sourceTree = "<group>"; };
 		5D96E7B7271D122F00CFFDB8 /* Emulator+Run.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Emulator+Run.swift"; sourceTree = "<group>"; };
 		5DD80ED6270AEA42006ADDFA /* Array+ByteIndexable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Array+ByteIndexable.swift"; sourceTree = "<group>"; };
@@ -176,6 +178,7 @@
 				5DEABB6C2709D769007AB419 /* Instruction.swift */,
 				5DD80EE0270B2D32006ADDFA /* InstructionCode.swift */,
 				5DDD82E62711D5C90045F4FF /* Screen.swift */,
+				5D698558271EA80C0046F280 /* EmulatorFlags.swift */,
 			);
 			path = Emulator;
 			sourceTree = "<group>";
@@ -319,6 +322,7 @@
 				5DD80ED9270AEA4F006ADDFA /* Array+WordIndexable.swift in Sources */,
 				5DD80EDD270B0782006ADDFA /* EmulationError.swift in Sources */,
 				5D96E7B6271D11C500CFFDB8 /* Emulator+Load.swift in Sources */,
+				5D698559271EA80C0046F280 /* EmulatorFlags.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
