@@ -7,6 +7,18 @@
 
 import Foundation
 
+struct EmulatorFlags: OptionSet {
+	var rawValue: UInt64
+
+	static let inPlaceShift = EmulatorFlags(rawValue: 1 << 0)
+	static let flaglessIndexOverflow = EmulatorFlags(rawValue: 1 << 1)
+	static let incrementIndexOnStore = EmulatorFlags(rawValue: 1 << 2)
+	static let jumpWithOffsetBXNN = EmulatorFlags(rawValue: 1 << 3)
+
+	static let cosmacVip: EmulatorFlags = [flaglessIndexOverflow, incrementIndexOnStore]
+	static let chip48: EmulatorFlags = [flaglessIndexOverflow, inPlaceShift, jumpWithOffsetBXNN]
+}
+
 protocol EmulatorDelegate: AnyObject {
 	func emulatorDidRender(
 		_ emulator: Emulator,
@@ -56,10 +68,12 @@ class Emulator {
 	private (set) var currentStack = 0
 	private (set) var delayTimer: UInt8 = 0
 	private (set) var soundTimer: UInt8 = 0
+	private (set) var flags: EmulatorFlags = .cosmacVip
 
 	weak var delegate: EmulatorDelegate?
 
-	init() {
+	init(with flags: EmulatorFlags = .cosmacVip) {
+		self.flags = flags
 		display = BitScreen(width: Self.ResolutionWidth, height: Self.ResolutionHeight)
 	}
 
@@ -143,7 +157,6 @@ class Emulator {
 	}
 
 	func getPixel(x: UInt16, y: UInt16) -> UInt8 {
-		// TODO: extract display into a separate class
 		display[x + y * Self.ResolutionWidth]
 	}
 
@@ -272,8 +285,9 @@ class Emulator {
 			registers[instruction.x] = res
 			registers[0x0f] = over ? 0 : 1
 		case .shiftRight?:
-			// FIXME: this should be an option
-			registers[instruction.x] = registers[instruction.y]
+			if !flags.contains(.inPlaceShift) {
+				registers[instruction.x] = registers[instruction.y]
+			}
 			registers[0x0f] = registers[instruction.x] & 0b0000_0001
 			registers[instruction.x] >>= 1
 		case .revSubtract?:
@@ -281,8 +295,9 @@ class Emulator {
 			registers[instruction.x] = res
 			registers[0x0f] = over ? 0 : 1
 		case .shiftLeft?:
-			// FIXME: this should be an option
-			registers[instruction.x] = registers[instruction.y]
+			if !flags.contains(.inPlaceShift) {
+				registers[instruction.x] = registers[instruction.y]
+			}
 			registers[0x0f] = (registers[instruction.x] & 0b1000_0000) >> 7
 			registers[instruction.x] <<= 1
 		default:
@@ -302,9 +317,12 @@ class Emulator {
 	}
 
 	private func executeJumpWithOffset(instruction: Instruction) throws {
-		// TODO: implement an option to increment by registers[x]
-		try ensureSafeIndex(programCounter + registers[0])
-		programCounter = instruction.nnn + registers[0]
+		let offset = flags.contains(.jumpWithOffsetBXNN)
+			? registers[instruction.x]
+			: registers[0]
+
+		try ensureSafeIndex(programCounter + offset)
+		programCounter = instruction.nnn + offset
 	}
 
 	private func executeRandom(instruction: Instruction) {
@@ -367,8 +385,9 @@ class Emulator {
 			indexRegister += UInt16(registers[instruction.x])
 			if indexRegister >= 0x1000 {
 				indexRegister &= 0x0fff
-				// TODO: implement an option to skip flagging this overlow
-				registers[0x0f] = 1
+				if !flags.contains(.flaglessIndexOverflow) {
+					registers[0x0f] = 1
+				}
 			}
 			try ensureSafeIndex(indexRegister)
 		case .indexToChar?:
@@ -380,15 +399,20 @@ class Emulator {
 			memory[indexRegister + 1] = num / 10 % 10
 			memory[indexRegister + 2] = num % 10
 		case .storeRegisters:
-			// TODO: implement an option to increment index register
 			try ensureSafeIndexRange(indexRegister, withWidth: instruction.x)
 			for i in 0...instruction.x {
 				memory[indexRegister + i] = registers[i]
+			}
+			if flags.contains(.incrementIndexOnStore) {
+				indexRegister += UInt16(instruction.x)
 			}
 		case .loadRegisters:
 			try ensureSafeIndexRange(indexRegister, withWidth: instruction.x)
 			for i in 0...instruction.x {
 				registers[i] = memory[indexRegister + i]
+			}
+			if flags.contains(.incrementIndexOnStore) {
+				indexRegister += UInt16(instruction.x)
 			}
 		default:
 			throw ExecutionError.NotSupported
