@@ -56,7 +56,6 @@ class Emulator {
 	private (set) var currentStack = 0
 	private (set) var delayTimer: UInt8 = 0
 	private (set) var soundTimer: UInt8 = 0
-	private (set) var quit = false
 
 	weak var delegate: EmulatorDelegate?
 
@@ -65,7 +64,6 @@ class Emulator {
 	}
 
 	func reset() {
-		quit = true
 		indexRegister = Self.ReservedMemorySize
 		programCounter = Self.ReservedMemorySize
 
@@ -107,52 +105,6 @@ class Emulator {
 		)
 	}
 
-	func load(instructions: Instruction...) throws {
-		var rom = [UInt8]()
-		rom.reserveCapacity(instructions.count * 2)
-
-		for i in instructions {
-			rom.append(i.a)
-			rom.append(i.b)
-		}
-
-		try load(rom: rom)
-	}
-
-	func load(string: String) throws {
-		let totalSteps = 1
-		var bytes = [UInt8]()
-		var step = totalSteps
-		var byte: UInt8 = 0
-
-		for char in string {
-			if CharacterSet.whitespacesAndNewlines.contains(char.unicodeScalars.first!) {
-				continue
-			}
-
-			if let digit = char.hexDigitValue {
-				byte |= UInt8(digit)
-				if step == 0 {
-					bytes.append(byte)
-					byte = 0
-					step = totalSteps
-				} else {
-					byte <<= 4
-					step -= 1
-				}
-			} else {
-				throw LoadError.InvalidCharacter(string: String(char))
-			}
-		}
-
-		// there's an incomplete byte left lingering
-		if step != totalSteps {
-			throw LoadError.InvalidInputLength
-		}
-
-		try load(rom: bytes)
-	}
-
 	func execute(instruction: Instruction) throws {
 		switch instruction.group {
 		case .special:
@@ -190,36 +142,6 @@ class Emulator {
 		}
 	}
 
-	func peekInstruction() -> Instruction {
-		Instruction(a: memory[programCounter], b: memory[programCounter + 1])
-	}
-
-	func executeNextInstruction() throws {
-		let instruction = peekInstruction()
-		try advanceProgramCounter()
-
-		try execute(instruction: instruction)
-	}
-
-	func run() throws {
-		quit = false
-		var timers = 0.0
-		while !quit {
-			timers += 1.0 / 700.0
-			if timers >= 1.0 / 60.0 {
-				timers += 0.0
-				tickTimers()
-			}
-			try executeNextInstruction()
-
-			// TODO: decouple from Thread
-			Thread.sleep(forTimeInterval: 1 / 700.0)
-			if Thread.current.isCancelled {
-				quit = true
-			}
-		}
-	}
-
 	func getPixel(x: UInt16, y: UInt16) -> UInt8 {
 		// TODO: extract display into a separate class
 		display[x + y * Self.ResolutionWidth]
@@ -242,6 +164,11 @@ class Emulator {
 		}
 	}
 
+	func advanceProgramCounter() throws {
+		try ensureSafeIndexRange(programCounter + 2, withWidth: 2)
+		programCounter += 2
+	}
+
 	private func ensureSafeIndexRange<Width: BinaryInteger>(
 		_ index: UInt16,
 		withWidth width: Width
@@ -260,11 +187,6 @@ class Emulator {
 		if index < Self.ReservedMemorySize || index >= Self.MemorySize {
 			throw ExecutionError.InvalidIndex(index: index)
 		}
-	}
-
-	private func advanceProgramCounter() throws {
-		try ensureSafeIndexRange(programCounter + 2, withWidth: 2)
-		programCounter += 2
 	}
 
 	private func clearDisplay() {
