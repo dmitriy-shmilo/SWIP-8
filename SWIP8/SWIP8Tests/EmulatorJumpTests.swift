@@ -60,11 +60,19 @@ class EmulatorJumpTests: XCTestCase {
 			"Expected an error when jumping into reserved memory"
 		)
 	}
+}
+
+class EmulatorChip48JumpTests: XCTestCase {
+
+	var sut = Emulator(with: .chip48)
+
+	override func setUpWithError() throws {
+		sut.reset()
+	}
 
 	func testJumpWithOffsetAlt() throws {
 		let address: UInt16 = 0x0200
 
-		XCTFail("Expected an option to toggle jump with offset modes")
 		try sut.execute(instruction: .makeSetRegister(register: 2, value: 8))
 		try sut.execute(instruction: .makeJumpWithOffset(address: address))
 		XCTAssertEqual(sut.programCounter, address + 8, "PC should point to given address with VX value as offset")
@@ -73,7 +81,6 @@ class EmulatorJumpTests: XCTestCase {
 	func testJumpWithOffsetAltOutOfBounds() throws {
 		let address: UInt16 = 0x0eff
 
-		XCTFail("Expected an option to toggle jump with offset modes")
 		try sut.execute(instruction: .makeSetRegister(register: 0x0e, value: 0xff))
 		XCTAssertThrowsError(
 			try sut.execute(instruction: .makeJumpWithOffset(address: address)),
@@ -84,12 +91,10 @@ class EmulatorJumpTests: XCTestCase {
 	func testJumpWithOffsetAltReserved() throws {
 		let address: UInt16 = 0x010f
 
-		XCTFail("Expected an option to toggle jump with offset modes")
 		try sut.execute(instruction: .makeSetRegister(register: 1, value: 8))
 		XCTAssertThrowsError(
 			try sut.execute(instruction: .makeJumpWithOffset(address: address)),
 			"Expected an error when jumping into reserved memory"
 		)
 	}
-
 }

@@ -10,7 +10,7 @@ import XCTest
 
 class EmulatorArithmeticTests: XCTestCase {
 
-	let sut = Emulator()
+	let sut = Emulator(with: .cosmacVip)
 
 	override func setUpWithError() throws {
 		sut.reset()
@@ -132,16 +132,6 @@ class EmulatorArithmeticTests: XCTestCase {
 		XCTAssertEqual(sut.registers[0x0f], 0, "Register F should contain shifted out bit")
 	}
 
-	func testShiftRightInPlace() throws {
-		// FIXME: there should be an option to shift VX in place
-		try sut.execute(instruction: .makeSetRegister(register: 0, value: 0b0011))
-		try sut.execute(instruction: .makeSetRegister(register: 1, value: 0b0101))
-		try sut.execute(instruction: .makeShiftRight(registerX: 0, registerY: 1))
-		XCTAssertEqual(sut.registers[0], 0b0001, "Register 0 should be equal to register 0 shifted right once")
-		XCTAssertEqual(sut.registers[1], 0b0101, "Register 1 should remain unaffected")
-		XCTAssertEqual(sut.registers[0x0f], 1, "Register F should contain shifted out bit")
-	}
-
 	func testShiftLeftOutOne() throws {
 		try sut.execute(instruction: .makeSetRegister(register: 0, value: 0b0011_0000))
 		try sut.execute(instruction: .makeSetRegister(register: 1, value: 0b1101_0000))
@@ -159,14 +149,31 @@ class EmulatorArithmeticTests: XCTestCase {
 		XCTAssertEqual(sut.registers[1], 0b0101_0000, "Register 1 should remain unaffected")
 		XCTAssertEqual(sut.registers[0x0f], 0, "Register F should contain shifted out bit")
 	}
+}
+
+class EmulatorChip48ArithmeticTests: XCTestCase {
+
+	let sut = Emulator(with: .chip48)
+
+	override func setUpWithError() throws {
+		sut.reset()
+	}
 
 	func testShiftLeftInPlace() throws {
-		// FIXME: there should be an option to shift VX in place
 		try sut.execute(instruction: .makeSetRegister(register: 0, value: 0b1101_0000))
 		try sut.execute(instruction: .makeSetRegister(register: 1, value: 0b0101_0000))
 		try sut.execute(instruction: .makeShiftLeft(registerX: 0, registerY: 1))
 		XCTAssertEqual(sut.registers[0], 0b1010_0000, "Register 0 should be equal to register 0 shifted right once")
 		XCTAssertEqual(sut.registers[1], 0b0101_0000, "Register 1 should remain unaffected")
+		XCTAssertEqual(sut.registers[0x0f], 1, "Register F should contain shifted out bit")
+	}
+
+	func testShiftRightInPlace() throws {
+		try sut.execute(instruction: .makeSetRegister(register: 0, value: 0b0011))
+		try sut.execute(instruction: .makeSetRegister(register: 1, value: 0b0101))
+		try sut.execute(instruction: .makeShiftRight(registerX: 0, registerY: 1))
+		XCTAssertEqual(sut.registers[0], 0b0001, "Register 0 should be equal to register 0 shifted right once")
+		XCTAssertEqual(sut.registers[1], 0b0101, "Register 1 should remain unaffected")
 		XCTAssertEqual(sut.registers[0x0f], 1, "Register F should contain shifted out bit")
 	}
 }

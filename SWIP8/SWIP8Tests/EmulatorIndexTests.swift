@@ -48,6 +48,15 @@ class EmulatorIndexTests: XCTestCase {
 		XCTAssertEqual(sut.indexRegister, address + 8, "Index register should point to an adjusted address")
 	}
 
+	func testAddToIndexOverflow() throws {
+		let address: UInt16 = 0x0fff
+		try sut.execute(instruction: .makeSetIndex(address: address))
+		try sut.execute(instruction: .makeSetRegister(register: 0, value: 8))
+		try sut.execute(instruction: .makeAddToIndex(registerX: 0))
+		XCTAssertEqual(sut.indexRegister, 7, "Index register should point to an adjusted address with wrapping")
+		XCTAssertEqual(sut.registers[0x0f], 0, "Flag register should remain unchanged")
+	}
+
 	func testAddToIndexOutOfBounds() throws {
 		let address: UInt16 = 0xfff0
 		try sut.execute(instruction: .makeSetIndex(address: address))
@@ -92,5 +101,22 @@ class EmulatorIndexTests: XCTestCase {
 		sut.reset()
 
 		XCTAssertEqual(zeroIndex, sut.indexRegister, "Index register should reset to the same value")
+	}
+}
+
+class EmulatorQuirkIndexTests: XCTestCase {
+	let sut = Emulator(with: .init(rawValue: 0))
+
+	override func setUpWithError() throws {
+		sut.reset()
+	}
+
+	func testAddToIndexOverflow() throws {
+		let address: UInt16 = 0x0fff
+		try sut.execute(instruction: .makeSetIndex(address: address))
+		try sut.execute(instruction: .makeSetRegister(register: 0, value: 8))
+		try sut.execute(instruction: .makeAddToIndex(registerX: 0))
+		XCTAssertEqual(sut.indexRegister, 7, "Index register should point to an adjusted address with wrapping")
+		XCTAssertEqual(sut.registers[0x0f], 1, "Flag register should indicate overflow")
 	}
 }
