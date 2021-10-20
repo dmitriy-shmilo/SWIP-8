@@ -270,4 +270,32 @@ class EmulatorDrawTests: XCTestCase {
 
 		wait(for: [expectation], timeout: 0)
 	}
+
+	func testCollisionFlagged() throws {
+		try sut.load(rom: [0xff, 0x00])
+
+		try sut.execute(instruction: .makeSetRegister(register: 0, value: 1)) // x = 1
+		try sut.execute(instruction: .makeSetRegister(register: 1, value: 2)) // y = 2
+		try sut.execute(instruction: .makeDraw(registerX: 0, registerY: 1, rows: 1))
+
+		try sut.execute(instruction: .makeSetRegister(register: 0, value: 3)) // x = 3
+		try sut.execute(instruction: .makeSetRegister(register: 1, value: 2)) // y = 2
+		try sut.execute(instruction: .makeDraw(registerX: 0, registerY: 1, rows: 1))
+
+		XCTAssertEqual(sut.registers[0x0f], 1, "Flag register should be set when one sprite intersects with another")
+	}
+
+	func testCollisionNotFlagged() throws {
+		try sut.load(rom: [0xff, 0x00])
+
+		try sut.execute(instruction: .makeSetRegister(register: 0, value: 1)) // x = 1
+		try sut.execute(instruction: .makeSetRegister(register: 1, value: 2)) // y = 2
+		try sut.execute(instruction: .makeDraw(registerX: 0, registerY: 1, rows: 1))
+
+		try sut.execute(instruction: .makeSetRegister(register: 0, value: 3)) // x = 3
+		try sut.execute(instruction: .makeSetRegister(register: 1, value: 3)) // y = 3
+		try sut.execute(instruction: .makeDraw(registerX: 0, registerY: 1, rows: 1))
+
+		XCTAssertEqual(sut.registers[0x0f], 0, "Flag register should remain unset when no sprites collide")
+	}
 }

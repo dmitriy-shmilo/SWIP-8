@@ -332,8 +332,8 @@ class Emulator {
 				let bit = (byte >> (8 - j - 1)) & 0x01
 				let index = (y + i) * Self.ResolutionWidth + x + UInt16(j)
 
+				registers[0x0f] = registers[0x0f] | (bit & display[index])
 				display[index] ^= bit
-				registers[0x0f] = registers[0x0f] | bit & display[index]
 			}
 		}
 
