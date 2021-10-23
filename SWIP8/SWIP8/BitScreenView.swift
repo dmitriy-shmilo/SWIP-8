@@ -62,20 +62,23 @@ class BitScreenView: UIView {
 		let verticalOffset = bounds.size.height / 2 - fieldHeight / 2
 		let horizontalOffset = bounds.size.width / 2 - fieldWidth / 2
 
-		// TODO: redraw only the portion specified by rect
 		ctx.setFillColor(cgBackground)
-		ctx.fill(bounds)
+		ctx.fill(rect)
 
 		ctx.setFillColor(cgPixOff)
-		ctx.fill(CGRect(
-			x: horizontalOffset,
-			y: verticalOffset,
-			width: bitSize * cgResolutionWidth,
-			height: bitSize * cgResolutionHeight
-		))
+		ctx.fill(
+			CGRect(
+				x: horizontalOffset,
+				y: verticalOffset,
+				width: bitSize * cgResolutionWidth,
+				height: bitSize * cgResolutionHeight
+			).intersection(rect)
+		)
 
 		let rects = bitScreen.enumerated()
-			.filter { $0.1 != 0 }
+			.filter {
+				$0.1 != 0
+			}
 			.map {
 				(x: UInt16($0.0) % bitScreen.width, y: UInt16($0.0) / bitScreen.width)
 			}
@@ -86,6 +89,9 @@ class BitScreenView: UIView {
 					width: bitSize,
 					height: bitSize
 				)
+			}
+			.filter {
+				$0.intersects(rect)
 			}
 		ctx.beginPath()
 		ctx.addRects(rects)
