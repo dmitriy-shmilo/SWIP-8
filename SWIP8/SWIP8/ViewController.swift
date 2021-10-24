@@ -63,9 +63,8 @@ d455 7415 f229 d455 00ee 8080 8080 8080
 		region: ScreenRegion<UInt16>) {
 		// TODO: prevent array copies
 		screenView.bitScreen = emulator.display
-		// TODO: pass an invalidated rectangle only
 		DispatchQueue.main.async { [weak self] in
-			self?.screenView.setNeedsDisplay()
+			self?.screenView.setNeedsDisplay(region)
 		}
 	}
 

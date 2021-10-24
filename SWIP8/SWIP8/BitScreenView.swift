@@ -99,6 +99,24 @@ class BitScreenView: UIView {
 		ctx.fillPath()
 	}
 
+	func setNeedsDisplay(_ region: ScreenRegion<UInt16>) {
+		let bitSize = min(
+			bounds.size.width / cgResolutionWidth,
+			bounds.size.height / cgResolutionHeight
+		)
+		let fieldWidth = bitSize * cgResolutionWidth
+		let fieldHeight = bitSize * cgResolutionHeight
+		let verticalOffset = bounds.size.height / 2 - fieldHeight / 2
+		let horizontalOffset = bounds.size.width / 2 - fieldWidth / 2
+
+		let x = CGFloat(region.x) * bitSize + horizontalOffset
+		let y = CGFloat(region.y) * bitSize + verticalOffset
+		let width = CGFloat(region.width) * bitSize
+		let height = CGFloat(region.height) * bitSize
+
+		setNeedsDisplay(CGRect(x: x, y: y, width: width, height: height))
+	}
+
 	private func setup() {
 		setupColors()
 		setupScreen()
