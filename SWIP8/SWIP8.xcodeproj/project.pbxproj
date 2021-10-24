@@ -29,6 +29,7 @@
 		5DD80EFF270C34AC006ADDFA /* EmulatorTimerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5DD80EFE270C34AC006ADDFA /* EmulatorTimerTests.swift */; };
 		5DDD82E72711D5C90045F4FF /* Screen.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5DDD82E62711D5C90045F4FF /* Screen.swift */; };
 		5DDD82E92711D5EB0045F4FF /* BitScreen.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5DDD82E82711D5EB0045F4FF /* BitScreen.swift */; };
+		5DE32BC52725BCC000B5BF62 /* ScreenRegion.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5DE32BC42725BCC000B5BF62 /* ScreenRegion.swift */; };
 		5DEABB492709C960007AB419 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5DEABB482709C960007AB419 /* AppDelegate.swift */; };
 		5DEABB4B2709C960007AB419 /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5DEABB4A2709C960007AB419 /* SceneDelegate.swift */; };
 		5DEABB4D2709C960007AB419 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5DEABB4C2709C960007AB419 /* ViewController.swift */; };
@@ -75,6 +76,7 @@
 		5DD80EFE270C34AC006ADDFA /* EmulatorTimerTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EmulatorTimerTests.swift; sourceTree = "<group>"; };
 		5DDD82E62711D5C90045F4FF /* Screen.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Screen.swift; sourceTree = "<group>"; };
 		5DDD82E82711D5EB0045F4FF /* BitScreen.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BitScreen.swift; sourceTree = "<group>"; };
+		5DE32BC42725BCC000B5BF62 /* ScreenRegion.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ScreenRegion.swift; sourceTree = "<group>"; };
 		5DEABB452709C960007AB419 /* SWIP8.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = SWIP8.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		5DEABB482709C960007AB419 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		5DEABB4A2709C960007AB419 /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
@@ -175,10 +177,11 @@
 				5DEABB6A2709D713007AB419 /* Emulator.swift */,
 				5D96E7B5271D11C500CFFDB8 /* Emulator+Load.swift */,
 				5D96E7B7271D122F00CFFDB8 /* Emulator+Run.swift */,
+				5D698558271EA80C0046F280 /* EmulatorFlags.swift */,
 				5DEABB6C2709D769007AB419 /* Instruction.swift */,
 				5DD80EE0270B2D32006ADDFA /* InstructionCode.swift */,
 				5DDD82E62711D5C90045F4FF /* Screen.swift */,
-				5D698558271EA80C0046F280 /* EmulatorFlags.swift */,
+				5DE32BC42725BCC000B5BF62 /* ScreenRegion.swift */,
 			);
 			path = Emulator;
 			sourceTree = "<group>";
@@ -313,6 +316,7 @@
 				5DDD82E72711D5C90045F4FF /* Screen.swift in Sources */,
 				5DEABB492709C960007AB419 /* AppDelegate.swift in Sources */,
 				5D96E7B8271D122F00CFFDB8 /* Emulator+Run.swift in Sources */,
+				5DE32BC52725BCC000B5BF62 /* ScreenRegion.swift in Sources */,
 				5DEABB6B2709D713007AB419 /* Emulator.swift in Sources */,
 				5DEABB6D2709D769007AB419 /* Instruction.swift in Sources */,
 				5DEABB4B2709C960007AB419 /* SceneDelegate.swift in Sources */,

@@ -10,10 +10,7 @@ import Foundation
 protocol EmulatorDelegate: AnyObject {
 	func emulatorDidRender(
 		_ emulator: Emulator,
-		x: UInt16,
-		y: UInt16,
-		width: UInt16,
-		height: UInt16
+		region: ScreenRegion<UInt16>
 	)
 }
 
@@ -88,7 +85,7 @@ class Emulator {
 		delayTimer = 0
 		soundTimer = 0
 
-		delegate?.emulatorDidRender(self, x: 0, y: 0, width: Self.ResolutionWidth, height: Self.ResolutionHeight)
+		delegate?.emulatorDidRender(self, region: ScreenRegion(x: 0, y: 0, width: Self.ResolutionWidth, height: Self.ResolutionHeight))
 	}
 
 	func load(rom: [UInt8]) throws {
@@ -192,7 +189,7 @@ class Emulator {
 
 	private func clearDisplay() {
 		display.reset()
-		delegate?.emulatorDidRender(self, x: 0, y: 0, width: Self.ResolutionWidth, height: Self.ResolutionHeight)
+		delegate?.emulatorDidRender(self, region: ScreenRegion(x: 0, y: 0, width: Self.ResolutionWidth, height: Self.ResolutionHeight))
 	}
 
 	// MARK: - Execute instruction implementation
@@ -337,7 +334,7 @@ class Emulator {
 			}
 		}
 
-		delegate?.emulatorDidRender(self, x: x, y: y, width: dx, height: dy)
+		delegate?.emulatorDidRender(self, region: ScreenRegion(x: x, y: y, width: dx, height: dy))
 	}
 
 	private func executeSkipIfKey(instruction: Instruction) throws {
